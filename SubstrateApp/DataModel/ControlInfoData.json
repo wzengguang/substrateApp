@@ -1,0 +1,76 @@
+{
+  "Groups": [
+    {
+      "UniqueId": "AllControls",
+      "Title": "All controls",
+      "Subtitle": "",
+      "ImagePath": "",
+      "Description": "",
+      "Items": []
+    },
+    {
+      "UniqueId": "Nupkg",
+      "Title": "Nupkg",
+      "Subtitle": "",
+      "ImagePath": "",
+      "Description": "",
+      "Items": [
+        {
+          "UniqueId": "GetReference",
+          "Title": "GetReference",
+          "Subtitle": "Get reference from a project file.",
+          "ImagePath": "ms-appx:///Assets/FlipView.png",
+          "Description": "Get reference from a project file.",
+          "Content": "",
+          "IsUpdated": false,
+          "Docs": [],
+          "RelatedControls": []
+        },
+        {
+          "UniqueId": "RemoveReference",
+          "Title": "RemoveReference",
+          "Subtitle": "Remove reference from a project file.",
+          "ImagePath": "ms-appx:///Assets/GridView.png",
+          "Description": "Remove reference from a project file.",
+          "Content": "",
+          "IsUpdated": false,
+          "Docs": [],
+          "RelatedControls": []
+        },
+        {
+          "UniqueId": "AddReference",
+          "Title": "AddReference",
+          "Subtitle": "Add reference to a project file.",
+          "ImagePath": "ms-appx:///Assets/ListBox.png",
+          "Description": "Add reference to a project file.",
+          "Content": "",
+          "IsUpdated": false,
+          "Docs": [],
+          "RelatedControls": []
+        },
+        {
+          "UniqueId": "AmendPackageReference",
+          "Title": "AmendPackageReference",
+          "Subtitle": "Amend package reference to a project file.",
+          "ImagePath": "ms-appx:///Assets/ListView.png",
+          "Description": "Amend package reference of a project file. This could remove these package references that not exist in reference assembly.",
+          "Content": "",
+          "IsUpdated": false,
+          "Docs": [],
+          "RelatedControls": []
+        },
+        {
+          "UniqueId": "CorrectTargetPath",
+          "Title": "CorrectTargetPath",
+          "Subtitle": "CorrectTargetPath.",
+          "ImagePath": "ms-appx:///Assets/PullToRefresh.png",
+          "Description": "Correct target path of reference.",
+          "Content": "",
+          "IsUpdated": false,
+          "Docs": [],
+          "RelatedControls": []
+        }
+      ]
+    }
+  ]
+}

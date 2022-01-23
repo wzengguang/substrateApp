@@ -1,0 +1,695 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{83B03237-24FF-45EC-AEAA-E7AAF77E2E58}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SubstrateApp</RootNamespace>
+    <AssemblyName>SubstrateApp</AssemblyName>
+    <DefaultLanguage>zh-CN</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion Condition=" '$(TargetPlatformVersion)' == '' ">10.0.18362.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.17134.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
+    <AppxPackageSigningEnabled>false</AppxPackageSigningEnabled>
+    <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+    <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+    <GenerateTestArtifacts>True</GenerateTestArtifacts>
+    <AppxBundlePlatforms>x86|x64|arm</AppxBundlePlatforms>
+    <AppInstallerUri>D:\</AppInstallerUri>
+    <HoursBetweenUpdateChecks>168</HoursBetweenUpdateChecks>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM64'">
+    <OutputPath>bin\ARM64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;NETFX_CORE;WINDOWS_UWP;CODE_ANALYSIS</DefineConstants>
+    <NoWarn>;2008;8305</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AllControlsPage.xaml.cs">
+      <DependentUpon>AllControlsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Behaviors\ImageScrollBehavior.cs" />
+    <Compile Include="Common\ActivityFeedLayout.cs" />
+    <Compile Include="Common\BooleanToValueConverter.cs" />
+    <Compile Include="Common\Category.cs" />
+    <Compile Include="Common\ColorSlideTransitionHelper.cs" />
+    <Compile Include="Common\DefaultElementAnimator.cs" />
+    <Compile Include="Common\DeviceFamilyTrigger.cs" />
+    <Compile Include="Common\DoubleToThicknessConverter.cs" />
+    <Compile Include="Common\ImageLoader.cs" />
+    <Compile Include="Common\LanguageList.cs" />
+    <Compile Include="Common\MenuItemTemplateSelector.cs" />
+    <Compile Include="Common\NullableBooleanToBooleanConverter.cs" />
+    <Compile Include="Common\NullToVisibilityConverter.cs" />
+    <Compile Include="Common\ObservableDictionary.cs" />
+    <Compile Include="Common\OrientedSize.cs" />
+    <Compile Include="Common\RelayCommand.cs" />
+    <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="Common\VariedImageSizeLayout.cs" />
+    <Compile Include="Common\WrapPanel.cs" />
+    <Compile Include="ControlPages\AmendPackageReferencePage.xaml.cs">
+      <DependentUpon>AmendPackageReferencePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ControlPages\AddReferencePage.xaml.cs">
+      <DependentUpon>AddReferencePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ControlPages\CorrectTargetPathPage.xaml.cs">
+      <DependentUpon>CorrectTargetPathPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ControlPages\RemoveReferencePage.xaml.cs">
+      <DependentUpon>RemoveReferencePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ControlPages\GetReferencePage.xaml.cs">
+      <DependentUpon>GetReferencePage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ControlExample.xaml.cs">
+      <DependentUpon>ControlExample.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ContentCopiedPresenter.xaml.cs">
+      <DependentUpon>ContentCopiedPresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\SampleCodePresenter.xaml.cs">
+      <DependentUpon>SampleCodePresenter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="DataModel\ControlInfoDataSource.cs" />
+    <Compile Include="DataModel\Project.cs" />
+    <Compile Include="DataModel\ProjectWrap.cs" />
+    <Compile Include="DataModel\Reference.cs" />
+    <Compile Include="DataModel\SettingConstant.cs" />
+    <Compile Include="DataModel\SubstrateData.cs" />
+    <Compile Include="DataModel\SubstrateDataExt.cs" />
+    <Compile Include="Helper\NavigationHelper.cs" />
+    <Compile Include="Helper\NavigationOrientationHelper.cs" />
+    <Compile Include="Helper\ProtocolActivationClipboardHelper.cs" />
+    <Compile Include="Helper\ThemeHelper.cs" />
+    <Compile Include="Helper\UIHelper.cs" />
+    <Compile Include="Utils\IEnumerableExtension.cs" />
+    <Compile Include="ItemPage.xaml.cs">
+      <DependentUpon>ItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ItemsPageBase.cs" />
+    <Compile Include="ItemTemplates.xaml.cs">
+      <DependentUpon>ItemTemplates.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Navigation\NavigationRootPage.xaml.cs">
+      <DependentUpon>NavigationRootPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PageHeader.xaml.cs">
+      <DependentUpon>PageHeader.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchResultsPage.xaml.cs">
+      <DependentUpon>SearchResultsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SectionPage.xaml.cs">
+      <DependentUpon>SectionPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="SettingsPage.xaml.cs">
+      <DependentUpon>SettingsPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\IgnoreCaseDictionary.cs" />
+    <Compile Include="Utils\IgnoreCaseHashSet.cs" />
+    <Compile Include="Utils\ListExtension.cs" />
+    <Compile Include="Utils\MSBuildPath.cs" />
+    <Compile Include="Utils\MSBuildUtils.cs" />
+    <Compile Include="Utils\PathUtils.cs" />
+    <Compile Include="Utils\StringExtension.cs" />
+    <Compile Include="Utils\SubstrateUtil.cs" />
+    <Compile Include="Utils\Tags.cs" />
+    <Compile Include="Utils\XDocumentExtension.cs" />
+    <Compile Include="Utils\XElementExtension.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\AcrylicBrush.png" />
+    <Content Include="Assets\Animations.png" />
+    <Content Include="Assets\AppBar.png" />
+    <Content Include="Assets\AppBarButton.png" />
+    <Content Include="Assets\AppBarSeparator.png" />
+    <Content Include="Assets\AppBarToggleButton.png" />
+    <Content Include="Assets\AutoSuggestBox.png" />
+    <Content Include="Assets\badgelogo.scale-100.png" />
+    <Content Include="Assets\badgelogo.scale-140.png" />
+    <Content Include="Assets\badgelogo.scale-180.png" />
+    <Content Include="Assets\blank.png" />
+    <Content Include="Assets\Border.png" />
+    <Content Include="Assets\Button.png" />
+    <Content Include="Assets\CalendarView.png" />
+    <Content Include="Assets\CalenderDatePicker.png" />
+    <Content Include="Assets\Canvas.png" />
+    <Content Include="Assets\CheckBox.png" />
+    <Content Include="Assets\CoffeeCup.png" />
+    <Content Include="Assets\ColorPicker.png" />
+    <Content Include="Assets\ComboBox.png" />
+    <Content Include="Assets\CommandBar.png" />
+    <Content Include="Assets\CommandBarFlyout.png" />
+    <Content Include="Assets\CompactSizing.png" />
+    <Content Include="Assets\ConnectedAnimations.png" />
+    <Content Include="Assets\Contacts.txt" />
+    <Content Include="Assets\ContentDialog.png" />
+    <Content Include="Assets\CopyLinkTeachingTip.png" />
+    <Content Include="Assets\DarkGray.png" />
+    <Content Include="Assets\DatePicker.png" />
+    <Content Include="Assets\DefaultIcon.png" />
+    <Content Include="Assets\DropdownButton.png" />
+    <Content Include="Assets\EasingFunctions.png" />
+    <Content Include="Assets\file.png" />
+    <Content Include="Assets\FlipView.png" />
+    <Content Include="Assets\Flyout.png" />
+    <Content Include="Assets\folder.png" />
+    <Content Include="Assets\Grid.png" />
+    <Content Include="Assets\GridView.png" />
+    <Content Include="Assets\HyperlinkButton.png" />
+    <Content Include="Assets\Image.png" />
+    <Content Include="Assets\InkCanvas.png" />
+    <Content Include="Assets\InnerPage_Banner.jpg" />
+    <Content Include="Assets\LightGray.png" />
+    <Content Include="Assets\ListBox.png" />
+    <Content Include="Assets\ListView.png" />
+    <Content Include="Assets\LottieLogo1.png" />
+    <Content Include="Assets\MainPage_Banner.png" />
+    <Content Include="Assets\MapControl.png" />
+    <Content Include="Assets\MediaElement.png" />
+    <Content Include="Assets\MediumGray.png" />
+    <Content Include="Assets\MenuBar.png" />
+    <Content Include="Assets\MenuFlyout.png" />
+    <Content Include="Assets\NavigationView.png" />
+    <Content Include="Assets\NavigationViewItemIcons\AllControlsIcon.png" />
+    <Content Include="Assets\NavigationViewItemIcons\ButtonsIcon.png" />
+    <Content Include="Assets\NavigationViewItemIcons\CollectionIcon.png" />
+    <Content Include="Assets\NavigationViewItemIcons\CommandingIcon.png" />
+    <Content Include="Assets\NavigationViewItemIcons\FlyoutIcon.png" />
+    <Content Include="Assets\NavigationViewItemIcons\LayoutIcon.png" />
+    <Content Include="Assets\NavigationViewItemIcons\MediaIcon.png" />
+    <Content Include="Assets\NavigationViewItemIcons\NewControlsIcon.png" />
+    <Content Include="Assets\NavigationViewItemIcons\ObjectQuickAnimation.png" />
+    <Content Include="Assets\NavigationViewItemIcons\PickerIcon.png" />
+    <Content Include="Assets\NavigationViewItemIcons\TextIcon.png" />
+    <Content Include="Assets\new.png" />
+    <Content Include="Assets\ninegrid.gif" />
+    <Content Include="Assets\NumberBox.png" />
+    <Content Include="Assets\ParallaxView.png" />
+    <Content Include="Assets\PasswordBox.png" />
+    <Content Include="Assets\PersonPicture.png" />
+    <Content Include="Assets\Pivot.png" />
+    <Content Include="Assets\preview.png" />
+    <Content Include="Assets\ProgressBar.png" />
+    <Content Include="Assets\ProgressRing.png" />
+    <Content Include="Assets\PullToRefresh.png" />
+    <Content Include="Assets\RadioButton.png" />
+    <Content Include="Assets\RadioButtons.png" />
+    <Content Include="Assets\RatingControl.png" />
+    <Content Include="Assets\RelativePanel.png" />
+    <Content Include="Assets\Reveal.png" />
+    <Content Include="Assets\RevealFocus.png" />
+    <Content Include="Assets\RichEditBox.png" />
+    <Content Include="Assets\RichTextBlock.png" />
+    <Content Include="Assets\SampleMedia\cliff.jpg" />
+    <Content Include="Assets\SampleMedia\fishes.wmv" />
+    <Content Include="Assets\SampleMedia\grapes.jpg" />
+    <Content Include="Assets\SampleMedia\ladybug.wmv" />
+    <Content Include="Assets\SampleMedia\LandscapeImage1.jpg" />
+    <Content Include="Assets\SampleMedia\LandscapeImage2.jpg" />
+    <Content Include="Assets\SampleMedia\LandscapeImage3.jpg" />
+    <Content Include="Assets\SampleMedia\LandscapeImage4.jpg" />
+    <Content Include="Assets\SampleMedia\LandscapeImage5.jpg" />
+    <Content Include="Assets\SampleMedia\LandscapeImage6.jpg" />
+    <Content Include="Assets\SampleMedia\LandscapeImage7.jpg" />
+    <Content Include="Assets\SampleMedia\LandscapeImage8.jpg" />
+    <Content Include="Assets\SampleMedia\rainier.jpg" />
+    <Content Include="Assets\SampleMedia\sunset.jpg" />
+    <Content Include="Assets\SampleMedia\treetops.jpg" />
+    <Content Include="Assets\SampleMedia\valley.jpg" />
+    <Content Include="Assets\ScrollViewer.png" />
+    <Content Include="Assets\SemanticZoom.png" />
+    <Content Include="Assets\SettingsFlyout.png" />
+    <Content Include="Assets\Slices.png" />
+    <Content Include="Assets\Slices2.png" />
+    <Content Include="Assets\Slider.png" />
+    <Content Include="Assets\Sound.png" />
+    <Content Include="Assets\SplitButton.png" />
+    <Content Include="Assets\SplitView.png" />
+    <Content Include="Assets\StackPanel.png" />
+    <Content Include="Assets\StoryboardAnimation.png" />
+    <Content Include="Assets\SunBlack.png" />
+    <Content Include="Assets\SunWhite.png" />
+    <Content Include="Assets\Swipe.png" />
+    <Content Include="Assets\TabViewIcons\cmd.png" />
+    <Content Include="Assets\TabViewIcons\linux.png" />
+    <Content Include="Assets\TabViewIcons\powershell.png" />
+    <Content Include="Assets\TeachingTip.png" />
+    <Content Include="Assets\TextBlock.png" />
+    <Content Include="Assets\TextBox.png" />
+    <Content Include="Assets\Tiles\BadgeLogo.scale-100.png" />
+    <Content Include="Assets\Tiles\BadgeLogo.scale-125.png" />
+    <Content Include="Assets\Tiles\BadgeLogo.scale-150.png" />
+    <Content Include="Assets\Tiles\BadgeLogo.scale-200.png" />
+    <Content Include="Assets\Tiles\BadgeLogo.scale-400.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-16_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-16_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-20_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-20_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-24_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-24_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-256_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-256_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-30_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-30_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-32_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-32_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-36_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-36_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-40_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-40_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-48_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-48_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-60_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-60_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-64_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-64_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-72_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-72_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-80_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-80_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-96_altform-unplated_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryAppList.targetsize-96_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryBadgeLogo.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryBadgeLogo.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryBadgeLogo.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryBadgeLogo.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryBadgeLogo.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryLargeTile.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryLargeTile.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryLargeTile.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryLargeTile.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryLargeTile.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryMedTile.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryMedTile.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryMedTile.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryMedTile.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryMedTile.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySmallTile.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySmallTile.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySmallTile.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySmallTile.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySmallTile.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySplashScreen.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySplashScreen.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySplashScreen.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySplashScreen.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGallerySplashScreen.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryStoreLogo.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryStoreLogo.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryStoreLogo.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryStoreLogo.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryStoreLogo.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryWideTile.scale-100_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryWideTile.scale-125_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryWideTile.scale-150_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryWideTile.scale-200_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-black\XAMLControlsGalleryWideTile.scale-400_contrast-black.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-16_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-16_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-20_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-20_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-24_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-24_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-256_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-256_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-30_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-30_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-32_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-32_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-36_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-36_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-40_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-40_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-48_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-48_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-60_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-60_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-64_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-64_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-72_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-72_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-80_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-80_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-96_altform-unplated_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryAppList.targetsize-96_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryBadgeLogo.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryBadgeLogo.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryBadgeLogo.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryBadgeLogo.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryBadgeLogo.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryLargeTile.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryLargeTile.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryLargeTile.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryLargeTile.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryLargeTile.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryMedTile.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryMedTile.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryMedTile.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryMedTile.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryMedTile.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySmallTile.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySmallTile.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySmallTile.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySmallTile.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySmallTile.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySplashScreen.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySplashScreen.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySplashScreen.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySplashScreen.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGallerySplashScreen.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryStoreLogo.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryStoreLogo.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryStoreLogo.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryStoreLogo.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryStoreLogo.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryWideTile.scale-100_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryWideTile.scale-125_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryWideTile.scale-150_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryWideTile.scale-200_contrast-white.png" />
+    <Content Include="Assets\Tiles\contrast-white\XAMLControlsGalleryWideTile.scale-400_contrast-white.png" />
+    <Content Include="Assets\Tiles\LargeTile.scale-100.png" />
+    <Content Include="Assets\Tiles\LargeTile.scale-125.png" />
+    <Content Include="Assets\Tiles\LargeTile.scale-150.png" />
+    <Content Include="Assets\Tiles\LargeTile.scale-200.png" />
+    <Content Include="Assets\Tiles\LargeTile.scale-400.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-lightunplated_targetsize-16.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-lightunplated_targetsize-24.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-lightunplated_targetsize-256.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-lightunplated_targetsize-32.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-lightunplated_targetsize-48.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-unplated_targetsize-16.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-unplated_targetsize-24.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-unplated_targetsize-256.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-unplated_targetsize-32.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.altform-unplated_targetsize-48.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.scale-100.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.scale-125.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.scale-150.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.scale-200.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.scale-400.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.targetsize-16.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.targetsize-24.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.targetsize-256.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.targetsize-32.png" />
+    <Content Include="Assets\Tiles\SmallTile-sdk.targetsize-48.png" />
+    <Content Include="Assets\Tiles\SmallTile.scale-100.png" />
+    <Content Include="Assets\Tiles\SmallTile.scale-125.png" />
+    <Content Include="Assets\Tiles\SmallTile.scale-150.png" />
+    <Content Include="Assets\Tiles\SmallTile.scale-200.png" />
+    <Content Include="Assets\Tiles\SmallTile.scale-400.png" />
+    <Content Include="Assets\Tiles\splash-sdk.scale-100.png" />
+    <Content Include="Assets\Tiles\splash-sdk.scale-125.png" />
+    <Content Include="Assets\Tiles\splash-sdk.scale-150.png" />
+    <Content Include="Assets\Tiles\splash-sdk.scale-200.png" />
+    <Content Include="Assets\Tiles\splash-sdk.scale-400.png" />
+    <Content Include="Assets\Tiles\squaretile-sdk.scale-100.png" />
+    <Content Include="Assets\Tiles\squaretile-sdk.scale-125.png" />
+    <Content Include="Assets\Tiles\squaretile-sdk.scale-150.png" />
+    <Content Include="Assets\Tiles\squaretile-sdk.scale-200.png" />
+    <Content Include="Assets\Tiles\squaretile-sdk.scale-400.png" />
+    <Content Include="Assets\Tiles\StoreLogo-sdk.scale-100.png" />
+    <Content Include="Assets\Tiles\StoreLogo-sdk.scale-125.png" />
+    <Content Include="Assets\Tiles\StoreLogo-sdk.scale-150.png" />
+    <Content Include="Assets\Tiles\StoreLogo-sdk.scale-200.png" />
+    <Content Include="Assets\Tiles\StoreLogo-sdk.scale-400.png" />
+    <Content Include="Assets\Tiles\Tile_General.png" />
+    <Content Include="Assets\Tiles\widelogo.scale-100.png" />
+    <Content Include="Assets\Tiles\widelogo.scale-140.png" />
+    <Content Include="Assets\Tiles\widelogo.scale-180.png" />
+    <Content Include="Assets\Tiles\WideLogo.scale-80.png" />
+    <Content Include="Assets\Tiles\WideTile.scale-100.png" />
+    <Content Include="Assets\Tiles\WideTile.scale-125.png" />
+    <Content Include="Assets\Tiles\WideTile.scale-150.png" />
+    <Content Include="Assets\Tiles\WideTile.scale-200.png" />
+    <Content Include="Assets\Tiles\WideTile.scale-400.png" />
+    <Content Include="Assets\TimePicker.png" />
+    <Content Include="Assets\TimingDuration.png" />
+    <Content Include="Assets\ToggleButton.png" />
+    <Content Include="Assets\ToggleSplitButton.png" />
+    <Content Include="Assets\ToggleSwitch.png" />
+    <Content Include="Assets\ToolTip.png" />
+    <Content Include="Assets\Transitions.png" />
+    <Content Include="Assets\TreeView.png" />
+    <Content Include="Assets\updated.png" />
+    <Content Include="Assets\VariableSizedWrapGrid.png" />
+    <Content Include="Assets\ViewBox.png" />
+    <Content Include="Assets\WebView.png" />
+    <Content Include="Assets\widelogo.scale-100.png" />
+    <Content Include="Assets\widelogo.scale-140.png" />
+    <Content Include="Assets\widelogo.scale-180.png" />
+    <Content Include="Assets\WideLogo.scale-80.png" />
+    <Content Include="Assets\Windows_Desktop.png" />
+    <Content Include="Common\ReadMe.txt" />
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="AllControlsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ControlPages\AmendPackageReferencePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ControlPages\AddReferencePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ControlPages\CorrectTargetPathPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ControlPages\RemoveReferencePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ControlPages\GetReferencePage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ControlExample.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ContentCopiedPresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\SampleCodePresenter.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ItemPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ItemTemplates.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Navigation\NavigationRootPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="PageHeader.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SearchResultsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SectionPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="SettingsPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="ColorCode.UWP">
+      <Version>2.0.5</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
+      <Version>6.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.UI.Xaml">
+      <Version>2.8.0-prerelease.220118001</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Xaml.Behaviors.Uwp.Managed">
+      <Version>2.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>13.0.1</Version>
+    </PackageReference>
+    <PackageReference Include="Win2D.uwp">
+      <Version>1.23.0</Version>
+    </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataModel\ControlInfoData.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="WindowsDesktop, Version=10.0.18362.0">
+      <Name>Windows Desktop Extensions for the UWP</Name>
+    </SDKReference>
+  </ItemGroup>
+  <ItemGroup>
+    <PRIResource Include="Strings\en-US\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mint\Mint.csproj">
+      <Project>{31552CAA-D220-4916-9C5A-B771B9AD1B22}</Project>
+      <Name>Mint</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
