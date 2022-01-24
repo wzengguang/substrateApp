@@ -677,8 +677,12 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Mint\Mint.csproj">
-      <Project>{31552CAA-D220-4916-9C5A-B771B9AD1B22}</Project>
+      <Project>{31552caa-d220-4916-9c5a-b771b9ad1b22}</Project>
       <Name>Mint</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SubstrateCore\SubstrateCore.csproj">
+      <Project>{f6bf4c7a-cff8-40ef-8618-df356e852074}</Project>
+      <Name>SubstrateCore</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

@@ -6,6 +6,11 @@
       xmlns:controls="using:SubstrateApp.Controls"
       mc:Ignorable="d">
     <StackPanel>
+        <AutoSuggestBox Header="Project file path:" x:Name="FilePathBox" PlaceholderText="Type a project file path"
+        TextChanged="FilePathBox_TextChanged"
+        QueryIcon="Find"
+        SuggestionChosen="FilePathBox_SuggestionChosen"/>
+
         <StackPanel x:DefaultBindMode="OneWay"
                 Grid.Row="1"
                 contract7Present:CornerRadius="0,0,8,8"
@@ -14,8 +19,12 @@
                 BorderThickness="1,0,1,1">
             <controls:ContentCopiedPresenter
                     x:Name="XamlPresenter"
-                    Code="{x:Bind Xaml}"
+                    Code="{x:Bind WrongTargetPath,Mode=OneWay}"
                     Margin="16,20" />
+        </StackPanel>
+
+        <StackPanel FlowDirection="RightToLeft">
+            <Button Click="VerifyTargetPathBtn_Click" Style="{StaticResource AccentButtonStyle}" Content="VerifyTargetPath" />
         </StackPanel>
     </StackPanel>
 </Page>

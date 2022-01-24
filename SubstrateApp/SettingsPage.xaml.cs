@@ -45,7 +45,8 @@ namespace SubstrateApp
         public SettingsPage()
         {
             this.InitializeComponent();
-            SubstrateDirTB.Text = localSettings.Values[SettingConstant.SubstrateDir] as string;
+            var setting = localSettings.Values[SettingConstant.SubstrateDir];
+            SubstrateDirTB.Text = setting == null ? "" : setting as string;
 
             Loaded += OnSettingsPageLoaded;
 

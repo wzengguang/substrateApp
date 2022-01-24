@@ -6,12 +6,30 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 using Windows.Storage;
+using Windows.UI.Xaml;
 
-namespace SubstrateApp.DataModel
+namespace SubstrateCore.Models
 {
     public partial class SubstrateData
     {
+        private List<Project> AllProjects { get; set; }
+
+        [XmlIgnore]
+        public ProjectSet ProjectSet { get; private set; } = new ProjectSet();
+
+        public List<string> SearchedProjectFile { get; set; }
+
+
+        [XmlIgnore]
+        private static SubstrateData instance;
+
+        [XmlIgnore]
+        public static SubstrateData Instance { get { return instance; } }
+
+
         public void UpdateSearchedProjectFile(string add)
         {
             if (SearchedProjectFile == null)
@@ -47,7 +65,6 @@ namespace SubstrateApp.DataModel
 
         public static async void Save()
         {
-
             StorageFile file = await GetSubstrateStorageFile();
 
             using (var fs = await file.OpenStreamForWriteAsync())
@@ -73,5 +90,6 @@ namespace SubstrateApp.DataModel
 
             return file;
         }
+
     }
 }

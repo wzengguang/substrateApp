@@ -1,14 +1,10 @@
 ﻿using SubstrateApp.Common;
 using SubstrateApp.Data;
-using SubstrateApp.Database;
 using SubstrateApp.DataModel;
 using SubstrateApp.Helper;
 using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.ApplicationModel;

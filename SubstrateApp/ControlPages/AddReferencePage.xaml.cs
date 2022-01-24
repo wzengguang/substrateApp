@@ -1,5 +1,6 @@
 using SubstrateApp.DataModel;
 using SubstrateApp.Utils;
+using SubstrateCore.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -59,7 +60,7 @@ namespace SubstrateApp.ControlPages
         private async Task<List<string>> AddAssembly(string filePath, IEnumerable<string> assemblies)
         {
 
-            var xml = await StorageFileUtil.LoadXmlSF(filePath);
+            var xml = await XmlUtil.LoadAsync(filePath);
 
             var nones = xml.Descendants("None")
                 .ToDictionary(a => a.Attribute("Include").Value.Split("\\").Last().Replace(".dll", ""), a => a);
@@ -103,7 +104,7 @@ namespace SubstrateApp.ControlPages
                 }
             }
 
-            await xml.SaveSF(filePath);
+            await XmlUtil.SaveAsync(xml, filePath);
 
             SubstrateData.Instance.UpdateSearchedProjectFile(filePath);
 
