@@ -18,36 +18,13 @@ namespace SubstrateApp.Controls
 {
     public sealed partial class ContentCopiedPresenter : UserControl
     {
-        public static readonly DependencyProperty CodeProperty = DependencyProperty.Register("Code", typeof(string), typeof(ContentCopiedPresenter), new PropertyMetadata("", OnDependencyPropertyChanged));
-        public string Code
+        public static readonly DependencyProperty CodeProperty = DependencyProperty.Register("Text", typeof(string), typeof(ContentCopiedPresenter),
+            new PropertyMetadata("", OnDependencyPropertyChanged));
+        public string Text
         {
             get { return (string)GetValue(CodeProperty); }
             set { SetValue(CodeProperty, value); }
         }
-
-        public static readonly DependencyProperty CodeSourceFileProperty = DependencyProperty.Register("CodeSourceFile", typeof(object), typeof(ContentCopiedPresenter), new PropertyMetadata(null, OnDependencyPropertyChanged));
-        public Uri CodeSourceFile
-        {
-            get { return (Uri)GetValue(CodeSourceFileProperty); }
-            set { SetValue(CodeSourceFileProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsCSharpSampleProperty = DependencyProperty.Register("IsCSharpSample", typeof(bool), typeof(ContentCopiedPresenter), new PropertyMetadata(false));
-        public bool IsCSharpSample
-        {
-            get { return (bool)GetValue(IsCSharpSampleProperty); }
-            set { SetValue(IsCSharpSampleProperty, value); }
-        }
-
-        public static readonly DependencyProperty SubstitutionsProperty = DependencyProperty.Register("Substitutions", typeof(IList<ControlExampleSubstitution>), typeof(ControlExample), new PropertyMetadata(new List<ControlExampleSubstitution>()));
-        public IList<ControlExampleSubstitution> Substitutions
-        {
-            get { return (IList<ControlExampleSubstitution>)GetValue(SubstitutionsProperty); }
-            set { SetValue(SubstitutionsProperty, value); }
-        }
-
-        private string actualCode = "";
-        private static Regex SubstitutionPattern = new Regex(@"\$\(([^\)]+)\)");
 
         public ContentCopiedPresenter()
         {
@@ -64,111 +41,22 @@ namespace SubstrateApp.Controls
 
         private void ReevaluateVisibility()
         {
-            if (Code.Length == 0 && CodeSourceFile == null)
+            if (Text.Length == 0)
             {
                 Visibility = Visibility.Collapsed;
             }
             else
             {
                 Visibility = Visibility.Visible;
+
+                FormatAndRenderSampleFromString(Text, CodePresenter, Languages.Xml);
             }
         }
 
         private void ContentCopiedPresenter_Loaded(object sender, RoutedEventArgs e)
         {
             ReevaluateVisibility();
-            foreach (var substitution in Substitutions)
-            {
-                substitution.ValueChanged += OnValueChanged;
-            }
-        }
 
-        private void CodePresenter_Loaded(object sender, RoutedEventArgs e)
-        {
-            GenerateSyntaxHighlightedContent();
-        }
-
-        private void ContentCopiedPresenter_ActualThemeChanged(FrameworkElement sender, object args)
-        {
-            // If the theme has changed after the user has already opened the app (ie. via settings), then the new locally set theme will overwrite the colors that are set during Loaded.
-            // Therefore we need to re-format the REB to use the correct colors.
-            GenerateSyntaxHighlightedContent();
-        }
-
-        private void OnValueChanged(ControlExampleSubstitution sender, object e)
-        {
-            GenerateSyntaxHighlightedContent();
-        }
-
-        private Uri GetDerivedSource(Uri rawSource)
-        {
-            // Get the full path of the source string
-            string concatString = "";
-            for (int i = 2; i < rawSource.Segments.Length; i++)
-            {
-                concatString += rawSource.Segments[i];
-            }
-            Uri derivedSource = new Uri(new Uri("ms-appx:///ControlPagesSampleCode/"), concatString);
-
-            return derivedSource;
-        }
-
-        private void GenerateSyntaxHighlightedContent()
-        {
-            if (!string.IsNullOrEmpty(Code))
-            {
-                FormatAndRenderSampleFromString(Code, CodePresenter, IsCSharpSample ? Languages.CSharp : Languages.Xml);
-            }
-            else
-            {
-                FormatAndRenderSampleFromFile(CodeSourceFile, CodePresenter, IsCSharpSample ? Languages.CSharp : Languages.Xml);
-            }
-        }
-
-        private async void FormatAndRenderSampleFromFile(Uri source, ContentPresenter presenter, ILanguage highlightLanguage)
-        {
-            if (source != null && source.AbsolutePath.EndsWith("txt"))
-            {
-                Uri derivedSource = GetDerivedSource(source);
-                var file = await StorageFile.GetFileFromApplicationUriAsync(derivedSource);
-                string sampleString = await FileIO.ReadTextAsync(file);
-
-                FormatAndRenderSampleFromString(sampleString, presenter, highlightLanguage);
-            }
-            else
-            {
-                presenter.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void FormatAndRenderSampleFromString(string sampleString, ContentPresenter presenter, ILanguage highlightLanguage)
-        {
-            // Trim out stray blank lines at start and end.
-            sampleString = sampleString.TrimStart('\n').TrimEnd();
-
-            // Also trim out spaces at the end of each line
-            sampleString = string.Join('\n', sampleString.Split('\n').Select(s => s.TrimEnd()));
-
-            // Perform any applicable substitutions.
-            sampleString = SubstitutionPattern.Replace(sampleString, match =>
-            {
-                foreach (var substitution in Substitutions)
-                {
-                    if (substitution.Key == match.Groups[1].Value)
-                    {
-                        return substitution.ValueAsString();
-                    }
-                }
-                throw new KeyNotFoundException(match.Groups[1].Value);
-            });
-
-            actualCode = sampleString;
-
-            var sampleCodeRTB = new RichTextBlock { FontFamily = new FontFamily("Consolas") };
-
-            var formatter = GenerateRichTextFormatter();
-            formatter.FormatRichTextBlock(sampleString, highlightLanguage, sampleCodeRTB);
-            presenter.Content = sampleCodeRTB;
         }
 
         private RichTextBlockFormatter GenerateRichTextFormatter()
@@ -224,11 +112,34 @@ namespace SubstrateApp.Controls
                 ReferenceName = "xmlName"
             });
         }
+        private void ContentCopiedPresenter_ActualThemeChanged(FrameworkElement sender, object args)
+        {
+            // If the theme has changed after the user has already opened the app (ie. via settings), then the new locally set theme will overwrite the colors that are set during Loaded.
+            // Therefore we need to re-format the REB to use the correct colors.
+            GenerateSyntaxHighlightedContent();
+        }
+
+        private void GenerateSyntaxHighlightedContent()
+        {
+            if (!string.IsNullOrEmpty(Text))
+            {
+                FormatAndRenderSampleFromString(Text, CodePresenter, Languages.Xml);
+            }
+        }
+
+        private void FormatAndRenderSampleFromString(string sampleString, ContentPresenter presenter, ILanguage highlightLanguage)
+        {
+            var sampleCodeRTB = new RichTextBlock { FontFamily = new FontFamily("Consolas") };
+
+            var formatter = GenerateRichTextFormatter();
+            formatter.FormatRichTextBlock(sampleString, highlightLanguage, sampleCodeRTB);
+            presenter.Content = sampleCodeRTB;
+        }
 
         private void CopyCodeButton_Click(object sender, RoutedEventArgs e)
         {
             DataPackage package = new DataPackage();
-            package.SetText(actualCode);
+            package.SetText(Text);
             Clipboard.SetContent(package);
 
             VisualStateManager.GoToState(this, "ConfirmationDialogVisible", false);

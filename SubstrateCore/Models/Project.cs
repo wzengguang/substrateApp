@@ -73,11 +73,12 @@ namespace SubstrateCore.Models
         public Project() { }
 
 
-        public Project(string name, string relativePath, ProjectTypeEnum projectType)
+        public Project(string name, string relativePath, ProjectTypeEnum projectType, string framework)
         {
             this.Name = name;
             this.ProjectType = projectType;
             this.RelativePath = relativePath;
+            Framework = framework;
 
         }
     }

@@ -22,6 +22,17 @@ namespace SubstrateCore.Utils
             }
         }
 
+        public static string TrimToRelativePath(string path)
+        {
+            path = path.Replace(SubstrateDir, "").Trim();
+            while (path.StartsWith("\\") || path.StartsWith("/"))
+            {
+                path = path.Remove(0, 1);
+            }
+            path = path.Replace("\\\\", "\\");
+            return path;
+        }
+
         public static string GetPhysicalPath(string path)
         {
             path = path.Trim();

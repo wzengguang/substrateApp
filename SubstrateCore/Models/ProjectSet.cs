@@ -13,20 +13,10 @@ namespace SubstrateCore.Models
         {
 
         }
-        public new ProjectWrap this[string name]
-        {
-            get
-            {
-                return this.ContainsKey(name) ? this[name] : null;
-            }
-            set
-            {
-                Add(name, value);
-            }
-        }
 
-        public bool AddProject(string key, Project obj)
+        public bool AddProject(Project obj)
         {
+            string key = obj.Name;
             if (!this.ContainsKey(key))
             {
                 this.Add(key, new ProjectWrap(key, obj.ProjectType));

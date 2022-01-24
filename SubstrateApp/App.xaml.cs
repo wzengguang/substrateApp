@@ -2,6 +2,7 @@
 using SubstrateApp.Data;
 using SubstrateApp.DataModel;
 using SubstrateApp.Helper;
+using SubstrateCore.Configuration;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -26,15 +27,9 @@ namespace SubstrateApp
 {
     sealed partial class App : Application
     {
-
-        /// <summary>
-        /// Initializes the singleton Application object.  This is the first line of authored code
-        /// executed, and as such is the logical equivalent of main() or WinMain().
-        /// </summary>
         public App()
         {
-            SubstrateData.Load();
-            SubstrateData.Save();
+            Startup.ConfigureAsync();
 
             this.InitializeComponent();
             this.Suspending += OnSuspending;

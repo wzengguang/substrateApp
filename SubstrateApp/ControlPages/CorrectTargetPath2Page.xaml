@@ -1,4 +1,4 @@
-<Page x:Class="SubstrateApp.ControlPages.CorrectTargetPathPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Page x:Class="SubstrateApp.ControlPages.CorrectTargetPath2Page" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:SubstrateApp"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -11,7 +11,12 @@
             <AutoSuggestBox Header="Project file path:" x:Name="FilePathBox" PlaceholderText="Type a project file path"
                             TextChanged="FilePathBox_TextChanged"
                             QueryIcon="Find"
-                            SuggestionChosen="FilePathBox_SuggestionChosen"/>
+                            SuggestionChosen="FilePathBox_SuggestionChosen" />
+
+        </StackPanel>
+
+        <StackPanel>
+            <TextBox Header="the assembies of need be replaced $(FlavorPlatformDir)" x:Name="replacedTargetPathBox" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="200" />
         </StackPanel>
 
         <StackPanel FlowDirection="RightToLeft" Margin="0,20">

@@ -69,6 +69,17 @@
           "IsUpdated": false,
           "Docs": [],
           "RelatedControls": []
+        },
+        {
+          "UniqueId": "CorrectTargetPath2",
+          "Title": "CorrectTargetPath2",
+          "Subtitle": "CorrectTargetPath2.",
+          "ImagePath": "ms-appx:///Assets/PullToRefresh.png",
+          "Description": "Correct target path of reference.",
+          "Content": "",
+          "IsUpdated": false,
+          "Docs": [],
+          "RelatedControls": []
         }
       ]
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace SubstrateCore.Common
 {
@@ -31,6 +32,9 @@ namespace SubstrateCore.Common
         public const string BuildArchitecture = @"$(BuildType)\$(BuildArchitecture)";
 
         public const string redmondRemote = @"//redmond/exchange/Build/SUBSTRATE/LATEST/target/";
-
+        public const string ProjectFile = "ProjectFile";
+        public const string PropertyGroup = "PropertyGroup";
+        public const string AssemblyName = "AssemblyName";
+        public const string RootNamespace = "RootNamespace";
     }
 }

@@ -42,7 +42,7 @@ namespace SubstrateApp.ControlPages
 
         private void FilePathBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            ((AutoSuggestBox)sender).ItemsSource = SubstrateData.Instance.SearchedProjectFile;
+            // ((AutoSuggestBox)sender).ItemsSource = SubstrateData.Instance.SearchedProjectFile;
         }
 
         private void AddAssemblyBtn_Click(object sender, RoutedEventArgs e)
@@ -53,7 +53,7 @@ namespace SubstrateApp.ControlPages
             Task.Run(async () =>
            {
                var NotProduceds = await AddAssembly(path, str.Split("\r\n").Select(a => a.Replace(".dll", "").Trim()));
-               XamlPresenter.Code = String.Join("\r\n", NotProduceds);
+               XamlPresenter.Text = String.Join("\r\n", NotProduceds);
            });
         }
 

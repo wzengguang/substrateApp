@@ -16,13 +16,13 @@ using Windows.UI.Xaml.Documents;
 
 namespace SubstrateApp.ControlPages
 {
-    public sealed partial class CorrectTargetPathPage : Page, INotifyPropertyChanged
+    public sealed partial class CorrectTargetPath2Page : Page, INotifyPropertyChanged
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
         public TargetPathPageViewModel ViewModel { get; }
 
-        public CorrectTargetPathPage()
+        public CorrectTargetPath2Page()
         {
             this.InitializeComponent();
             ViewModel = ServiceLocator.Current.GetService<TargetPathPageViewModel>();
@@ -45,8 +45,12 @@ namespace SubstrateApp.ControlPages
         private void VerifyTargetPathBtn_Click(object sender, RoutedEventArgs e)
         {
             var path = PathUtil.GetPhysicalPath(FilePathBox.Text);
+            var replaced = replacedTargetPathBox.Text.Trim().Split("\r").Select(a => a.Replace(".dll", ""));
 
-            ViewModel.ClickCheck(path);
+            Task.Run(async () =>
+            {
+                await ViewModel.ReplaceTargetDir(path, replaced);
+            });
         }
 
 
