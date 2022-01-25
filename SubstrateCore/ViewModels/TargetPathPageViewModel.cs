@@ -17,11 +17,17 @@ namespace SubstrateCore.ViewModels
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
-        private IProjectService ProjectService { get; }
+        IProjectService _projectService;
 
-        public TargetPathPageViewModel(IProjectService projectService)
+        ISearchPathService _searchPathService;
+
+        public SearchFilePathViewModel SearchFilePathViewModel { get; }
+
+        public TargetPathPageViewModel(IProjectService projectService, ISearchPathService searchPathService, SearchFilePathViewModel searchFilePathViewModel)
         {
-            ProjectService = projectService;
+            _projectService = projectService;
+            _searchPathService = searchPathService;
+            SearchFilePathViewModel = searchFilePathViewModel;
         }
 
         public Dictionary<string, string> NotInRemote { get; set; } = new Dictionary<string, string>();
@@ -48,17 +54,23 @@ namespace SubstrateCore.ViewModels
             {
                 var xml = await XmlUtil.LoadAsync(path);
 
-                var nones = xml.GetIncludes(ProjectConst.None).Where(a => a.Value.Attribute(ProjectConst.Include).Value.StartsWith(ProjectConst.TargetPathDir)).ToDictionary(a => a.Key, b => b.Value);
+                var nones = xml.GetIncludes(SubstrateConst.None).Where(a => a.Value.Attribute(SubstrateConst.Include).Value.StartsWith(SubstrateConst.TargetPathDir)).ToDictionary(a => a.Key, b => b.Value);
 
-                var customs = xml.GetIncludes(ProjectConst.QCustomInput);
+                var customs = xml.GetIncludes(SubstrateConst.QCustomInput);
+
+                var Projects = await _projectService.LoadProduces();
 
                 foreach (var item in replaces)
                 {
                     if (nones.ContainsKey(item))
                     {
                         var target = nones[item].AttrInclude().Replace(@"$(FlavorPlatformDir)", @"bin\$(Configuration)\netcoreapp3.1");
-                        nones[item].SetAttributeValue(ProjectConst.Include, target);
-                        customs[item].SetAttributeValue(ProjectConst.Include, target);
+                        if (Projects.ContainsKey(item) && Projects[item].NetCore != null)
+                        {
+                            target.Replace(@".NetStd\", @".NetCore\");
+                        }
+                        nones[item].SetAttributeValue(SubstrateConst.Include, target);
+                        customs[item].SetAttributeValue(SubstrateConst.Include, target);
                     }
                 }
 
@@ -74,27 +86,70 @@ namespace SubstrateCore.ViewModels
 
         }
 
-
-        public async void ClickCheck(string path)
+        public async Task OrderTargetPath()
         {
+            var path = PathUtil.GetPhysicalPath(SearchFilePathViewModel.SearchPath);
+            var xml = await XmlUtil.LoadAsync(path);
+
+            var nones = xml.Descendants(SubstrateConst.None).ToList();
+            var noneParent = nones.First().Parent;
+            foreach (var item in nones)
+            {
+                item.Remove();
+            }
+            var order = nones.OrderBy(a => a.Attribute(SubstrateConst.PackagePath).Value.Length)
+                  .ThenBy(a => a.Attribute(SubstrateConst.Include).Value)
+                  .ToList();
+
+            foreach (var item in order)
+            {
+                noneParent.Add(item);
+            }
+
+            var customs = xml.Descendants(SubstrateConst.QCustomInput).ToList();
+            var customParent = customs.First().Parent;
+            foreach (var item in customs)
+            {
+                item.Remove();
+            }
+            var ordercustoms = customs.OrderBy(a => a.Attribute(SubstrateConst.Include).Value)
+                  .ToList();
+
+
+            foreach (var item in ordercustoms)
+            {
+                customParent.Add(item);
+            }
+
+            await XmlUtil.SaveAsync(xml, path);
+
+        }
+
+
+        public async void ClickCheck()
+        {
+            var path = PathUtil.GetPhysicalPath(SearchFilePathViewModel.SearchPath);
+
             await Task.Run(async () =>
              {
                  await VerifyPathFromRemote(path);
+
+                 await _searchPathService.Save(PathUtil.TrimToRelativePath(path));
              });
         }
 
         private async Task<bool> CheckCanFix(string name)
         {
-            var Projects = await ProjectService.LoadProduces();
+            var Projects = await _projectService.LoadProduces();
 
             var p1 = Projects.ContainsKey(name) ? (Projects[name]?.Produced?.RelativePath) : null;
             if (p1 != null)
             {
                 var targetPath = PathUtil.GetTargetPath(name, PathUtil.GetPhysicalPath(p1));
-                var remotePath = (ProjectConst.redmondRemote + PathUtil.ReplacePathVirable(targetPath)).Replace("/", "\\");
+                var remotePath = (SubstrateConst.redmondRemote + PathUtil.ReplacePathVirable(targetPath)).Replace("/", "\\");
 
                 var targetPath2 = PathUtil.GetTargetPathNew(name, "");
-                var remotePath2 = (ProjectConst.redmondRemote + PathUtil.ReplacePathVirable(targetPath2)).Replace("/", "\\");
+                var remotePath2 = (SubstrateConst.redmondRemote + PathUtil.ReplacePathVirable(targetPath2)).Replace("/", "\\");
                 if (File.Exists(remotePath))
                 {
                     CanFix.Add(name, targetPath);
@@ -122,16 +177,16 @@ namespace SubstrateCore.ViewModels
             {
                 var xml = await XmlUtil.LoadAsync(path);
 
-                var nones = xml.GetIncludes(ProjectConst.None).Where(a => a.Value.Attribute(ProjectConst.Include).Value.StartsWith(ProjectConst.TargetPathDir));
+                var nones = xml.GetIncludes(SubstrateConst.None).Where(a => a.Value.Attribute(SubstrateConst.Include).Value.StartsWith(SubstrateConst.TargetPathDir));
 
-                var customs = xml.GetIncludes(ProjectConst.QCustomInput);
+                var customs = xml.GetIncludes(SubstrateConst.QCustomInput);
 
                 foreach (var item in nones)
                 {
                     var attrpath = item.Value.AttrInclude();
                     attrpath = PathUtil.ReplacePathVirable(attrpath);
 
-                    var remotePath = (ProjectConst.redmondRemote + attrpath).Replace("/", "\\");
+                    var remotePath = (SubstrateConst.redmondRemote + attrpath).Replace("/", "\\");
 
                     if (!File.Exists(remotePath) && !(await CheckCanFix(item.Key)))
                     {

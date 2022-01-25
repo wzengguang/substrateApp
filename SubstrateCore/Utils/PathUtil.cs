@@ -40,6 +40,7 @@ namespace SubstrateCore.Utils
             {
                 path = path.Remove(0, 1);
             }
+            path = path.Replace("/", "\\");
 
             path = path.Replace("\\\\", "\\");
 
@@ -87,11 +88,11 @@ namespace SubstrateCore.Utils
 
         public static string ReplacePathVirable(string path)
         {
-            return path.Replace(ProjectConst.FlavorPlatformDir, ProjectConst.DebugAmd64)
-            .Replace(ProjectConst.Configuration, ProjectConst.Debug)
-            .Replace(ProjectConst.BuildArchitecture, ProjectConst.DebugAmd64)
-            .Replace(ProjectConst.TargetPathDir + "\\", "")
-            .Replace(ProjectConst.TargetPathDir, "");
+            return path.Replace(SubstrateConst.FlavorPlatformDir, SubstrateConst.DebugAmd64)
+            .Replace(SubstrateConst.Configuration, SubstrateConst.Debug)
+            .Replace(SubstrateConst.BuildArchitecture, SubstrateConst.DebugAmd64)
+            .Replace(SubstrateConst.TargetPathDir + "\\", "")
+            .Replace(SubstrateConst.TargetPathDir, "");
         }
     }
 }

@@ -3,19 +3,24 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:contract7Present="http://schemas.microsoft.com/winfx/2006/xaml/presentation?IsApiContractPresent(Windows.Foundation.UniversalApiContract,7)" 
-      xmlns:controls="using:SubstrateApp.Controls"
+      xmlns:controls="using:SubstrateApp.Controls" xmlns:vm="using:SubstrateCore.ViewModels"
       mc:Ignorable="d">
     <StackPanel>
-        <StackPanel x:DefaultBindMode="OneWay"
-                Grid.Row="1"
-                contract7Present:CornerRadius="0,0,8,8"
-                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
-                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-                BorderThickness="1,0,1,1">
-            <controls:ContentCopiedPresenter
-                    x:Name="XamlPresenter"
-                    Text="{x:Bind Xaml}"
-                    Margin="16,20" />
+        <StackPanel Margin="0,30,0,0">
+            <AutoSuggestBox Header="Project file path:" x:Name="FilePathBox" PlaceholderText="Type a project file path"
+                            TextChanged="FilePathBox_TextChanged"
+                            QueryIcon="Find"
+                            SuggestionChosen="FilePathBox_SuggestionChosen"
+                            Text="{x:Bind ViewModel.SearchFilePathViewModel.SearchPath, Mode=TwoWay}"
+                            ItemsSource="{x:Bind ViewModel.SearchFilePathViewModel.Suggestions, Mode=OneWay}"/>
+        </StackPanel>
+
+        <StackPanel>
+            <TextBox Header="need remove" Text="{x:Bind ViewModel.NeedRemoved, Mode=TwoWay}"  TextWrapping="Wrap" AcceptsReturn="True" Height="250" />
+        </StackPanel>
+
+        <StackPanel FlowDirection="RightToLeft" Margin="0,20">
+            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="RemoveBtn_Click" Style="{StaticResource AccentButtonStyle}" Content="Remove" />
         </StackPanel>
     </StackPanel>
 </Page>

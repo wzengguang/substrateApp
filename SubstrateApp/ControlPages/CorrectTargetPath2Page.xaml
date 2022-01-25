@@ -46,5 +46,10 @@
                     Text="{x:Bind vm:Converters.ToRichString(ViewModel.CanFix.Keys), Mode=OneWay}"
                     Margin="16,20" />
         </StackPanel>
+
+        <StackPanel FlowDirection="RightToLeft" Margin="0,20">
+            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="Button_Click" Style="{StaticResource AccentButtonStyle}" Content="test" />
+        </StackPanel>
     </StackPanel>
+    
 </Page>

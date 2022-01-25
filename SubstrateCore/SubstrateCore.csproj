@@ -130,8 +130,10 @@
     <Compile Include="Models\ProjectTypeEnum.cs" />
     <Compile Include="Models\SubstrateData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ISearchPathService.cs" />
     <Compile Include="Services\ProjectService.cs" />
     <Compile Include="Services\IProjectService.cs" />
+    <Compile Include="Services\SearchPathService.cs" />
     <Compile Include="Utils\MSBuildPath.cs" />
     <Compile Include="Utils\MSBuildUtils.cs" />
     <Compile Include="Utils\PathUtil.cs" />
@@ -140,9 +142,30 @@
     <Compile Include="Utils\StringExtension.cs" />
     <Compile Include="Utils\XElementExtension.cs" />
     <Compile Include="Utils\XmlUtil.cs" />
+    <Compile Include="ViewModels\GetReferenceViewModel.cs" />
+    <Compile Include="ViewModels\RemoveReferenceViewModel.cs" />
     <Compile Include="ViewModels\BindableBase.cs" />
     <Compile Include="ViewModels\Converters.cs" />
+    <Compile Include="ViewModels\SearchFilePathViewModel.cs" />
     <Compile Include="ViewModels\TargetPathPageViewModel.cs" />
+    <Compile Include="WillDelete\Project.cs" />
+    <Compile Include="WillDelete\ProjectWrap.cs" />
+    <Compile Include="WillDelete\Reference.cs" />
+    <Compile Include="WillDelete\SettingConstant.cs" />
+    <Compile Include="WillDelete\SubstrateData.cs" />
+    <Compile Include="WillDelete\SubstrateDataExt.cs" />
+    <Compile Include="WillDelete\Utils\IEnumerableExtension.cs" />
+    <Compile Include="WillDelete\Utils\IgnoreCaseDictionary.cs" />
+    <Compile Include="WillDelete\Utils\IgnoreCaseHashSet.cs" />
+    <Compile Include="WillDelete\Utils\ListExtension.cs" />
+    <Compile Include="WillDelete\Utils\MSBuildPath.cs" />
+    <Compile Include="WillDelete\Utils\MSBuildUtils.cs" />
+    <Compile Include="WillDelete\Utils\PathUtils.cs" />
+    <Compile Include="WillDelete\Utils\StringExtension.cs" />
+    <Compile Include="WillDelete\Utils\SubstrateUtil.cs" />
+    <Compile Include="WillDelete\Utils\Tags.cs" />
+    <Compile Include="WillDelete\Utils\XDocumentExtension.cs" />
+    <Compile Include="WillDelete\Utils\XElementExtension.cs" />
     <EmbeddedResource Include="Properties\SubstrateCore.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -156,7 +179,12 @@
       <Version>7.0.0</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Mint\Mint.csproj">
+      <Project>{31552caa-d220-4916-9c5a-b771b9ad1b22}</Project>
+      <Name>Mint</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

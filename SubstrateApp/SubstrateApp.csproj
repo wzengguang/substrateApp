@@ -175,18 +175,11 @@
       <DependentUpon>SampleCodePresenter.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataModel\ControlInfoDataSource.cs" />
-    <Compile Include="DataModel\Project.cs" />
-    <Compile Include="DataModel\ProjectWrap.cs" />
-    <Compile Include="DataModel\Reference.cs" />
-    <Compile Include="DataModel\SettingConstant.cs" />
-    <Compile Include="DataModel\SubstrateData.cs" />
-    <Compile Include="DataModel\SubstrateDataExt.cs" />
     <Compile Include="Helper\NavigationHelper.cs" />
     <Compile Include="Helper\NavigationOrientationHelper.cs" />
     <Compile Include="Helper\ProtocolActivationClipboardHelper.cs" />
     <Compile Include="Helper\ThemeHelper.cs" />
     <Compile Include="Helper\UIHelper.cs" />
-    <Compile Include="Utils\IEnumerableExtension.cs" />
     <Compile Include="ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>
@@ -213,17 +206,6 @@
     <Compile Include="SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utils\IgnoreCaseDictionary.cs" />
-    <Compile Include="Utils\IgnoreCaseHashSet.cs" />
-    <Compile Include="Utils\ListExtension.cs" />
-    <Compile Include="Utils\MSBuildPath.cs" />
-    <Compile Include="Utils\MSBuildUtils.cs" />
-    <Compile Include="Utils\PathUtils.cs" />
-    <Compile Include="Utils\StringExtension.cs" />
-    <Compile Include="Utils\SubstrateUtil.cs" />
-    <Compile Include="Utils\Tags.cs" />
-    <Compile Include="Utils\XDocumentExtension.cs" />
-    <Compile Include="Utils\XElementExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

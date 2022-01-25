@@ -34,21 +34,25 @@ namespace SubstrateApp.ControlPages
 
         private void FilePathBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-
+            if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
+            {
+                ViewModel.SearchFilePathViewModel.SearchPathTb_TextChanged(sender, args);
+            }
         }
 
         private void FilePathBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-
+            ViewModel.SearchFilePathViewModel.FilePathTb_SuggestionChosen(sender, args);
         }
 
         private void VerifyTargetPathBtn_Click(object sender, RoutedEventArgs e)
         {
-            var path = PathUtil.GetPhysicalPath(FilePathBox.Text);
-
-            ViewModel.ClickCheck(path);
+            ViewModel.ClickCheck();
         }
 
-
+        private async void OrderTargetPathBtn_Click(object sender, RoutedEventArgs e)
+        {
+            await Task.Run(async () => { await ViewModel.OrderTargetPath(); });
+        }
     }
 }

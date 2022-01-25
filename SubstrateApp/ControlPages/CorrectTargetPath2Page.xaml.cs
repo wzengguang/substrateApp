@@ -34,12 +34,12 @@ namespace SubstrateApp.ControlPages
 
         private void FilePathBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
-
+            ViewModel.SearchFilePathViewModel.SearchPathTb_TextChanged(sender, args);
         }
 
         private void FilePathBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-
+            ViewModel.SearchFilePathViewModel.FilePathTb_SuggestionChosen(sender, args);
         }
 
         private void VerifyTargetPathBtn_Click(object sender, RoutedEventArgs e)
@@ -53,6 +53,9 @@ namespace SubstrateApp.ControlPages
             });
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
     }
 }

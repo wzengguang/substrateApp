@@ -11,11 +11,14 @@
             <AutoSuggestBox Header="Project file path:" x:Name="FilePathBox" PlaceholderText="Type a project file path"
                             TextChanged="FilePathBox_TextChanged"
                             QueryIcon="Find"
-                            SuggestionChosen="FilePathBox_SuggestionChosen"/>
+                            SuggestionChosen="FilePathBox_SuggestionChosen"
+                            Text="{x:Bind ViewModel.SearchFilePathViewModel.SearchPath, Mode=TwoWay}"
+                            ItemsSource="{x:Bind ViewModel.SearchFilePathViewModel.Suggestions, Mode=OneWay}"/>
         </StackPanel>
 
         <StackPanel FlowDirection="RightToLeft" Margin="0,20">
             <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="VerifyTargetPathBtn_Click" Style="{StaticResource AccentButtonStyle}" Content="VerifyTargetPath" />
+            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="OrderTargetPathBtn_Click" Style="{StaticResource AccentButtonStyle}" Content="OrderTargetPath" />
         </StackPanel>
 
         <StackPanel x:DefaultBindMode="OneWay"

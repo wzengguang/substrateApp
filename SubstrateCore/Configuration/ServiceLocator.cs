@@ -20,13 +20,13 @@ namespace SubstrateCore.Configuration
         static public void Configure(IServiceCollection serviceCollection)
         {
             serviceCollection.AddSingleton<IProjectService, ProjectService>();
+            serviceCollection.AddSingleton<ISearchPathService, SearchPathService>();
 
             serviceCollection.AddTransient<TargetPathPageViewModel>();
-
+            serviceCollection.AddTransient<SearchFilePathViewModel>();
+            serviceCollection.AddTransient<RemoveReferenceViewModel>();
 
             _rootServiceProvider = serviceCollection.BuildServiceProvider();
-
-
         }
 
         static public ServiceLocator Current

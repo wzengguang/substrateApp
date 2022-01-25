@@ -27,17 +27,11 @@ namespace SubstrateApp.ControlPages
         {
             if (args.Reason == AutoSuggestionBoxTextChangeReason.UserInput)
             {
-                var suitableItems = SubstrateData.Instance.SearchedProjectFile ?? new List<string>();
-                if (suitableItems.Count == 0)
-                {
-                    suitableItems.Add("No results found");
-                }
-                sender.ItemsSource = suitableItems;
+
             }
         }
         private void FilePathBox_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
         {
-            FilePathBox.Text = args.SelectedItem.ToString();
         }
 
         private void FilePathBox_GotFocus(object sender, RoutedEventArgs e)

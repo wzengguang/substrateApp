@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace SubstrateCore.Common
 {
-    public static class ProjectConst
+    public static class SubstrateConst
     {
         public const string TargetFramework = "TargetFramework";
 
@@ -32,9 +32,15 @@ namespace SubstrateCore.Common
         public const string BuildArchitecture = @"$(BuildType)\$(BuildArchitecture)";
 
         public const string redmondRemote = @"//redmond/exchange/Build/SUBSTRATE/LATEST/target/";
+
         public const string ProjectFile = "ProjectFile";
+
         public const string PropertyGroup = "PropertyGroup";
+
         public const string AssemblyName = "AssemblyName";
+
         public const string RootNamespace = "RootNamespace";
+
+        public const string PackagePath = "PackagePath";
     }
 }

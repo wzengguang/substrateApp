@@ -40,11 +40,27 @@ namespace SubstrateCore.Utils
             try
             {
                 StorageFile file = await StorageFile.GetFileFromPathAsync(path);
-
-                using (Stream stream = await file.OpenStreamForWriteAsync())
+                using (Stream stream = await file.OpenStreamForWriteAsync().ConfigureAwait(false))
                 {
-                    xElement.Save(stream);
+                    stream.SetLength(0);
+                    xElement.Save(stream, SaveOptions.OmitDuplicateNamespaces);
                 }
+
+                var text = (await FileIO.ReadLinesAsync(file)).ToList();
+                if (text[0].Contains("<?xml version="))
+                {
+                    text.RemoveAt(0);
+                }
+                int r = 0;
+                while (r < text.Count)
+                {
+                    if (text[r].Contains("</ItemGroup>") || text[r].Contains("</PropertyGroup>") || text[r].Contains("<Import Project="))
+                    {
+                        text.Insert(r + 1, "");
+                    }
+                    r++;
+                }
+                await FileIO.WriteLinesAsync(file, text);
             }
             catch (Exception e)
             {
@@ -70,12 +86,12 @@ namespace SubstrateCore.Utils
 
         public static string AttrInclude(this XElement xml)
         {
-            return xml.Attribute(ProjectConst.Include)?.Value?.Trim();
+            return xml.Attribute(SubstrateConst.Include)?.Value?.Trim();
         }
 
         public static string NameFromIncludeAttr(this XElement xml)
         {
-            return xml.Attribute(ProjectConst.Include)?.Value?.Trim().Split("\\").Last().Replace(".dll", "");
+            return xml.Attribute(SubstrateConst.Include)?.Value?.Trim().Split("\\").Last().Replace(".dll", "");
         }
     }
 }

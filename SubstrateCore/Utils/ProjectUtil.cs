@@ -15,9 +15,9 @@ namespace SubstrateCore.Utils
 
         public static string InferAssemblyName(string path, XElement xml)
         {
-            xml = xml.GetFirst(ProjectConst.PropertyGroup);
+            xml = xml.GetFirst(SubstrateConst.PropertyGroup);
 
-            string assemblyName = xml.GetFirst(ProjectConst.AssemblyName)?.Value;
+            string assemblyName = xml.GetFirst(SubstrateConst.AssemblyName)?.Value;
 
             if (string.IsNullOrEmpty(assemblyName))
             {
@@ -26,7 +26,7 @@ namespace SubstrateCore.Utils
             }
             else if (assemblyName.EqualsIgnoreCase(@"$(RootNamespace)"))
             {
-                assemblyName = xml.GetFirst(ProjectConst.RootNamespace).Value;
+                assemblyName = xml.GetFirst(SubstrateConst.RootNamespace).Value;
             }
 
             return assemblyName;

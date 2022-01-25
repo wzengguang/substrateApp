@@ -16,32 +16,11 @@ namespace SubstrateCore.Services
 {
     public class ProjectService : IProjectService
     {
-        private List<string> SearchedProjectFile { get; set; }
         public ProjectSet ProjectSet { get; private set; } = new ProjectSet();
-
-        private SubstrateData _substrateData = new SubstrateData();
-
-        public void UpdateSearchedProjectFile(string add)
-        {
-            if (SearchedProjectFile == null)
-            {
-                SearchedProjectFile = new List<string>();
-            }
-
-            if (!SearchedProjectFile.Contains(add))
-            {
-                SearchedProjectFile.Insert(0, add);
-            }
-
-            if (SearchedProjectFile.Count > 10)
-            {
-                SearchedProjectFile.RemoveAt(SearchedProjectFile.Count - 1);
-            }
-        }
 
         public async Task<ProjectSet> LoadProduces(bool reload = false)
         {
-            await Load();
+            await Load(reload);
             if (!reload && ProjectSet.Count > 0)
             {
                 return ProjectSet;
@@ -49,8 +28,8 @@ namespace SubstrateCore.Services
 
             XElement projectRestoreEntryXml = await XmlUtil.LoadAsync("NonCoreXTProjectRestoreEntry\\dirs.proj");
 
-            var producedPaths = projectRestoreEntryXml.Descendants(ProjectConst.ProjectFile)
-                .Select(x => x.Attribute(ProjectConst.Include).Value.ReplaceIgnoreCase("$(InetRoot)\\", "").Trim()).ToList();
+            var producedPaths = projectRestoreEntryXml.Descendants(SubstrateConst.ProjectFile)
+                .Select(x => x.Attribute(SubstrateConst.Include).Value.ReplaceIgnoreCase("$(InetRoot)\\", "").Trim()).ToList();
 
             foreach (var producedPath in producedPaths)
             {
@@ -59,36 +38,43 @@ namespace SubstrateCore.Services
 
                 var assembliesName = ProjectUtil.InferAssemblyName(p, xml) ?? Path.GetFileNameWithoutExtension(p);
 
-                string framework = xml.GetFirst(ProjectConst.TargetFramework)?.Value
+                string framework = xml.GetFirst(SubstrateConst.TargetFramework)?.Value
                   ?? MSBuildUtils.InferFrameworkByPath(p);
 
                 var project = new Project(assembliesName, PathUtil.TrimToRelativePath(p), ProjectTypeEnum.Substrate, framework);
 
                 ProjectSet.AddProject(project);
-                _substrateData.AllProjects.Add(project);
             };
             await Save();
             return ProjectSet;
         }
 
-        public async Task<SubstrateData> Load()
+        public async Task<ProjectSet> Load(bool force)
         {
-            if (_substrateData != null)
+            if (ProjectSet.Count > 0 && !force)
             {
-                return _substrateData;
+                return ProjectSet;
             }
+
 
             StorageFile file = await GetSubstrateStorageFile();
 
             using (var fs = await file.OpenStreamForReadAsync())
             {
-                XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
-                DataContractSerializer ser = new DataContractSerializer(typeof(SubstrateData));
-                var readobject = (SubstrateData)ser.ReadObject(reader, true);
-                _substrateData = readobject ?? new SubstrateData();
-                reader.Close();
+                using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas()))
+                {
+                    try
+                    {
+                        DataContractSerializer ser = new DataContractSerializer(typeof(ProjectSet));
+                        var readobject = (ProjectSet)ser.ReadObject(reader, true);
+                        ProjectSet = readobject ?? ProjectSet;
+                    }
+                    catch (Exception)
+                    {
+                    }
+                }
             }
-            return _substrateData;
+            return ProjectSet;
         }
 
         public async Task Save()
@@ -97,23 +83,23 @@ namespace SubstrateCore.Services
 
             using (var fs = await file.OpenStreamForWriteAsync())
             {
-                DataContractSerializer ser = new DataContractSerializer(typeof(SubstrateData));
-                ser.WriteObject(fs, _substrateData);
+                DataContractSerializer ser = new DataContractSerializer(typeof(ProjectSet));
+                ser.WriteObject(fs, ProjectSet);
             }
         }
 
         private static async Task<StorageFile> GetSubstrateStorageFile()
         {
+            var path = "\\local\\SubstrateData.xml";
             StorageFolder storageFolder = Windows.Storage.ApplicationData.Current.LocalFolder;
             StorageFile file;
             try
             {
-                file = await storageFolder.GetFileAsync("\\local\\SubstrateData.xml");
+                file = await storageFolder.GetFileAsync(path);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                await storageFolder.CreateFileAsync("\\local\\SubstrateData.xml", Windows.Storage.CreationCollisionOption.ReplaceExisting);
-                file = await storageFolder.GetFileAsync("\\local\\SubstrateData.xml");
+                file = await storageFolder.CreateFileAsync(path, CreationCollisionOption.ReplaceExisting);
             }
 
             return file;
