@@ -120,6 +120,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Common\Frameworks.cs" />
     <Compile Include="Common\ProjectConst.cs" />
     <Compile Include="Configuration\ServiceLocator.cs" />
     <Compile Include="Configuration\Startup.cs" />
@@ -142,11 +143,14 @@
     <Compile Include="Utils\StringExtension.cs" />
     <Compile Include="Utils\XElementExtension.cs" />
     <Compile Include="Utils\XmlUtil.cs" />
+    <Compile Include="ViewModels\AddReferenceViewModel.cs" />
     <Compile Include="ViewModels\GetReferenceViewModel.cs" />
     <Compile Include="ViewModels\RemoveReferenceViewModel.cs" />
     <Compile Include="ViewModels\BindableBase.cs" />
     <Compile Include="ViewModels\Converters.cs" />
     <Compile Include="ViewModels\SearchFilePathViewModel.cs" />
+    <Compile Include="ViewModels\SettingViewModel.cs" />
+    <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="ViewModels\TargetPathPageViewModel.cs" />
     <Compile Include="WillDelete\Project.cs" />
     <Compile Include="WillDelete\ProjectWrap.cs" />

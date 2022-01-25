@@ -1,25 +1,31 @@
 namespace Mint.Substrate.Construction
 {
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Linq;
     using Mint.Substrate.Utilities;
+    using SubstrateCore.Utils;
 
     public class XMLFile
     {
         public string FilePath { get; }
 
-        public XDocument Document { get; }
+        public XDocument Document { get; set; }
 
-        public XNamespace Namespace { get; }
+        public XNamespace Namespace { get; set; }
 
         public XMLFile(string path)
         {
-            ErrorUtils.VerifyThrowFileNotExists(path);
-            ErrorUtils.VerifyThrowXmlLoadFail(path);
+            //ErrorUtils.VerifyThrowFileNotExists(path);
+            //ErrorUtils.VerifyThrowXmlLoadFail(path);
 
             this.FilePath = path;
-            this.Document = XDocument.Load(path);
-            this.Namespace = this.Document.Root.GetDefaultNamespace();
+
+            Task.Run(async () =>
+            {
+                this.Document = await XmlUtilMin.LoadDocAsync(path);
+                this.Namespace = this.Document.Root.GetDefaultNamespace();
+            });
         }
 
         public void Save(bool omniDeclaration = false)

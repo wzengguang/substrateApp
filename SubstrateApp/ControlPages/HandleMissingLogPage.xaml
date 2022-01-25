@@ -1,4 +1,4 @@
-<Page x:Class="SubstrateApp.ControlPages.GetReferencePage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+<Page x:Class="SubstrateApp.ControlPages.HandleMissingLogPage" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="using:SubstrateApp"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,13 +6,12 @@
       xmlns:controls="using:SubstrateApp.Controls" xmlns:vm="using:SubstrateCore.ViewModels"
       mc:Ignorable="d">
     <StackPanel>
-
         <StackPanel>
-            <TextBox Header="Get Reference" Text="{x:Bind ViewModel.ProjectNames,Mode=TwoWay}" x:Name="replacedTargetPathBox" TextWrapping="Wrap" AcceptsReturn="True" MinHeight="200" />
+            <TextBox Header="need remove" Text="{x:Bind ViewModel.Input, Mode=TwoWay}"  TextWrapping="Wrap" AcceptsReturn="True" Height="250" />
         </StackPanel>
 
         <StackPanel FlowDirection="RightToLeft" Margin="0,20">
-            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="GetReferenceBtn_Click" Style="{StaticResource AccentButtonStyle}" Content="GetReference" />
+            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="Btn_Click" Style="{StaticResource AccentButtonStyle}" Content="missing" />
         </StackPanel>
 
         <StackPanel x:DefaultBindMode="OneWay"
@@ -23,13 +22,8 @@
                 BorderThickness="1,0,1,1">
             <controls:ContentCopiedPresenter
                     x:Name="CanFixPaths"
-                    Text="{x:Bind vm:Converters.ToRichString(ViewModel.References), Mode=OneWay}"
+                    Text="{x:Bind ViewModel.OutPut, Mode=OneWay}"
                     Margin="16,20" />
         </StackPanel>
-
-        <StackPanel>
-            <TextBlock  Text="{x:Bind vm:Converters.ToRichString(ViewModel.NoFindProject),Mode=OneWay}" TextWrapping="Wrap" MinHeight="200" />
-        </StackPanel>
-
     </StackPanel>
 </Page>

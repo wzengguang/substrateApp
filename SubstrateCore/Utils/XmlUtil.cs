@@ -12,6 +12,28 @@ namespace SubstrateCore.Utils
 {
     public static class XmlUtil
     {
+        public async static Task<XDocument> LoadDocAsync(string path)
+        {
+            path = PathUtil.GetPhysicalPath(path);
+
+            XDocument xml = null;
+            try
+            {
+                StorageFile f = await StorageFile.GetFileFromPathAsync(path);
+                using (var stream = await f.OpenStreamForReadAsync())
+                {
+                    xml = XDocument.Load(stream);
+                }
+            }
+            catch (Exception)
+            {
+                // file can't found
+                return null;
+            }
+
+            return xml;
+        }
+
         public async static Task<XElement> LoadAsync(string path)
         {
             path = PathUtil.GetPhysicalPath(path);
@@ -25,9 +47,10 @@ namespace SubstrateCore.Utils
                     xml = XElement.Load(stream);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                // file can't found
+                return null;
             }
 
             return xml;

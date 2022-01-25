@@ -10,5 +10,6 @@ namespace SubstrateCore.Services
     public interface IProjectService
     {
         Task<ProjectSet> LoadProduces(bool reload = false);
+        Task Save(ProjectSet projectSet);
     }
 }

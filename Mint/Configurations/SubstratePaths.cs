@@ -6,7 +6,7 @@ namespace Mint.Substrate.Configurations
 
     public class SubstratePaths
     {
-        public string SrcDir { get; set; }
+        public string SrcDir { get; set; } = @"D:\Substrate\src";
 
         public string RestoreEntry { get; set; }
 

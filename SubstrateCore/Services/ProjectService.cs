@@ -45,7 +45,7 @@ namespace SubstrateCore.Services
 
                 ProjectSet.AddProject(project);
             };
-            await Save();
+            await Save(ProjectSet);
             return ProjectSet;
         }
 
@@ -55,7 +55,6 @@ namespace SubstrateCore.Services
             {
                 return ProjectSet;
             }
-
 
             StorageFile file = await GetSubstrateStorageFile();
 
@@ -77,14 +76,15 @@ namespace SubstrateCore.Services
             return ProjectSet;
         }
 
-        public async Task Save()
+        public async Task Save(ProjectSet projectSet)
         {
             StorageFile file = await GetSubstrateStorageFile();
 
             using (var fs = await file.OpenStreamForWriteAsync())
             {
+                fs.SetLength(0);
                 DataContractSerializer ser = new DataContractSerializer(typeof(ProjectSet));
-                ser.WriteObject(fs, ProjectSet);
+                ser.WriteObject(fs, projectSet);
             }
         }
 

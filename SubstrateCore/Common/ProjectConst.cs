@@ -42,5 +42,10 @@ namespace SubstrateCore.Common
         public const string RootNamespace = "RootNamespace";
 
         public const string PackagePath = "PackagePath";
+
+        public const string PackageId = "PackageId";
+        public const string NuspecFile = "NuspecFile";
+
+
     }
 }

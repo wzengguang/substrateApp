@@ -25,6 +25,10 @@ namespace SubstrateCore.Configuration
             serviceCollection.AddTransient<TargetPathPageViewModel>();
             serviceCollection.AddTransient<SearchFilePathViewModel>();
             serviceCollection.AddTransient<RemoveReferenceViewModel>();
+            serviceCollection.AddTransient<SettingViewModel>();
+            serviceCollection.AddTransient<GetReferenceViewModel>();
+            serviceCollection.AddTransient<AddReferenceViewModel>();
+            serviceCollection.AddTransient<ToolViewModel>();
 
             _rootServiceProvider = serviceCollection.BuildServiceProvider();
         }

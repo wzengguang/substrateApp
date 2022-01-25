@@ -1,4 +1,6 @@
-﻿using SubstrateCore.Models;
+﻿using Mint.Substrate;
+using Mint.Substrate.Construction;
+using SubstrateCore.Models;
 using SubstrateCore.Utils;
 using System;
 using System.Collections.Generic;
@@ -14,6 +16,8 @@ namespace SubstrateCore.Models
     public class Project
     {
         public ProjectTypeEnum ProjectType { get; set; }
+
+
         public string Framework { get; set; }
 
         public string Name { get; set; }
@@ -81,5 +85,35 @@ namespace SubstrateCore.Models
             Framework = framework;
 
         }
+
+
+        #region
+        [XmlIgnore]
+        private static Mint.Substrate.LookupTable lookupTable = null;
+        private ReferenceSet oldreferences;
+
+        [XmlIgnore]
+        private static Mint.Substrate.LookupTable GetLookupTable
+        {
+            get
+            {
+                if (lookupTable == null)
+                {
+                    lookupTable = new Mint.Substrate.LookupTable();
+                }
+                return lookupTable;
+            }
+        }
+        public Mint.Substrate.Construction.ReferenceSet GetReferences()
+        {
+            if (oldreferences == null)
+            {
+                var resolver = new ReferenceResolver(PhysicalPath, GetLookupTable);
+                oldreferences = Repo.Load<BuildFile>(PhysicalPath).GetReferences(resolver);
+            }
+
+            return oldreferences;
+        }
+        #endregion region
     }
 }

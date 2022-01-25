@@ -80,7 +80,19 @@
           "IsUpdated": false,
           "Docs": [],
           "RelatedControls": []
+        },
+        {
+          "UniqueId": "HandleMissingLog",
+          "Title": "HandleMissingLog",
+          "Subtitle": "HandleMissingLog.",
+          "ImagePath": "ms-appx:///Assets/PullToRefresh.png",
+          "Description": "HandleMissingLog",
+          "Content": "",
+          "IsUpdated": false,
+          "Docs": [],
+          "RelatedControls": []
         }
+        
       ]
     }
   ]

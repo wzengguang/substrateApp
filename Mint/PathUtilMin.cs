@@ -1,6 +1,4 @@
-﻿using SubstrateCore.Common;
-using SubstrateCore.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +9,7 @@ using Windows.Storage;
 
 namespace SubstrateCore.Utils
 {
-    public static class PathUtil
+    public static class PathUtilMin
     {
 
         public static string SubstrateDir
@@ -20,26 +18,6 @@ namespace SubstrateCore.Utils
             {
                 return ApplicationData.Current.LocalSettings.Values["SubstrateDir"] as string;
             }
-        }
-
-        /// <summary>
-        /// no repeat,no empty, ignore case
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string[] ConvertProjectNameArrayFromTextBox(string text)
-        {
-            HashSet<string> result = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (string str in text.Split('\r'))
-            {
-                var s = str.Replace(".dll", "").Trim();
-                if (!string.IsNullOrEmpty(s))
-                {
-                    result.Add(s);
-                }
-            }
-            return result.ToArray();
         }
 
         public static string TrimToRelativePath(string path)
@@ -106,13 +84,13 @@ namespace SubstrateCore.Utils
             return $"$(TargetPathDir){rootPath}{folderName}\\bin\\$(Configuration)\\netcoreapp3.1\\{assemblyName}.dll";
         }
 
-        public static string ReplacePathVirable(string path)
-        {
-            return path.Replace(SubstrateConst.FlavorPlatformDir, SubstrateConst.DebugAmd64)
-            .Replace(SubstrateConst.Configuration, SubstrateConst.Debug)
-            .Replace(SubstrateConst.BuildArchitecture, SubstrateConst.DebugAmd64)
-            .Replace(SubstrateConst.TargetPathDir + "\\", "")
-            .Replace(SubstrateConst.TargetPathDir, "");
-        }
+        //public static string ReplacePathVirable(string path)
+        //{
+        //    return path.Replace(SubstrateConst.FlavorPlatformDir, SubstrateConst.DebugAmd64)
+        //    .Replace(SubstrateConst.Configuration, SubstrateConst.Debug)
+        //    .Replace(SubstrateConst.BuildArchitecture, SubstrateConst.DebugAmd64)
+        //    .Replace(SubstrateConst.TargetPathDir + "\\", "")
+        //    .Replace(SubstrateConst.TargetPathDir, "");
+        //}
     }
 }

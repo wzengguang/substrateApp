@@ -31,7 +31,7 @@ public class SearchFilePathViewModel : BindableBase
     public async void SearchPathTb_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
     {
         Suggestions.Clear();
-        var text = searchPath.Replace(".dll", "");
+        var text = searchPath.Replace(".dll", "").Trim();
         if (text.Contains(":") && text.IndexOf("src") != -1)
         {
             var srcIndex = text.IndexOf("src");
@@ -39,7 +39,7 @@ public class SearchFilePathViewModel : BindableBase
         }
         await Task.Run(async () =>
          {
-             if (String.IsNullOrWhiteSpace(text))
+             if (String.IsNullOrEmpty(text))
              {
                  await dispatcherQueue.EnqueueAsync(async () =>
                  {
@@ -71,5 +71,10 @@ public class SearchFilePathViewModel : BindableBase
     public void FilePathTb_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)
     {
         SearchPath = args.SelectedItem.ToString();
+    }
+
+    public async Task UpdateSearch(string path)
+    {
+        await _searchPathService.Save(path);
     }
 }

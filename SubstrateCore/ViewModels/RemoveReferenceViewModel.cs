@@ -51,7 +51,7 @@ namespace SubstrateCore.ViewModels
             {
                 var path = PathUtil.GetPhysicalPath(SearchFilePathViewModel.SearchPath);
 
-                var removes = NeedRemoved.Split('\r').Select(a => a.Replace(".dll", "").Trim()).Distinct();
+                var removes = PathUtil.ConvertProjectNameArrayFromTextBox(NeedRemoved);
 
                 var xml = await XmlUtil.LoadAsync(path);
                 var nones = xml.GetIncludes(SubstrateConst.None);

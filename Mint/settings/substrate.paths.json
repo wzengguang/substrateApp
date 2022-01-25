@@ -1,5 +1,5 @@
 {
-  "SrcDir": "C:\\Substrate\\src",
+  "SrcDir": "d:\\Substrate\\src",
   "RestoreEntry": "NonCoreXTProjectRestoreEntry\\dirs.proj",
   "PackagesProps": "Packages.props",
   "InnerCorext": "build\\corext\\corext.config",

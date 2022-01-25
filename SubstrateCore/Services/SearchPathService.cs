@@ -25,11 +25,20 @@ namespace SubstrateCore.Services
 
             using (var fs = await file.OpenStreamForReadAsync())
             {
-                XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas());
-                DataContractSerializer ser = new DataContractSerializer(typeof(List<string>));
-                var readobject = (List<string>)ser.ReadObject(reader, true);
-                searchPaths = readobject ?? new List<string>();
-                reader.Close();
+                try
+                {
+                    using (XmlDictionaryReader reader = XmlDictionaryReader.CreateTextReader(fs, new XmlDictionaryReaderQuotas()))
+                    {
+                        DataContractSerializer ser = new DataContractSerializer(typeof(List<string>));
+                        var readobject = (List<string>)ser.ReadObject(reader, true);
+                        searchPaths = readobject ?? new List<string>();
+                    }
+                }
+                catch (Exception)
+                {
+                    searchPaths = new List<string>();
+                }
+
             }
             return searchPaths;
         }

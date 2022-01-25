@@ -159,6 +159,7 @@
     <Compile Include="LookupTables\PropertyLookupTable.cs" />
     <Compile Include="Package.cs" />
     <Compile Include="PackageSet.cs" />
+    <Compile Include="PathUtilMin.cs" />
     <Compile Include="Porting\BuildFileComparer.cs" />
     <Compile Include="Porting\BuildFileFormatter.cs" />
     <Compile Include="Porting\BuildFileProducer.cs" />
@@ -185,6 +186,7 @@
     <Compile Include="Utilities\PathUtils.cs" />
     <Compile Include="Utilities\Timer.cs" />
     <Compile Include="Utilities\UserInputParser.cs" />
+    <Compile Include="XmlUtilMin.cs" />
     <EmbeddedResource Include="Properties\Mint.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -199,10 +201,18 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="settings\substrate.nugets.json" />
-    <None Include="settings\substrate.paths.json" />
-    <None Include="settings\substrate.projects.json" />
-    <None Include="settings\substrate.properties.json" />
+    <None Include="settings\substrate.nugets.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="settings\substrate.paths.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="settings\substrate.projects.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="settings\substrate.properties.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Construction\Packages\" />

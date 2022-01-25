@@ -1,3 +1,5 @@
+using SubstrateCore.Configuration;
+using SubstrateCore.ViewModels;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
@@ -5,18 +7,21 @@ namespace SubstrateApp.ControlPages
 {
     public sealed partial class GetReferencePage : Page
     {
-        public string Xaml { get; set; } = "12345";
+
+
+        public GetReferenceViewModel ViewModel { get; }
+
         public GetReferencePage()
         {
             this.InitializeComponent();
+
+            ViewModel = ServiceLocator.Current.GetService<GetReferenceViewModel>();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void GetReferenceBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button b)
-            {
+            ViewModel.GetCurrentPathIncludes().ConfigureAwait(false);
 
-            }
         }
     }
 }

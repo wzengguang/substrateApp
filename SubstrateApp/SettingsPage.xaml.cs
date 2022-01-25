@@ -24,6 +24,9 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using SubstrateApp.DataModel;
 using System.IO;
+using SubstrateCore.Configuration;
+using SubstrateCore.ViewModels;
+using System.Threading.Tasks;
 
 namespace SubstrateApp
 {
@@ -42,9 +45,14 @@ namespace SubstrateApp
             }
         }
 
+        SettingViewModel ViewModel { get; }
+
         public SettingsPage()
         {
             this.InitializeComponent();
+
+            ViewModel = ServiceLocator.Current.GetService<SettingViewModel>();
+
             var setting = localSettings.Values[SettingConstant.SubstrateDir];
             SubstrateDirTB.Text = setting == null ? "" : setting as string;
 
@@ -188,6 +196,12 @@ namespace SubstrateApp
                 localSettings.Values[SettingConstant.SubstrateDir] = selectedFolder.Path;
                 SubstrateDirTB.Text = selectedFolder.Path;
             }
+        }
+
+        private void ScanSubstrateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Task.Run(async () => { await ViewModel.ScanSubstrateFolder(); });
+
         }
     }
 }

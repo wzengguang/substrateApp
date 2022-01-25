@@ -1,10 +1,13 @@
 ﻿using Microsoft.Toolkit.Uwp;
+using Mint.Substrate.Construction;
+using SubstrateApp.Utils;
 using SubstrateCore.Common;
 using SubstrateCore.Services;
 using SubstrateCore.Utils;
 using SubstrateCore.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,28 +45,70 @@ namespace SubstrateCore.ViewModels
 
         public List<string> NoFindProject = new List<string>();
 
+        public ObservableCollection<string> References = new ObservableCollection<string>();
+
+        public async Task GetCurrentPathIncludes()
+        {
+            await dispatcherQueue.EnqueueAsync(() =>
+            {
+                References.Clear();
+            });
+
+            var pNames = PathUtil.ConvertProjectNameArrayFromTextBox(ProjectNames);
+
+            foreach (var item in pNames)
+            {
+                var xml = await XmlUtil.LoadAsync(item);
+                var nones = xml.GetIncludes(SubstrateConst.None);
+                foreach (var n in nones.Keys)
+                {
+                    if (!References.Contains(n))
+                    {
+                        await dispatcherQueue.EnqueueAsync(() =>
+                        {
+                            References.Add(n);
+                        });
+                    }
+                }
+            }
+        }
+
 
         public async Task GetReferencesAsync()
         {
-            NoFindProject.Clear();
-            var filePaths = ProjectNames.Split("\r");
+            await dispatcherQueue.EnqueueAsync(() =>
+            {
+                _isLoading = true;
+                NoFindProject.Clear();
+                References.Clear();
+            });
+
+            var pNames = ProjectNames.Split("\r").Select(a => a.Replace(".dll", "").Trim());
             var children = new HashSet<string>();
-            var childrenChildren = new HashSet<string>();
-            await dispatcherQueue.EnqueueAsync(() => { _isLoading = true; });
             try
             {
                 var projects = await _projectService.LoadProduces();
 
-                foreach (var filePath in filePaths)
+                foreach (var pName in pNames)
                 {
-                    var xml = await XmlUtil.LoadAsync(filePath);
-                    xml.Descendants("None").Select(a => a.Attribute("Include")?.Value).ToList()
-                        .ForEach(a =>
+                    if (projects.ContainsKey(pName))
+                    {
+                        projects[pName].Produced.GetReferences().Where(a => a.Type == ReferenceType.Substrate)
+                               .Select(a => a.ReferenceName).ToList().ForEach(async a =>
+                               {
+                                   await dispatcherQueue.EnqueueAsync(() =>
+                                  {
+                                      References.Add(a);
+                                  });
+                               });
+                    }
+                    else
+                    {
+                        await dispatcherQueue.EnqueueAsync(() =>
                         {
-                            var name = a.Split(@"\").Last().Replace(".dll", "").Trim();
-                            children.Add(name);
+                            NoFindProject.Add(pName);
                         });
-
+                    }
                 }
             }
             catch (Exception e)

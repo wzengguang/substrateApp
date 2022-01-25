@@ -32,7 +32,7 @@ namespace SubstrateCore.Models
                     case FrameworkConst.NetStd:
                         this[key].NetStd = obj;
                         break;
-                    case FrameworkConst.NetFramework:
+                    default:
                         this[key].NetFramework = obj;
                         break;
                 }

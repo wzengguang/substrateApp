@@ -15,5 +15,10 @@ namespace SubstrateCore.Models
         public const string NetCore = "netcoreapp3.1";
 
         public const string Net = "net5.0";
+
+        public const string Nupkg = "Nupkg";
+
+
+
     }
 }
