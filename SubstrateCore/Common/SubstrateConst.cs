@@ -23,7 +23,7 @@ namespace SubstrateCore.Common
 
         public const string Configuration = "$(Configuration)";
 
-        public const string Inetroot = "$(Inetroot)";
+        public const string Inetroot = "$(Inetroot)\\";
 
         public const string DebugAmd64 = @"debug\amd64";
 

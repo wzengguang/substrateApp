@@ -1,6 +1,7 @@
 ﻿using Microsoft.Toolkit.Uwp;
 using SubstrateApp.Utils;
 using SubstrateCore.Common;
+using SubstrateCore.Configuration;
 using SubstrateCore.Models;
 using SubstrateCore.Services;
 using SubstrateCore.Utils;
@@ -28,6 +29,14 @@ namespace SubstrateCore.ViewModels
             set => Set(ref _isLoading, value);
         }
 
+        private string _substrateDirectory = AppSettings.Current.SubstrateDir;
+
+        public string SubstrateDirectory
+        {
+            get => _substrateDirectory;
+            set => Set(ref _substrateDirectory, value);
+        }
+
         private string _scaningFolder = "";
 
         public string ScaningFolder
@@ -37,10 +46,20 @@ namespace SubstrateCore.ViewModels
         }
 
         private IProjectService _projectService;
-        public SettingViewModel(IProjectService projectService)
+        private IScanService _scanService;
+        public SettingViewModel(IProjectService projectService, IScanService scanService)
         {
             _projectService = projectService;
+            _scanService = scanService;
         }
+
+        public async Task ScanProducedFolder()
+        {
+            IsLoading = true;
+            await _scanService.ScanFileOfNonCoreXTProjectRestoreEntry();
+            IsLoading = false;
+        }
+
 
         public async Task ScanSubstrateFolder()
         {

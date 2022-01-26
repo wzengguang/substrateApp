@@ -15,6 +15,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Foundation.Metadata;
 using Windows.System.Profile;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -30,10 +31,10 @@ namespace SubstrateApp
         public App()
         {
             Startup.ConfigureAsync();
-
             this.InitializeComponent();
             this.Suspending += OnSuspending;
             this.Resuming += App_Resuming;
+            this.UnhandledException += Application_UnhandledException;
             this.RequiresPointerMode = ApplicationRequiresPointerMode.WhenRequested;
 
             if (ApiInformation.IsApiContractPresent("Windows.Foundation.UniversalApiContract", 6))
@@ -274,6 +275,13 @@ namespace SubstrateApp
             await SuspensionManager.SaveAsync();
             UpdateNavigationBasedOnSelectedPage(GetRootFrame());
             deferral.Complete();
+        }
+
+        private async void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+
+            await new MessageDialog(e.Exception.ToString(), "Unknown Error").ShowAsync();
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SubstrateCore.Repositories;
 using SubstrateCore.Services;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,7 @@ namespace SubstrateCore.Configuration
             ServiceLocator.Configure(_serviceCollection);
 
             //var projectService = ServiceLocator.Current.GetService<IProjectService>();
-
+            SQLiteDb.InitializeDb();
         }
     }
 }

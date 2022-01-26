@@ -9,7 +9,7 @@ namespace SubstrateCore.Services
 {
     public interface IProjectService
     {
-        Task<Dictionary<string, Project>> LoadProduces(bool reload = false);
+        Task<Dictionary<string, Project>> LoadProduces();
         Task Save(Dictionary<string, Project> projectSet);
     }
 }

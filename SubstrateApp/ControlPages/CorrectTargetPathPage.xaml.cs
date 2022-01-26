@@ -52,7 +52,7 @@ namespace SubstrateApp.ControlPages
 
         private async void OrderTargetPathBtn_Click(object sender, RoutedEventArgs e)
         {
-            await Task.Run(async () => { await ViewModel.OrderTargetPath(); });
+            await ViewModel.OrderTargetPath();
         }
     }
 }

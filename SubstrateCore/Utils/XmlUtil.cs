@@ -1,6 +1,7 @@
 ﻿using SubstrateCore.Common;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -49,14 +50,15 @@ namespace SubstrateCore.Utils
                     file = await StorageFile.GetFileFromPathAsync(PathUtil.GetPhysicalPath(relativePath));
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.WriteLine(e.Message + e.StackTrace);
                 return null;
             }
             return await XmlUtil.LoadAsync(file.Path);
         }
 
-        public async static Task<XElement> LoadAsync(string path)
+        private async static Task<XElement> LoadAsync(string path)
         {
             path = PathUtil.GetPhysicalPath(path);
 

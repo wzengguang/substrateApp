@@ -1,9 +1,11 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SubstrateCore.Repositories;
 using SubstrateCore.Repository;
 using SubstrateCore.Services;
 using SubstrateCore.ViewModels;
 using System;
 using System.Collections.Concurrent;
+using System.Reflection;
 using Windows.UI.ViewManagement;
 
 namespace SubstrateCore.Configuration
@@ -16,18 +18,16 @@ namespace SubstrateCore.Configuration
 
         static public void Configure(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddSingleton<IDataRepositoryFactory, DataRepositoryFactory>();
-
-            serviceCollection.AddSingleton<ISettingsService, SettingsService>();
-            serviceCollection.AddSingleton<IMessageService, MessageService>();
-            serviceCollection.AddSingleton<ILogService, LogService>();
-            serviceCollection.AddSingleton<IDialogService, DialogService>();
-            serviceCollection.AddSingleton<IFilePickerService, FilePickerService>();
+            serviceCollection.AddTransient<SQLiteDataRepository>();
             serviceCollection.AddScoped<IContextService, ContextService>();
             serviceCollection.AddScoped<ICommonServices, CommonServices>();
 
+            serviceCollection.AddSingleton<IMessageService, MessageService>();
+            serviceCollection.AddSingleton<IDialogService, DialogService>();
+            serviceCollection.AddSingleton<IFilePickerService, FilePickerService>();
             serviceCollection.AddSingleton<IProjectService, ProjectService>();
             serviceCollection.AddSingleton<ISearchPathService, SearchPathService>();
+            serviceCollection.AddSingleton<IScanService, ScanService>();
 
             serviceCollection.AddTransient<TargetPathPageViewModel>();
             serviceCollection.AddTransient<SearchFilePathViewModel>();
@@ -36,6 +36,7 @@ namespace SubstrateCore.Configuration
             serviceCollection.AddTransient<GetReferenceViewModel>();
             serviceCollection.AddTransient<AddReferenceViewModel>();
             serviceCollection.AddTransient<ToolViewModel>();
+            serviceCollection.AddTransient<SettingViewModel>();
 
             _rootServiceProvider = serviceCollection.BuildServiceProvider();
         }

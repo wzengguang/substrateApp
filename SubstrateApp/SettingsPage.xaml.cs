@@ -1,29 +1,15 @@
-//*********************************************************
-//
-// Copyright (c) Microsoft. All rights reserved.
-// THIS CODE IS PROVIDED *AS IS* WITHOUT WARRANTY OF
-// ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING ANY
-// IMPLIED WARRANTIES OF FITNESS FOR A PARTICULAR
-// PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
-//
-//*********************************************************
-using SubstrateApp.Common;
 using SubstrateApp.Helper;
-using SubstrateApp;
 using System;
 using System.Linq;
-using Windows.ApplicationModel.Core;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.System;
-using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
 using SubstrateApp.DataModel;
-using System.IO;
 using SubstrateCore.Configuration;
 using SubstrateCore.ViewModels;
 using System.Threading.Tasks;
@@ -51,12 +37,9 @@ namespace SubstrateApp
         {
             this.InitializeComponent();
 
-            ViewModel = ServiceLocator.Current.GetService<SettingViewModel>();
-
-            var setting = localSettings.Values[SettingConstant.SubstrateDir];
-            SubstrateDirTB.Text = setting == null ? "" : setting as string;
-
             Loaded += OnSettingsPageLoaded;
+
+            ViewModel = ServiceLocator.Current.GetService<SettingViewModel>();
 
             if (ElementSoundPlayer.State == ElementSoundPlayerState.On)
                 soundToggle.IsOn = true;
@@ -87,6 +70,32 @@ namespace SubstrateApp
             var currentTheme = ThemeHelper.RootTheme.ToString();
             (ThemePanel.Children.Cast<RadioButton>().FirstOrDefault(c => c?.Tag?.ToString() == currentTheme)).IsChecked = true;
         }
+
+        private async void SubstrateDirBtn_Click(object sender, RoutedEventArgs e)
+        {
+            FolderPicker fPicker = new FolderPicker();
+            var selectedFolder = await fPicker.PickSingleFolderAsync();
+            fPicker.FileTypeFilter.Add("*");
+            if (selectedFolder != null)
+            {
+                Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace("substrateDir", selectedFolder);
+
+                Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", selectedFolder);
+                AppSettings.Current.SubstrateDir = selectedFolder.Path;
+                ViewModel.SubstrateDirectory = selectedFolder.Path;
+            }
+        }
+
+        private async void ScanProducedBtn_Click(object sender, RoutedEventArgs e)
+        {
+            await ViewModel.ScanProducedFolder();
+        }
+
+        private void ScanSubstrateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Task.Run(async () => { await ViewModel.ScanSubstrateFolder(); });
+        }
+
 
         private void OnThemeRadioButtonChecked(object sender, RoutedEventArgs e)
         {
@@ -183,25 +192,5 @@ namespace SubstrateApp
             this.Frame.Navigate(typeof(ItemPage), "Sound");
         }
 
-        private async void SubstrateDirBtn_Click(object sender, RoutedEventArgs e)
-        {
-            FolderPicker fPicker = new FolderPicker();
-            var selectedFolder = await fPicker.PickSingleFolderAsync();
-            fPicker.FileTypeFilter.Add("*");
-            if (selectedFolder != null)
-            {
-                Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.AddOrReplace("substrateDir", selectedFolder);
-
-                Windows.Storage.AccessCache.StorageApplicationPermissions.FutureAccessList.AddOrReplace("PickedFolderToken", selectedFolder);
-                localSettings.Values[SettingConstant.SubstrateDir] = selectedFolder.Path;
-                SubstrateDirTB.Text = selectedFolder.Path;
-            }
-        }
-
-        private void ScanSubstrateBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Task.Run(async () => { await ViewModel.ScanSubstrateFolder(); });
-
-        }
     }
 }

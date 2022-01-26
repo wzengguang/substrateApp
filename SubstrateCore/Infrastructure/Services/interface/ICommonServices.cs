@@ -8,6 +8,5 @@ namespace SubstrateCore.Services
         IContextService ContextService { get; }
         IMessageService MessageService { get; }
         IDialogService DialogService { get; }
-        ILogService LogService { get; }
     }
 }

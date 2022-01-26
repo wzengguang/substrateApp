@@ -4,12 +4,11 @@ namespace SubstrateCore.Services
 {
     public class CommonServices : ICommonServices
     {
-        public CommonServices(IContextService contextService, IMessageService messageService, IDialogService dialogService, ILogService logService)
+        public CommonServices(IContextService contextService, IMessageService messageService, IDialogService dialogService)
         {
             ContextService = contextService;
             MessageService = messageService;
             DialogService = dialogService;
-            LogService = logService;
         }
 
         public IContextService ContextService { get; }
@@ -19,6 +18,5 @@ namespace SubstrateCore.Services
 
         public IDialogService DialogService { get; }
 
-        public ILogService LogService { get; }
     }
 }

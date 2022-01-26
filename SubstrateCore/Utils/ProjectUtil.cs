@@ -11,8 +11,6 @@ namespace SubstrateCore.Utils
 {
     public static class ProjectUtil
     {
-
-
         public static string InferAssemblyName(string path, XElement xml)
         {
             xml = xml.GetFirst(SubstrateConst.PropertyGroup);

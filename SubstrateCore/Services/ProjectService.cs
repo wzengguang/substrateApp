@@ -1,5 +1,6 @@
 ﻿using SubstrateCore.Common;
 using SubstrateCore.Models;
+using SubstrateCore.Repositories;
 using SubstrateCore.Repository;
 using SubstrateCore.Utils;
 using System;
@@ -17,53 +18,34 @@ namespace SubstrateCore.Services
 {
     public class ProjectService : IProjectService
     {
-        public IDataRepositoryFactory DataRepositoryFactory { get; }
+        public SQLiteDataRepository _sQLiteDataRepository { get; }
 
-        public ProjectService(IDataRepositoryFactory dataRepositoryFactory)
+        public ProjectService(SQLiteDataRepository sQLiteDataRepository)
         {
-            DataRepositoryFactory = dataRepositoryFactory;
+            _sQLiteDataRepository = sQLiteDataRepository;
         }
 
 
-        public async Task<ProjectInfo> GetAll()
+        private List<ProjectInfo> _projects;
+        public async Task<List<ProjectInfo>> GetAll()
         {
-            using (var dataService = DataRepositoryFactory.CreateDataRepo())
+            if (_projects == null)
             {
-                return await dataService.GetAllProjectInfo();
+                _projects = await _sQLiteDataRepository.GetProjects();
             }
+            return _projects;
         }
 
 
         public Dictionary<string, Project> ProjectSet { get; private set; } = new Dictionary<string, Project>(StringComparer.OrdinalIgnoreCase);
 
-        public async Task<Dictionary<string, Project>> LoadProduces(bool reload = false)
+        public async Task<Dictionary<string, Project>> LoadProduces()
         {
-            //await Load(reload);
-            if (!reload && ProjectSet.Count > 0)
+            var projectInfos = await _sQLiteDataRepository.GetProjects();
+            foreach (var item in projectInfos)
             {
-                return ProjectSet;
+                AddProject(item);
             }
-
-            XElement projectRestoreEntryXml = await XmlUtil.LoadAsync("NonCoreXTProjectRestoreEntry\\dirs.proj");
-
-            var producedPaths = projectRestoreEntryXml.Descendants(SubstrateConst.ProjectFile)
-                .Select(x => x.Attribute(SubstrateConst.Include).Value.ReplaceIgnoreCase("$(InetRoot)\\", "").Trim()).ToList();
-
-            foreach (var producedPath in producedPaths)
-            {
-                var p = PathUtil.GetPhysicalPath(producedPath);
-                XElement xml = await XmlUtil.LoadAsync(producedPath);
-
-                var assembliesName = ProjectUtil.InferAssemblyName(p, xml) ?? Path.GetFileNameWithoutExtension(p);
-
-                string framework = xml.GetFirst(SubstrateConst.TargetFramework)?.Value
-                  ?? MSBuildUtils.InferFrameworkByPath(p);
-
-                var project = new ProjectInfo(assembliesName, PathUtil.TrimToRelativePath(p), ProjectTypeEnum.Substrate, framework);
-
-                AddProject(project);
-            };
-            //await Save(ProjectSet);
             return ProjectSet;
         }
 
