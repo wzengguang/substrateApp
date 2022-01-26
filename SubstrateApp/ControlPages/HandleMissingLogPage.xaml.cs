@@ -22,5 +22,10 @@ namespace SubstrateApp.ControlPages
             ViewModel.HandlerMissing();
 
         }
+
+        private void TargetToPackageBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ViewModel.ConvertToTargetReference();
+        }
     }
 }

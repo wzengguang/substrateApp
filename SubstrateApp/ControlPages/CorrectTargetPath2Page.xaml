@@ -20,7 +20,7 @@
         </StackPanel>
 
         <StackPanel FlowDirection="RightToLeft" Margin="0,20">
-            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="VerifyTargetPathBtn_Click" Style="{StaticResource AccentButtonStyle}" Content="VerifyTargetPath" />
+            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="VerifyTargetPathBtn_Click" Style="{StaticResource AccentButtonStyle}" Content="Confirm" />
         </StackPanel>
 
         <StackPanel x:DefaultBindMode="OneWay"
@@ -48,8 +48,8 @@
         </StackPanel>
 
         <StackPanel FlowDirection="RightToLeft" Margin="0,20">
-            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="Button_Click" Style="{StaticResource AccentButtonStyle}" Content="test" />
+            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="Button_Click" Style="{StaticResource AccentButtonStyle}" Content="Test pathSearch" />
         </StackPanel>
     </StackPanel>
-    
+
 </Page>

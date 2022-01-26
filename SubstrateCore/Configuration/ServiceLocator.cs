@@ -1,12 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using SubstrateCore.Repository;
 using SubstrateCore.Services;
 using SubstrateCore.ViewModels;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.ViewManagement;
 
 namespace SubstrateCore.Configuration
@@ -19,6 +16,16 @@ namespace SubstrateCore.Configuration
 
         static public void Configure(IServiceCollection serviceCollection)
         {
+            serviceCollection.AddSingleton<IDataRepositoryFactory, DataRepositoryFactory>();
+
+            serviceCollection.AddSingleton<ISettingsService, SettingsService>();
+            serviceCollection.AddSingleton<IMessageService, MessageService>();
+            serviceCollection.AddSingleton<ILogService, LogService>();
+            serviceCollection.AddSingleton<IDialogService, DialogService>();
+            serviceCollection.AddSingleton<IFilePickerService, FilePickerService>();
+            serviceCollection.AddScoped<IContextService, ContextService>();
+            serviceCollection.AddScoped<ICommonServices, CommonServices>();
+
             serviceCollection.AddSingleton<IProjectService, ProjectService>();
             serviceCollection.AddSingleton<ISearchPathService, SearchPathService>();
 

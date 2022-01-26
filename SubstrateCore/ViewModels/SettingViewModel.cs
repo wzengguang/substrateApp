@@ -50,13 +50,13 @@ namespace SubstrateCore.ViewModels
             {
                 var current = await StorageFolder.GetFolderFromPathAsync(Path.Combine(PathUtil.SubstrateDir, "sources\\dev"));
 
-                var queue = new ConcurrentQueue<Project>();
+                var queue = new ConcurrentQueue<ProjectInfo>();
                 await Director(current, queue);
 
-                ProjectSet projects = new ProjectSet();
+                Dictionary<string, Project> projects = new Dictionary<string, Project>();
                 foreach (var item in queue)
                 {
-                    projects.AddProject(item);
+                    // projects.AddProject(item);
                 }
                 await _projectService.Save(projects);
 
@@ -75,7 +75,7 @@ namespace SubstrateCore.ViewModels
             }
         }
 
-        public async Task Director(StorageFolder folder, ConcurrentQueue<Project> projects)
+        public async Task Director(StorageFolder folder, ConcurrentQueue<ProjectInfo> projects)
         {
             await dispatcherQueue.EnqueueAsync(() => { ScaningFolder = folder.Path; });
 
@@ -86,7 +86,7 @@ namespace SubstrateCore.ViewModels
             {
                 if (fileInfo.FileType == ".csproj" || fileInfo.FileType == ".vcxproj")
                 {
-                    var p = new Project() { RelativePath = PathUtil.TrimToRelativePath(fileInfo.Path), ProjectType = ProjectTypeEnum.Substrate };
+                    var p = new ProjectInfo() { RelativePath = PathUtil.TrimToRelativePath(fileInfo.Path), ProjectType = ProjectTypeEnum.Substrate };
                     try
                     {
                         var xml = await XmlUtil.LoadDocAsync(fileInfo.Path);

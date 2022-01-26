@@ -34,6 +34,28 @@ namespace SubstrateCore.Utils
             return xml;
         }
 
+        public async static Task<XElement> LoadAsync(string relativePath, bool fromApp = false)
+        {
+            StorageFile file;
+            try
+            {
+                if (fromApp)
+                {
+                    Uri dataUri = new Uri("ms-appx:///" + relativePath);
+                    file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
+                }
+                else
+                {
+                    file = await StorageFile.GetFileFromPathAsync(PathUtil.GetPhysicalPath(relativePath));
+                }
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            return await XmlUtil.LoadAsync(file.Path);
+        }
+
         public async static Task<XElement> LoadAsync(string path)
         {
             path = PathUtil.GetPhysicalPath(path);

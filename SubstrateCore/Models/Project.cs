@@ -1,6 +1,4 @@
-﻿using Mint.Substrate;
-using Mint.Substrate.Construction;
-using SubstrateCore.Models;
+﻿using SubstrateCore.Models;
 using SubstrateCore.Utils;
 using System;
 using System.Collections.Generic;
@@ -17,103 +15,34 @@ namespace SubstrateCore.Models
     {
         public ProjectTypeEnum ProjectType { get; set; }
 
-
-        public string Framework { get; set; }
-
         public string Name { get; set; }
 
-        public string RelativePath { get; set; }
-
-
-        [XmlIgnore]
-        private string physicalPath;
+        public bool IsProduced { get; set; }
 
         [XmlIgnore]
-        public string PhysicalPath
-        {
-            get
-            {
-                if (physicalPath == null)
-                {
-                    physicalPath = PathUtil.GetPhysicalPath(RelativePath);
-                }
-
-                return physicalPath;
-            }
-            set
-            {
-                physicalPath = value;
-            }
-        }
+        public ProjectInfo Produced { get { return NetCore ?? NetStd; } }
 
         [XmlIgnore]
-        private string targetPath = null;
+        public ProjectInfo NetFramework { get; set; }
 
         [XmlIgnore]
-        public string TargetPath
-        {
-            get
-            {
-                if (targetPath == null)
-                {
-                    targetPath = PathUtil.GetTargetPath(Name, PhysicalPath);
-                }
-                return targetPath;
-
-            }
-            set
-            {
-                targetPath = value;
-            }
-        }
+        public ProjectInfo NetCore { get; set; }
 
         [XmlIgnore]
-        private Dictionary<string, Project> references;
-
-        [XmlIgnore]
-        protected Dictionary<string, Project> References { get { return references == null ? new Dictionary<string, Project>() : references; } }
-
+        public ProjectInfo NetStd { get; set; }
 
         public Project() { }
 
-
-        public Project(string name, string relativePath, ProjectTypeEnum projectType, string framework)
+        public Project(string name, ProjectTypeEnum type)
         {
             this.Name = name;
-            this.ProjectType = projectType;
-            this.RelativePath = relativePath;
-            Framework = framework;
+            this.ProjectType = type;
 
         }
 
-
-        #region
-        [XmlIgnore]
-        private static Mint.Substrate.LookupTable lookupTable = null;
-        private ReferenceSet oldreferences;
-
-        [XmlIgnore]
-        private static Mint.Substrate.LookupTable GetLookupTable
+        public override int GetHashCode()
         {
-            get
-            {
-                if (lookupTable == null)
-                {
-                    lookupTable = new Mint.Substrate.LookupTable();
-                }
-                return lookupTable;
-            }
+            return this.Name.GetHashCode();
         }
-        public Mint.Substrate.Construction.ReferenceSet GetReferences()
-        {
-            if (oldreferences == null)
-            {
-                var resolver = new ReferenceResolver(PhysicalPath, GetLookupTable);
-                oldreferences = Repo.Load<BuildFile>(PhysicalPath).GetReferences(resolver);
-            }
-
-            return oldreferences;
-        }
-        #endregion region
     }
 }

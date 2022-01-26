@@ -75,7 +75,7 @@
           "Title": "CorrectTargetPath2",
           "Subtitle": "CorrectTargetPath2.",
           "ImagePath": "ms-appx:///Assets/PullToRefresh.png",
-          "Description": "Correct target path of reference.",
+          "Description": "$(FlavorPlatformDir) to bin\\$(Configuration)\\netcoreapp3.1.",
           "Content": "",
           "IsUpdated": false,
           "Docs": [],

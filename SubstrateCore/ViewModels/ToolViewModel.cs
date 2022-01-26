@@ -9,6 +9,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using Windows.Storage;
 using Windows.System;
 
 namespace SubstrateCore.ViewModels
@@ -53,12 +55,20 @@ namespace SubstrateCore.ViewModels
             set => Set(ref _output, value);
         }
 
+        private string output1;
+        public string OutPut1
+        {
+            get => output1;
+            set => Set(ref output1, value);
+        }
+
         public void HandlerMissing()
         {
             HashSet<string> outputs = new HashSet<string>();
             foreach (var item in Input.Split("\r"))
             {
-                var t = item.Split("->").Last().Trim();
+                var s = item.Split("->");
+                var t = s[1];
 
                 outputs.Add(t);
             }
@@ -66,5 +76,44 @@ namespace SubstrateCore.ViewModels
 
         }
 
+
+        public async void ConvertToTargetReference()
+        {
+            IsLoading = true;
+            var xml = await XmlUtil.LoadAsync("DataModel/pr.xml", true);
+            var dlls = xml.GetIncludes(SubstrateConst.None);
+
+            var projects = await _projectService.LoadProduces();
+
+            List<string> result = new List<string>();
+            var notFind = new List<string>();
+            foreach (var project in dlls)
+            {
+                if (projects.ContainsKey(project.Key))
+                {
+                    var p = projects[project.Key].Produced ?? projects[project.Key].NetFramework;
+                    result.Add("<ProjectReference Include=\"$(Inetroot)\\" + p.RelativePath + "\" />");
+                }
+                else
+                {
+                    var include = project.Value.Attribute("Include").Value;
+                    if (project.Key.Contains(".resources") && include.Contains("\\en\\"))
+                    {
+                        continue;
+                    }
+
+                    var str = "<Reference Include=\"" + project.Key + "\"><HintPath>" + include
+                        + "</HintPath ></Reference>";
+                    notFind.Add(str);
+                }
+            }
+
+            await dispatcherQueue.EnqueueAsync(() =>
+             {
+                 OutPut = Converters.ToRichString(result.OrderBy(a => a));
+                 OutPut1 = Converters.ToRichString(notFind.OrderBy(a => a));
+                 IsLoading = false;
+             });
+        }
     }
 }

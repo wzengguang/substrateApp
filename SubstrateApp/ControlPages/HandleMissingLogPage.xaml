@@ -12,6 +12,7 @@
 
         <StackPanel FlowDirection="RightToLeft" Margin="0,20">
             <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="Btn_Click" Style="{StaticResource AccentButtonStyle}" Content="missing" />
+            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="TargetToPackageBtn_Click" Style="{StaticResource AccentButtonStyle}" Content="Target Reference To Package Reference" />
         </StackPanel>
 
         <StackPanel x:DefaultBindMode="OneWay"
@@ -21,8 +22,17 @@
                 BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
                 BorderThickness="1,0,1,1">
             <controls:ContentCopiedPresenter
-                    x:Name="CanFixPaths"
                     Text="{x:Bind ViewModel.OutPut, Mode=OneWay}"
+                    Margin="16,20" />
+        </StackPanel>
+        <StackPanel x:DefaultBindMode="OneWay"
+                Grid.Row="1"
+                contract7Present:CornerRadius="0,0,8,8"
+                Background="{ThemeResource CardBackgroundFillColorSecondaryBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1,0,1,1">
+            <controls:ContentCopiedPresenter
+                    Text="{x:Bind ViewModel.OutPut1, Mode=OneWay}"
                     Margin="16,20" />
         </StackPanel>
     </StackPanel>

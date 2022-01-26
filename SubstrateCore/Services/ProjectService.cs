@@ -1,5 +1,6 @@
 ﻿using SubstrateCore.Common;
 using SubstrateCore.Models;
+using SubstrateCore.Repository;
 using SubstrateCore.Utils;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,28 @@ namespace SubstrateCore.Services
 {
     public class ProjectService : IProjectService
     {
-        public ProjectSet ProjectSet { get; private set; } = new ProjectSet();
+        public IDataRepositoryFactory DataRepositoryFactory { get; }
 
-        public async Task<ProjectSet> LoadProduces(bool reload = false)
+        public ProjectService(IDataRepositoryFactory dataRepositoryFactory)
         {
-            await Load(reload);
+            DataRepositoryFactory = dataRepositoryFactory;
+        }
+
+
+        public async Task<ProjectInfo> GetAll()
+        {
+            using (var dataService = DataRepositoryFactory.CreateDataRepo())
+            {
+                return await dataService.GetAllProjectInfo();
+            }
+        }
+
+
+        public Dictionary<string, Project> ProjectSet { get; private set; } = new Dictionary<string, Project>(StringComparer.OrdinalIgnoreCase);
+
+        public async Task<Dictionary<string, Project>> LoadProduces(bool reload = false)
+        {
+            //await Load(reload);
             if (!reload && ProjectSet.Count > 0)
             {
                 return ProjectSet;
@@ -41,15 +59,42 @@ namespace SubstrateCore.Services
                 string framework = xml.GetFirst(SubstrateConst.TargetFramework)?.Value
                   ?? MSBuildUtils.InferFrameworkByPath(p);
 
-                var project = new Project(assembliesName, PathUtil.TrimToRelativePath(p), ProjectTypeEnum.Substrate, framework);
+                var project = new ProjectInfo(assembliesName, PathUtil.TrimToRelativePath(p), ProjectTypeEnum.Substrate, framework);
 
-                ProjectSet.AddProject(project);
+                AddProject(project);
             };
-            await Save(ProjectSet);
+            //await Save(ProjectSet);
             return ProjectSet;
         }
 
-        public async Task<ProjectSet> Load(bool force)
+        private bool AddProject(ProjectInfo obj)
+        {
+            string key = obj.Name;
+            if (!ProjectSet.ContainsKey(key))
+            {
+                ProjectSet.Add(key, new Project(key, obj.ProjectType));
+            }
+
+            if (obj.ProjectType == ProjectTypeEnum.Substrate)
+            {
+                switch (obj.Framework)
+                {
+                    case FrameworkConst.NetCore:
+                        ProjectSet[key].NetCore = obj;
+                        break;
+                    case FrameworkConst.NetStd:
+                        ProjectSet[key].NetStd = obj;
+                        break;
+                    default:
+                        ProjectSet[key].NetFramework = obj;
+                        break;
+                }
+            }
+
+            return true;
+        }
+
+        public async Task<Dictionary<string, Project>> Load(bool force)
         {
             if (ProjectSet.Count > 0 && !force)
             {
@@ -64,8 +109,8 @@ namespace SubstrateCore.Services
                 {
                     try
                     {
-                        DataContractSerializer ser = new DataContractSerializer(typeof(ProjectSet));
-                        var readobject = (ProjectSet)ser.ReadObject(reader, true);
+                        DataContractSerializer ser = new DataContractSerializer(typeof(Dictionary<string, Project>));
+                        var readobject = (Dictionary<string, Project>)ser.ReadObject(reader, true);
                         ProjectSet = readobject ?? ProjectSet;
                     }
                     catch (Exception)
@@ -76,14 +121,14 @@ namespace SubstrateCore.Services
             return ProjectSet;
         }
 
-        public async Task Save(ProjectSet projectSet)
+        public async Task Save(Dictionary<string, Project> projectSet)
         {
             StorageFile file = await GetSubstrateStorageFile();
 
             using (var fs = await file.OpenStreamForWriteAsync())
             {
                 fs.SetLength(0);
-                DataContractSerializer ser = new DataContractSerializer(typeof(ProjectSet));
+                DataContractSerializer ser = new DataContractSerializer(typeof(Dictionary<string, Project>));
                 ser.WriteObject(fs, projectSet);
             }
         }
