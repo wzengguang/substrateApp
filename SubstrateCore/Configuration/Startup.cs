@@ -18,7 +18,7 @@ namespace SubstrateCore.Configuration
             //AppCenter.Start("7b48b5c7-768f-49e3-a2e4-7293abe8b0ca", typeof(Analytics), typeof(Crashes));
             //Analytics.TrackEvent("AppStarted");
 
-            ServiceLocator.Configure(_serviceCollection);
+            ServiceProvider.Configure(_serviceCollection);
 
             //var projectService = ServiceLocator.Current.GetService<IProjectService>();
             SQLiteDb.InitializeDb();

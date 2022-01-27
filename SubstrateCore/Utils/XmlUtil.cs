@@ -1,4 +1,5 @@
-﻿using SubstrateCore.Common;
+﻿using SubstrateApp.Utils;
+using SubstrateCore.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -140,5 +141,27 @@ namespace SubstrateCore.Utils
         {
             return xml.Attribute(SubstrateConst.Include)?.Value?.Trim().Split("\\").Last().Replace(".dll", "");
         }
+
+    }
+
+    public static class XDocumentUtil
+    {
+        public static string TryGetAssemblyName(this XDocument doc, string path)
+        {
+            string assemblyName = doc.GetFirst(Tags.AssemblyName)?.Value;
+
+            if (string.IsNullOrEmpty(assemblyName))
+            {
+                string fileName = Path.GetFileNameWithoutExtension(path);
+                assemblyName = fileName;
+            }
+            else if (assemblyName.EqualsIgnoreCase(@"$(RootNamespace)"))
+            {
+                assemblyName = doc.GetFirst(Tags.RootNamespace).Value;
+            }
+
+            return assemblyName;
+        }
+
     }
 }

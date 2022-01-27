@@ -10,5 +10,6 @@
 
         Unknown,
 
+        SDK
     }
 }

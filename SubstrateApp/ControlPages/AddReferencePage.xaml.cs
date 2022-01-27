@@ -1,4 +1,3 @@
-using SubstrateApp.DataModel;
 using SubstrateApp.Utils;
 using SubstrateCore.Configuration;
 using SubstrateCore.Utils;
@@ -29,7 +28,7 @@ namespace SubstrateApp.ControlPages
         public AddReferencePage()
         {
             this.InitializeComponent();
-            ViewModel = ServiceLocator.Current.GetService<AddReferenceViewModel>();
+            ViewModel = ServiceProvider.Current.GetService<AddReferenceViewModel>();
         }
 
         private void FilePathBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)

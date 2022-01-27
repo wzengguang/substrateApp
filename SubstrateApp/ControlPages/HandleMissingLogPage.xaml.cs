@@ -13,7 +13,7 @@ namespace SubstrateApp.ControlPages
         {
             this.InitializeComponent();
 
-            ViewModel = ServiceLocator.Current.GetService<ToolViewModel>();
+            ViewModel = ServiceProvider.Current.GetService<ToolViewModel>();
         }
 
 

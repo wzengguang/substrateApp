@@ -122,9 +122,11 @@
   <ItemGroup>
     <Compile Include="Common\SubstrateConst.cs" />
     <Compile Include="Configuration\AppSettings.cs" />
-    <Compile Include="Configuration\ServiceLocator.cs" />
+    <Compile Include="Configuration\ServiceProvider.cs" />
     <Compile Include="Configuration\Startup.cs" />
     <Compile Include="Infrastructure\Models\Result.cs" />
+    <Compile Include="Utils\Jsonutil.cs" />
+    <Compile Include="Utils\Substrate\SubstrateNuGets.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SQLiteDataRepository.cs" />
     <Compile Include="Infrastructure\Services\CommonServices.cs" />
@@ -157,7 +159,9 @@
     <Compile Include="Utils\PathUtils.cs" />
     <Compile Include="Utils\ProjectUtil.cs" />
     <Compile Include="Utils\StringExtension.cs" />
-    <Compile Include="Utils\XElementExtension.cs" />
+    <Compile Include="Utils\Substrate\ReferenceResolver.cs" />
+    <Compile Include="Utils\Substrate\XDocumentExtension.cs" />
+    <Compile Include="Utils\Substrate\XElementExtension.cs" />
     <Compile Include="Utils\XmlUtil.cs" />
     <Compile Include="ViewModels\AddReferenceViewModel.cs" />
     <Compile Include="ViewModels\GetReferenceViewModel.cs" />
@@ -168,32 +172,12 @@
     <Compile Include="ViewModels\SettingViewModel.cs" />
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="ViewModels\TargetPathPageViewModel.cs" />
-    <Compile Include="WillDelete\Project.cs" />
-    <Compile Include="WillDelete\ProjectWrap.cs" />
-    <Compile Include="WillDelete\Reference.cs" />
-    <Compile Include="WillDelete\SettingConstant.cs" />
-    <Compile Include="WillDelete\SubstrateData.cs" />
-    <Compile Include="WillDelete\SubstrateDataExt.cs" />
-    <Compile Include="WillDelete\Utils\IEnumerableExtension.cs" />
-    <Compile Include="WillDelete\Utils\IgnoreCaseDictionary.cs" />
-    <Compile Include="WillDelete\Utils\IgnoreCaseHashSet.cs" />
-    <Compile Include="WillDelete\Utils\ListExtension.cs" />
-    <Compile Include="WillDelete\Utils\MSBuildPath.cs" />
-    <Compile Include="WillDelete\Utils\MSBuildUtils.cs" />
-    <Compile Include="WillDelete\Utils\PathUtils.cs" />
-    <Compile Include="WillDelete\Utils\StringExtension.cs" />
-    <Compile Include="WillDelete\Utils\SubstrateUtil.cs" />
-    <Compile Include="WillDelete\Utils\Tags.cs" />
-    <Compile Include="WillDelete\Utils\XDocumentExtension.cs" />
-    <Compile Include="WillDelete\Utils\XElementExtension.cs" />
+    <Compile Include="Utils\Tags.cs" />
     <EmbeddedResource Include="Properties\SubstrateCore.rd.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore">
-      <Version>3.1.22</Version>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite">
-      <Version>3.1.22</Version>
+    <PackageReference Include="Microsoft.Data.Sqlite">
+      <Version>6.0.1</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection">
       <Version>6.0.0</Version>
@@ -201,20 +185,22 @@
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.2.13</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Mvvm">
+      <Version>7.1.2</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
       <Version>7.0.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Text.Json">
+      <Version>6.0.1</Version>
     </PackageReference>
     <PackageReference Include="Win2D.uwp">
       <Version>1.23.0</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mint\Mint.csproj">
-      <Project>{31552caa-d220-4916-9c5a-b771b9ad1b22}</Project>
-      <Name>Mint</Name>
-    </ProjectReference>
+    <Content Include="Models\substrate.nugets.json" />
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

@@ -1,5 +1,5 @@
-﻿using Mint.Substrate;
-using Mint.Substrate.Construction;
+﻿using SubstrateApp.Utils;
+using SubstrateCore.Common;
 using SubstrateCore.Models;
 using SubstrateCore.Utils;
 using System;
@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Tags = SubstrateApp.Utils.Tags;
 
 namespace SubstrateCore.Models
 {
@@ -22,6 +23,8 @@ namespace SubstrateCore.Models
         public string Name { get; set; }
 
         public string RelativePath { get; set; }
+
+        public bool Unnecessary { get; set; }
 
         [XmlIgnore]
         private string physicalPath;
@@ -75,43 +78,48 @@ namespace SubstrateCore.Models
         public ProjectInfo() { }
 
 
-        public ProjectInfo(string name, string relativePath, ProjectTypeEnum projectType, string framework)
+        public ProjectInfo(string name, string relativePath, ProjectTypeEnum projectType, string framework, bool unnecessary = false)
         {
             this.Name = name;
             this.ProjectType = projectType;
             this.RelativePath = relativePath;
             Framework = framework;
+            Unnecessary = unnecessary;
 
         }
 
-
-        #region
-        [XmlIgnore]
-        private static Mint.Substrate.LookupTable lookupTable = null;
-        private ReferenceSet oldreferences;
-
-        [XmlIgnore]
-        private static Mint.Substrate.LookupTable GetLookupTable
+        public override bool Equals(object obj)
         {
-            get
+            if (obj == null) return false;
+            ProjectInfo other = obj as ProjectInfo;
+            if (other == null) return false;
+
+            return other.Name == Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return this.Name.GetHashCode();
+        }
+
+
+        private HashSet<ProjectInfo> resolvers = new HashSet<ProjectInfo>();
+
+        public async Task<HashSet<ProjectInfo>> getReferences()
+        {
+            if (resolvers.Count == 0)
             {
-                if (lookupTable == null)
+                var doc = await XmlUtil.LoadDocAsync(physicalPath);
+                var refs = doc.GetAll(Tags.Reference, Tags.ProjectReference, Tags.PackageReference);
+
+                foreach (var item in refs)
                 {
-                    lookupTable = new Mint.Substrate.LookupTable();
+                    var r = await ReferenceResolver.Resolve(item, physicalPath);
+                    resolvers.Add(r);
                 }
-                return lookupTable;
-            }
-        }
-        public Mint.Substrate.Construction.ReferenceSet GetReferences()
-        {
-            if (oldreferences == null)
-            {
-                var resolver = new ReferenceResolver(PhysicalPath, GetLookupTable);
-                oldreferences = Repo.Load<BuildFile>(PhysicalPath).GetReferences(resolver);
             }
 
-            return oldreferences;
+            return resolvers;
         }
-        #endregion region
     }
 }

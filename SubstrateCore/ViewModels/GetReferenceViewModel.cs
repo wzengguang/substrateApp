@@ -1,5 +1,4 @@
 ﻿using Microsoft.Toolkit.Uwp;
-using Mint.Substrate.Construction;
 using SubstrateApp.Utils;
 using SubstrateCore.Common;
 using SubstrateCore.Services;
@@ -93,14 +92,14 @@ namespace SubstrateCore.ViewModels
                 {
                     if (projects.ContainsKey(pName))
                     {
-                        projects[pName].Produced.GetReferences().Where(a => a.Type == ReferenceType.Substrate)
-                               .Select(a => a.ReferenceName).ToList().ForEach(async a =>
-                               {
-                                   await dispatcherQueue.EnqueueAsync(() =>
-                                  {
-                                      References.Add(a);
-                                  });
-                               });
+                        (await projects[pName].Produced.getReferences()).Where(a => a.ProjectType == Models.ProjectTypeEnum.Substrate)
+                                .Select(a => a.Name).ToList().ForEach(async a =>
+                                {
+                                    await dispatcherQueue.EnqueueAsync(() =>
+                                   {
+                                       References.Add(a);
+                                   });
+                                });
                     }
                     else
                     {

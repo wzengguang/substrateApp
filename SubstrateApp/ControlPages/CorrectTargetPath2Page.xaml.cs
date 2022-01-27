@@ -25,7 +25,7 @@ namespace SubstrateApp.ControlPages
         public CorrectTargetPath2Page()
         {
             this.InitializeComponent();
-            ViewModel = ServiceLocator.Current.GetService<TargetPathPageViewModel>();
+            ViewModel = ServiceProvider.Current.GetService<TargetPathPageViewModel>();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

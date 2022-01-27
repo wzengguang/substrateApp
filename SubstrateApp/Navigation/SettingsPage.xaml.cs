@@ -9,7 +9,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Navigation;
-using SubstrateApp.DataModel;
 using SubstrateCore.Configuration;
 using SubstrateCore.ViewModels;
 using System.Threading.Tasks;
@@ -39,7 +38,7 @@ namespace SubstrateApp
 
             Loaded += OnSettingsPageLoaded;
 
-            ViewModel = ServiceLocator.Current.GetService<SettingViewModel>();
+            ViewModel = ServiceProvider.Current.GetService<SettingViewModel>();
 
             if (ElementSoundPlayer.State == ElementSoundPlayerState.On)
                 soundToggle.IsOn = true;

@@ -1,6 +1,5 @@
 ﻿using SubstrateApp.Common;
 using SubstrateApp.Data;
-using SubstrateApp.DataModel;
 using SubstrateApp.Helper;
 using SubstrateCore.Configuration;
 using System;
@@ -18,16 +17,13 @@ using Windows.System.Profile;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 namespace SubstrateApp
 {
     sealed partial class App : Application
     {
+        public new static App Current => (App)Application.Current;
         public App()
         {
             Startup.ConfigureAsync();
@@ -109,11 +105,6 @@ namespace SubstrateApp
             await EnsureWindow(args);
         }
 
-        private void DebugSettings_BindingFailed(object sender, BindingFailedEventArgs e)
-        {
-
-        }
-
         protected async override void OnActivated(IActivatedEventArgs args)
         {
             await EnsureWindow(args);
@@ -131,8 +122,7 @@ namespace SubstrateApp
 
             ThemeHelper.Initialize();
 
-            if (args.PreviousExecutionState == ApplicationExecutionState.Terminated
-                    || args.PreviousExecutionState == ApplicationExecutionState.Suspended)
+            if (args.PreviousExecutionState == ApplicationExecutionState.Terminated || args.PreviousExecutionState == ApplicationExecutionState.Suspended)
             {
                 try
                 {
@@ -252,23 +242,11 @@ namespace SubstrateApp
             return rootFrame;
         }
 
-        /// <summary>
-        /// Invoked when Navigation to a certain page fails
-        /// </summary>
-        /// <param name="sender">The Frame which failed navigation</param>
-        /// <param name="e">Details about the navigation failure</param>
         void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception("Failed to load Page " + e.SourcePageType.FullName);
         }
 
-        /// <summary>
-        /// Invoked when application execution is being suspended.  Application state is saved
-        /// without knowing whether the application will be terminated or resumed with the contents
-        /// of memory still intact.
-        /// </summary>
-        /// <param name="sender">The source of the suspend request.</param>
-        /// <param name="e">Details about the suspend request.</param>
         private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
@@ -277,11 +255,16 @@ namespace SubstrateApp
             deferral.Complete();
         }
 
+        private void DebugSettings_BindingFailed(object sender, BindingFailedEventArgs e)
+        {
+
+        }
         private async void Application_UnhandledException(object sender, Windows.UI.Xaml.UnhandledExceptionEventArgs e)
         {
             e.Handled = true;
 
             await new MessageDialog(e.Exception.ToString(), "Unknown Error").ShowAsync();
         }
+
     }
 }

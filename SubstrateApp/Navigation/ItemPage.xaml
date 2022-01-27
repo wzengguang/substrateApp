@@ -1,4 +1,3 @@
-
 <Page
     x:Class="SubstrateApp.ItemPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -33,10 +32,10 @@
             <VisualStateGroup>
                 <VisualState x:Name="NormalFrameContent" />
                 <VisualState x:Name="WideFrameContent">
-                    <VisualState.Setters>
+                    <!--<VisualState.Setters>
                         <Setter Target="contentFrame.Width" Value="1028" />
                         <Setter Target="contentFrame.HorizontalAlignment" Value="Left" />
-                    </VisualState.Setters>
+                    </VisualState.Setters>-->
                 </VisualState>
             </VisualStateGroup>
             <VisualStateGroup x:Name="LayoutVisualStates">

@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Uwp;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Uwp;
 using SubstrateApp.Utils;
 using SubstrateCore.Common;
 using SubstrateCore.Configuration;
@@ -17,7 +18,7 @@ using Windows.System;
 
 namespace SubstrateCore.ViewModels
 {
-    public class SettingViewModel : BindableBase
+    public class SettingViewModel : ObservableRecipient
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
@@ -26,7 +27,7 @@ namespace SubstrateCore.ViewModels
         public bool IsLoading
         {
             get => _isLoading;
-            set => Set(ref _isLoading, value);
+            set => SetProperty(ref _isLoading, value);
         }
 
         private string _substrateDirectory = AppSettings.Current.SubstrateDir;
@@ -34,7 +35,7 @@ namespace SubstrateCore.ViewModels
         public string SubstrateDirectory
         {
             get => _substrateDirectory;
-            set => Set(ref _substrateDirectory, value);
+            set => SetProperty(ref _substrateDirectory, value);
         }
 
         private string _scaningFolder = "";
@@ -42,7 +43,7 @@ namespace SubstrateCore.ViewModels
         public string ScaningFolder
         {
             get => _scaningFolder;
-            set => Set(ref _scaningFolder, value);
+            set => SetProperty(ref _scaningFolder, value);
         }
 
         private IProjectService _projectService;

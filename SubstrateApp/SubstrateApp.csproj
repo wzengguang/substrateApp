@@ -122,7 +122,7 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AllControlsPage.xaml.cs">
+    <Compile Include="Navigation\AllControlsPage.xaml.cs">
       <DependentUpon>AllControlsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="App.xaml.cs">
@@ -183,30 +183,27 @@
     <Compile Include="Helper\ProtocolActivationClipboardHelper.cs" />
     <Compile Include="Helper\ThemeHelper.cs" />
     <Compile Include="Helper\UIHelper.cs" />
-    <Compile Include="ItemPage.xaml.cs">
+    <Compile Include="Navigation\ItemPage.xaml.cs">
       <DependentUpon>ItemPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ItemsPageBase.cs" />
-    <Compile Include="ItemTemplates.xaml.cs">
+    <Compile Include="ControlPages\ItemsPageBase.cs" />
+    <Compile Include="Navigation\ItemTemplates.xaml.cs">
       <DependentUpon>ItemTemplates.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Navigation\NavigationRootPage.xaml.cs">
       <DependentUpon>NavigationRootPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PageHeader.xaml.cs">
+    <Compile Include="Navigation\PageHeader.xaml.cs">
       <DependentUpon>PageHeader.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SearchResultsPage.xaml.cs">
+    <Compile Include="Navigation\SearchResultsPage.xaml.cs">
       <DependentUpon>SearchResultsPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SectionPage.xaml.cs">
+    <Compile Include="Navigation\SectionPage.xaml.cs">
       <DependentUpon>SectionPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SettingsPage.xaml.cs">
+    <Compile Include="Navigation\SettingsPage.xaml.cs">
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
@@ -548,7 +545,6 @@
     <Content Include="Assets\widelogo.scale-180.png" />
     <Content Include="Assets\WideLogo.scale-80.png" />
     <Content Include="Assets\Windows_Desktop.png" />
-    <Content Include="Common\ReadMe.txt" />
     <Content Include="DataModel\pr.xml" />
     <Content Include="DataModel\rightTagetPath.xml" />
     <Content Include="Properties\Default.rd.xml" />
@@ -565,7 +561,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="AllControlsPage.xaml">
+    <Page Include="Navigation\AllControlsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -609,15 +605,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ItemPage.xaml">
+    <Page Include="Navigation\ItemPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ItemTemplates.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="Navigation\ItemTemplates.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -625,19 +617,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="PageHeader.xaml">
+    <Page Include="Navigation\PageHeader.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SearchResultsPage.xaml">
+    <Page Include="Navigation\SearchResultsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SectionPage.xaml">
+    <Page Include="Navigation\SectionPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SettingsPage.xaml">
+    <Page Include="Navigation\SettingsPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -646,8 +638,14 @@
     <PackageReference Include="ColorCode.UWP">
       <Version>2.0.5</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.Data.Sqlite">
+      <Version>6.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.NETCore.UniversalWindowsPlatform">
       <Version>6.1.9</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Toolkit.Mvvm">
+      <Version>7.1.2</Version>
     </PackageReference>
     <PackageReference Include="Microsoft.Toolkit.Uwp">
       <Version>7.0.0</Version>
@@ -677,10 +675,6 @@
     <PRIResource Include="Strings\en-US\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Mint\Mint.csproj">
-      <Project>{31552caa-d220-4916-9c5a-b771b9ad1b22}</Project>
-      <Name>Mint</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SubstrateCore\SubstrateCore.csproj">
       <Project>{f6bf4c7a-cff8-40ef-8618-df356e852074}</Project>
       <Name>SubstrateCore</Name>

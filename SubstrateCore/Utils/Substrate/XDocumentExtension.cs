@@ -1,4 +1,4 @@
-namespace SubstrateApp.Utils
+namespace SubstrateCore.Utils
 {
     using System.Collections.Generic;
     using System.Linq;

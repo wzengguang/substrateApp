@@ -15,7 +15,7 @@ namespace SubstrateApp.ControlPages
         {
             this.InitializeComponent();
 
-            ViewModel = ServiceLocator.Current.GetService<GetReferenceViewModel>();
+            ViewModel = ServiceProvider.Current.GetService<GetReferenceViewModel>();
         }
 
         private void GetReferenceBtn_Click(object sender, RoutedEventArgs e)

@@ -1,43 +1,34 @@
-namespace Mint.Substrate.Construction
+namespace SubstrateCore.Utils
 {
     using System.IO;
     using System.Linq;
     using System.Text.RegularExpressions;
+    using System.Threading.Tasks;
     using System.Xml.Linq;
-    using Mint.Common.Extensions;
-    using Mint.Common.Utilities;
-    using Mint.Substrate.Utilities;
+    using SubstrateApp.Utils;
+    using SubstrateCore.Models;
 
     public class ReferenceResolver
     {
         private readonly string filePath;
 
-        private readonly LookupTable lookupTable;
+        private static readonly Regex pkgPattern = new Regex(@"\$\(Pkg(.*?)([_\d]*)\).*");
 
-        private readonly Regex pkgPattern;
-
-        public ReferenceResolver(string filePath, LookupTable lookupTable)
-        {
-            this.filePath = filePath;
-            this.lookupTable = lookupTable;
-            this.pkgPattern = new Regex(@"\$\(Pkg(.*?)([_\d]*)\).*");
-        }
-
-        public IReference Resolve(in XElement element)
+        public async static Task<ProjectInfo> Resolve(XElement element, string path)
         {
             string actualName;
             string refName, dllName;
 
             if (element.Is(Tags.ProjectReference))
             {
-                ResolveProjectReference(element, out refName, out dllName);
-                return new Reference(refName, dllName, ReferenceType.Substrate);
+                refName = await ResolveProjectReference(path, element);
+                return new ProjectInfo(refName, null, ProjectTypeEnum.Substrate, null);
             }
 
             else if (element.Is(Tags.PackageReference))
             {
                 ResolvePackageReference(element, out refName, out dllName);
-                return new Reference(refName, dllName, ReferenceType.NuGet);
+                return new ProjectInfo(refName, null, ProjectTypeEnum.NuGet, null);
             }
 
             else
@@ -45,59 +36,55 @@ namespace Mint.Substrate.Construction
                 ResolveNormalReference(element, out refName, out dllName, out bool unnecessary);
 
                 // 1. try as SDK
-                if (this.lookupTable.IsSDK(refName, out actualName))
+                if ((await SubstrateNuGets.Instance()).KnownSDKs.TryGetValue(refName, out actualName))
                 {
-                    return new Reference(actualName, dllName, ReferenceType.SDK, unnecessary);
+                    return new ProjectInfo(actualName, null, ProjectTypeEnum.SDK, null, unnecessary);
                 }
 
                 // 2. try as NuGet
-                if (this.lookupTable.IsDefinedNuGet(refName, out actualName, out _) ||
-                    this.lookupTable.IsKnownNuGet(refName, out actualName))
+                if ((await SubstrateNuGets.Instance()).DefinedNuGets.TryGetValue(refName, out actualName) ||
+                    (await SubstrateNuGets.Instance()).KnownNuGets.TryGetValue(refName, out actualName))
                 {
-                    return new Reference(actualName, dllName, ReferenceType.NuGet, unnecessary);
+                    return new ProjectInfo(actualName, null, ProjectTypeEnum.NuGet, null, unnecessary);
                 }
 
                 // any reference starts with $(Pkg is a package reference
-                MatchCollection matchs = this.pkgPattern.Matches(element.ToString());
+                MatchCollection matchs = ReferenceResolver.pkgPattern.Matches(element.ToString());
                 if (matchs.Any())
                 {
                     string packageName = matchs[0].Groups[1].Value.Replace("_", ".");
-                    return new Reference(packageName, dllName, ReferenceType.NuGet, unnecessary);
+                    return new ProjectInfo(packageName, null, ProjectTypeEnum.NuGet, null, unnecessary);
                 }
 
                 // 3. try as normal project
-                if (this.lookupTable.IsProducedProject(refName, out IProject project))
-                {
-                    string assemblyName = project.Name;
-                    return new Reference(assemblyName, $"{assemblyName}.dll", ReferenceType.Substrate, unnecessary);
-                }
-                else
-                {
-                    return new Reference(refName, $"{refName}.dll", ReferenceType.Substrate, unnecessary);
-                }
+                //if (this.lookupTable.IsProducedProject(refName, out ProjectInfo project))
+                //{
+                //    string assemblyName = project.Name;
+                //    return new ProjectInfo(assemblyName, null, ProjectTypeEnum.Substrate, null, unnecessary);
+                //}
+                return new ProjectInfo(refName, null, ProjectTypeEnum.Substrate, null, unnecessary);
             }
         }
 
-        private void ResolveProjectReference(in XElement element, out string refName, out string dllName)
+        private static async Task<string> ResolveProjectReference(string path, XElement element)
         {
             string include = element.GetAttribute(Tags.Include).Value;
-            string parent = Directory.GetParent(this.filePath).FullName;
+            string parent = Directory.GetParent(path).FullName;
             MSBuildUtils.TryResolveBuildVariables(parent, include, out string normalPath);
             string fullPath = PathUtils.GetAbsolutePath(parent, normalPath);
 
             if (File.Exists(fullPath))
             {
-                refName = Repo.Load<BuildFile>(fullPath).AssemblyName;
-                dllName = $"{refName}.dll";
+                return (await XmlUtil.LoadDocAsync(fullPath)).TryGetAssemblyName(path);
             }
             else
             {
-                string errMsg = $"Can not resolve ProjectReference: '{include}' in '{this.filePath}', last resolve result: {fullPath}";
+                string errMsg = $"Can not resolve ProjectReference: '{include}' in '{path}', last resolve result: {fullPath}";
                 throw new FileNotFoundException(errMsg);
             }
         }
 
-        private void ResolvePackageReference(in XElement element, out string refName, out string dllName)
+        private static void ResolvePackageReference(in XElement element, out string refName, out string dllName)
         {
             string include = element.GetAttribute(Tags.Include)?.Value;
             if (include == null)
@@ -108,7 +95,7 @@ namespace Mint.Substrate.Construction
             dllName = $"{refName}.dll";
         }
 
-        private void ResolveNormalReference(in XElement element, out string refName, out string dllName, out bool unnecessary)
+        private static void ResolveNormalReference(in XElement element, out string refName, out string dllName, out bool unnecessary)
         {
             refName = string.Empty;
             dllName = string.Empty;

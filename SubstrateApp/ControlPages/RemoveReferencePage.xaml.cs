@@ -13,7 +13,7 @@ namespace SubstrateApp.ControlPages
         {
             this.InitializeComponent();
 
-            ViewModel = ServiceLocator.Current.GetService<RemoveReferenceViewModel>();
+            ViewModel = ServiceProvider.Current.GetService<RemoveReferenceViewModel>();
         }
 
 

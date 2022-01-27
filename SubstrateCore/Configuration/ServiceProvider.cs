@@ -10,11 +10,11 @@ using Windows.UI.ViewManagement;
 
 namespace SubstrateCore.Configuration
 {
-    public class ServiceLocator : IDisposable
+    public class ServiceProvider : IDisposable
     {
-        static private readonly ConcurrentDictionary<int, ServiceLocator> _serviceLocators = new ConcurrentDictionary<int, ServiceLocator>();
+        static private readonly ConcurrentDictionary<int, ServiceProvider> _serviceLocators = new ConcurrentDictionary<int, ServiceProvider>();
 
-        static private ServiceProvider _rootServiceProvider = null;
+        static private Microsoft.Extensions.DependencyInjection.ServiceProvider _rootServiceProvider = null;
 
         static public void Configure(IServiceCollection serviceCollection)
         {
@@ -41,19 +41,19 @@ namespace SubstrateCore.Configuration
             _rootServiceProvider = serviceCollection.BuildServiceProvider();
         }
 
-        static public ServiceLocator Current
+        static public ServiceProvider Current
         {
             get
             {
                 int currentViewId = ApplicationView.GetForCurrentView().Id;
-                return _serviceLocators.GetOrAdd(currentViewId, key => new ServiceLocator());
+                return _serviceLocators.GetOrAdd(currentViewId, key => new ServiceProvider());
             }
         }
 
         static public void DisposeCurrent()
         {
             int currentViewId = ApplicationView.GetForCurrentView().Id;
-            if (_serviceLocators.TryRemove(currentViewId, out ServiceLocator current))
+            if (_serviceLocators.TryRemove(currentViewId, out ServiceProvider current))
             {
                 current.Dispose();
             }
@@ -61,7 +61,7 @@ namespace SubstrateCore.Configuration
 
         private IServiceScope _serviceScope = null;
 
-        private ServiceLocator()
+        private ServiceProvider()
         {
             _serviceScope = _rootServiceProvider.CreateScope();
         }
