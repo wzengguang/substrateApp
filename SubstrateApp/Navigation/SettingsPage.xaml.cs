@@ -31,7 +31,7 @@ namespace SubstrateApp
         }
 
         SettingViewModel ViewModel { get; }
-
+        ScanViewModel ScanViewModel { get; }
         public SettingsPage()
         {
             this.InitializeComponent();
@@ -39,6 +39,7 @@ namespace SubstrateApp
             Loaded += OnSettingsPageLoaded;
 
             ViewModel = ServiceProvider.Current.GetService<SettingViewModel>();
+            ScanViewModel = ServiceProvider.Current.GetService<ScanViewModel>();
 
             if (ElementSoundPlayer.State == ElementSoundPlayerState.On)
                 soundToggle.IsOn = true;
@@ -83,16 +84,6 @@ namespace SubstrateApp
                 AppSettings.Current.SubstrateDir = selectedFolder.Path;
                 ViewModel.SubstrateDirectory = selectedFolder.Path;
             }
-        }
-
-        private async void ScanProducedBtn_Click(object sender, RoutedEventArgs e)
-        {
-            await ViewModel.ScanProducedFolder();
-        }
-
-        private void ScanSubstrateBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Task.Run(async () => { await ViewModel.ScanSubstrateFolder(); });
         }
 
         private void OnThemeRadioButtonChecked(object sender, RoutedEventArgs e)

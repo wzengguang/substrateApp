@@ -15,8 +15,8 @@ namespace SubstrateCore.Services
 {
     public class ScanService : IScanService
     {
-        private SQLiteDataRepository _reop;
-        public ScanService(SQLiteDataRepository reop)
+        private ProjectRepository _reop;
+        public ScanService(ProjectRepository reop)
         {
             _reop = reop;
         }
@@ -41,7 +41,7 @@ namespace SubstrateCore.Services
                     string framework = xml.GetFirst(SubstrateConst.TargetFramework)?.Value
                       ?? MSBuildUtils.InferFrameworkByPath(p);
 
-                    var project = new ProjectInfo(assembliesName, PathUtil.TrimToRelativePath(p), ProjectTypeEnum.Substrate, framework);
+                    var project = new Project(assembliesName, PathUtil.TrimToRelativePath(p), ProjectTypeEnum.Substrate, framework);
 
                     await _reop.AddProject(project);
                 };

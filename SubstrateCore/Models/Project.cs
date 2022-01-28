@@ -1,4 +1,6 @@
-﻿using SubstrateCore.Models;
+﻿using SubstrateApp.Utils;
+using SubstrateCore.Common;
+using SubstrateCore.Models;
 using SubstrateCore.Utils;
 using System;
 using System.Collections.Generic;
@@ -8,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using Tags = SubstrateApp.Utils.Tags;
 
 namespace SubstrateCore.Models
 {
@@ -15,34 +18,68 @@ namespace SubstrateCore.Models
     {
         public ProjectTypeEnum ProjectType { get; set; }
 
+        public string Framework { get; set; }
+
         public string Name { get; set; }
 
-        public bool IsProduced { get; set; }
+        public string RelativePath { get; set; }
 
-        [XmlIgnore]
-        public ProjectInfo Produced { get { return NetCore ?? NetStd; } }
+        public string Content { get; set; }
 
-        [XmlIgnore]
-        public ProjectInfo NetFramework { get; set; }
+        public bool Unnecessary { get; set; }
 
-        [XmlIgnore]
-        public ProjectInfo NetCore { get; set; }
+        public string PhysicalPath { get { return PathUtil.GetPhysicalPath(RelativePath); } }
 
-        [XmlIgnore]
-        public ProjectInfo NetStd { get; set; }
+        public string TargetPath { get { return PathUtil.GetTargetPath(Name, PhysicalPath); } }
+
+
+
 
         public Project() { }
 
-        public Project(string name, ProjectTypeEnum type)
+        public Project(string name, string relativePath, ProjectTypeEnum projectType, string framework, bool unnecessary = false)
         {
             this.Name = name;
-            this.ProjectType = type;
+            this.ProjectType = projectType;
+            this.RelativePath = relativePath;
+            Framework = framework;
+            Unnecessary = unnecessary;
 
+        }
+
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+            Project other = obj as Project;
+            if (other == null) return false;
+
+            return other.Name == Name;
         }
 
         public override int GetHashCode()
         {
             return this.Name.GetHashCode();
+        }
+
+
+        private HashSet<Project> resolvers = new HashSet<Project>();
+
+        public async Task<HashSet<Project>> getReferences()
+        {
+            if (resolvers.Count == 0)
+            {
+                var doc = XDocument.Parse(Content);
+                var refs = doc.GetAll(Tags.Reference, Tags.ProjectReference, Tags.PackageReference);
+
+                foreach (var item in refs)
+                {
+                    var r = await ReferenceResolver.Resolve(item, PhysicalPath);
+                    resolvers.Add(r);
+                }
+            }
+
+            return resolvers;
         }
     }
 }

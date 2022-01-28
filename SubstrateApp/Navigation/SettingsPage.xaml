@@ -49,18 +49,13 @@
                 <TextBlock
                     Style="{StaticResource SubtitleTextBlockStyle}"
                     Margin="0,40,0,0"
-                    Text="Scan Produced" />
-                <StackPanel Margin="0,10,0,0">
-                    <Button Click="ScanProducedBtn_Click" IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading),Mode=OneWay}" Style="{StaticResource AccentButtonStyle}" Content="Scan Produced" />
-                </StackPanel>
-
-                <TextBlock
-                    Style="{StaticResource SubtitleTextBlockStyle}"
-                    Margin="0,40,0,0"
                     Text="Scan Substrate" />
                 <StackPanel x:Name="ScanSubstratePanel" Margin="0,10,0,0">
-                    <Button x:Name="ScanSubstrateBtn" Click="ScanSubstrateBtn_Click" IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading),Mode=OneWay}" Style="{StaticResource AccentButtonStyle}" Content="Scan Substrate" />
-                    <TextBlock Text="{x:Bind ViewModel.ScaningFolder,Mode=OneWay}"></TextBlock>
+                    <Button x:Name="ScanSubstrateBtn" Style="{StaticResource AccentButtonStyle}"
+                            Command="{x:Bind ScanViewModel.ScanCommand}" 
+                            IsEnabled="{x:Bind vm:Converters.Not(ScanViewModel.ScanCommand.IsRunning),Mode=OneWay}" 
+                            Content="Scan Substrate" />
+                    <TextBlock Text="{x:Bind ScanViewModel.ScaningFolder,Mode=OneWay}"></TextBlock>
                 </StackPanel>
 
                 <TextBlock

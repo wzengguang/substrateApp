@@ -21,19 +21,19 @@ namespace SubstrateCore.Repositories
             using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
             {
                 db.Open();
-                //string drop = "Drop table ProjectInfo";
+                //string drop = "Drop table IF EXISTS ProjectInfo";
                 //SqliteCommand dropTable = new SqliteCommand(drop, db);
                 //dropTable.ExecuteReader();
 
                 String tableCommand = "CREATE TABLE IF NOT " +
-                    "EXISTS ProjectInfo (Id INT PRIMARY KEY, " +
+                    "EXISTS Project (" +
+                    "Id INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "Name VARCHAR(1024) NOT NULL COLLATE NOCASE," +
-                    "ProjectType INT," +
-                    "Framework VARCHAR(200) NULL," +
+                    "ProjectType INT NOT NULL," +
+                    "Framework VARCHAR(200) NOT NULL," +
                     "RelativePath VARCHAR(1024) NOT NULL UNIQUE COLLATE NOCASE," +
-                    "Content TEXT);" +
-                    "CREATE INDEX IF NOT EXISTS index_path ON ProjectInfo (RelativePath);";
-
+                    "Content TEXT NOT NULL);" +
+                    "CREATE INDEX IF NOT EXISTS index_path ON Project (RelativePath);";
                 SqliteCommand createTable = new SqliteCommand(tableCommand, db);
 
                 createTable.ExecuteReader();

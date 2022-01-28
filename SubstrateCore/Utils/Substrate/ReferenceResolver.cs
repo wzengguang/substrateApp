@@ -14,7 +14,7 @@ namespace SubstrateCore.Utils
 
         private static readonly Regex pkgPattern = new Regex(@"\$\(Pkg(.*?)([_\d]*)\).*");
 
-        public async static Task<ProjectInfo> Resolve(XElement element, string path)
+        public async static Task<Project> Resolve(XElement element, string path)
         {
             string actualName;
             string refName, dllName;
@@ -22,13 +22,13 @@ namespace SubstrateCore.Utils
             if (element.Is(Tags.ProjectReference))
             {
                 refName = await ResolveProjectReference(path, element);
-                return new ProjectInfo(refName, null, ProjectTypeEnum.Substrate, null);
+                return new Project(refName, null, ProjectTypeEnum.Substrate, null);
             }
 
             else if (element.Is(Tags.PackageReference))
             {
                 ResolvePackageReference(element, out refName, out dllName);
-                return new ProjectInfo(refName, null, ProjectTypeEnum.NuGet, null);
+                return new Project(refName, null, ProjectTypeEnum.NuGet, null);
             }
 
             else
@@ -38,14 +38,14 @@ namespace SubstrateCore.Utils
                 // 1. try as SDK
                 if ((await SubstrateNuGets.Instance()).KnownSDKs.TryGetValue(refName, out actualName))
                 {
-                    return new ProjectInfo(actualName, null, ProjectTypeEnum.SDK, null, unnecessary);
+                    return new Project(actualName, null, ProjectTypeEnum.SDK, null, unnecessary);
                 }
 
                 // 2. try as NuGet
                 if ((await SubstrateNuGets.Instance()).DefinedNuGets.TryGetValue(refName, out actualName) ||
                     (await SubstrateNuGets.Instance()).KnownNuGets.TryGetValue(refName, out actualName))
                 {
-                    return new ProjectInfo(actualName, null, ProjectTypeEnum.NuGet, null, unnecessary);
+                    return new Project(actualName, null, ProjectTypeEnum.NuGet, null, unnecessary);
                 }
 
                 // any reference starts with $(Pkg is a package reference
@@ -53,7 +53,7 @@ namespace SubstrateCore.Utils
                 if (matchs.Any())
                 {
                     string packageName = matchs[0].Groups[1].Value.Replace("_", ".");
-                    return new ProjectInfo(packageName, null, ProjectTypeEnum.NuGet, null, unnecessary);
+                    return new Project(packageName, null, ProjectTypeEnum.NuGet, null, unnecessary);
                 }
 
                 // 3. try as normal project
@@ -62,7 +62,7 @@ namespace SubstrateCore.Utils
                 //    string assemblyName = project.Name;
                 //    return new ProjectInfo(assemblyName, null, ProjectTypeEnum.Substrate, null, unnecessary);
                 //}
-                return new ProjectInfo(refName, null, ProjectTypeEnum.Substrate, null, unnecessary);
+                return new Project(refName, null, ProjectTypeEnum.Substrate, null, unnecessary);
             }
         }
 

@@ -18,7 +18,7 @@ namespace SubstrateCore.Configuration
 
         static public void Configure(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient<SQLiteDataRepository>();
+            serviceCollection.AddTransient<ProjectRepository>();
             serviceCollection.AddScoped<IContextService, ContextService>();
             serviceCollection.AddScoped<ICommonServices, CommonServices>();
 
@@ -37,6 +37,7 @@ namespace SubstrateCore.Configuration
             serviceCollection.AddTransient<AddReferenceViewModel>();
             serviceCollection.AddTransient<ToolViewModel>();
             serviceCollection.AddTransient<SettingViewModel>();
+            serviceCollection.AddSingleton<ScanViewModel>();
 
             _rootServiceProvider = serviceCollection.BuildServiceProvider();
         }
