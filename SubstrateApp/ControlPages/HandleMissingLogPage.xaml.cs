@@ -1,5 +1,5 @@
-using SubstrateCore.Configuration;
-using SubstrateCore.ViewModels;
+using SubstrateApp.Configuration;
+using SubstrateApp.ViewModels;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -25,7 +25,7 @@ namespace SubstrateApp.ControlPages
 
         private void TargetToPackageBtn_Click(object sender, RoutedEventArgs e)
         {
-            ViewModel.ConvertToTargetReference();
+
         }
     }
 }

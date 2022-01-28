@@ -1,8 +1,8 @@
 using Microsoft.Toolkit.Uwp;
+using SubstrateApp.Configuration;
 using SubstrateCore.Common;
-using SubstrateCore.Configuration;
 using SubstrateCore.Utils;
-using SubstrateCore.ViewModels;
+using SubstrateApp.ViewModels;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;

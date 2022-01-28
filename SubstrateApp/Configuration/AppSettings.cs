@@ -1,14 +1,8 @@
-﻿using SubstrateCore.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using Windows.ApplicationModel;
 using Windows.Storage;
 
-namespace SubstrateCore.Configuration
+namespace SubstrateApp.Configuration
 {
     public class AppSettings
     {

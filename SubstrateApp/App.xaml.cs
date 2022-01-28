@@ -1,7 +1,7 @@
 ﻿using SubstrateApp.Common;
+using SubstrateApp.Configuration;
 using SubstrateApp.Data;
 using SubstrateApp.Helper;
-using SubstrateCore.Configuration;
 using System;
 using System.Linq;
 using System.Reflection;

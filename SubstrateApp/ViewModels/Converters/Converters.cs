@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
-namespace SubstrateCore.ViewModels
+namespace SubstrateApp.ViewModels
 {
     /// <summary>
     /// Provides static methods for use in x:Bind function binding to convert bound values to the required value.

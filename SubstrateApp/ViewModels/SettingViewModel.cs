@@ -1,24 +1,9 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
-using Microsoft.Toolkit.Uwp;
-using SubstrateApp.Utils;
-using SubstrateCore.Common;
-using SubstrateCore.Configuration;
-using SubstrateCore.Models;
+using SubstrateApp.Configuration;
 using SubstrateCore.Services;
-using SubstrateCore.Utils;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Windows.Storage;
 using Windows.System;
 
-namespace SubstrateCore.ViewModels
+namespace SubstrateApp.ViewModels
 {
     public class SettingViewModel : ObservableRecipient
     {

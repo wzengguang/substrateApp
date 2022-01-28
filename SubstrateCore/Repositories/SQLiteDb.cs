@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.Sqlite;
-using SubstrateCore.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,11 +11,13 @@ namespace SubstrateCore.Repositories
 {
     public class SQLiteDb
     {
+        static public readonly string DatabaseName = "db\\sqliteDb.db";
+
         public async static void InitializeDb()
         {
 
-            await ApplicationData.Current.LocalFolder.CreateFileAsync(AppSettings.DatabaseName, CreationCollisionOption.OpenIfExists);
-            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, AppSettings.DatabaseName);
+            await ApplicationData.Current.LocalFolder.CreateFileAsync(DatabaseName, CreationCollisionOption.OpenIfExists);
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, DatabaseName);
 
             using (SqliteConnection db = new SqliteConnection($"Filename={dbpath}"))
             {

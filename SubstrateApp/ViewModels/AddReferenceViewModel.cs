@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Uwp;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Uwp;
 using SubstrateCore.Services;
 using SubstrateCore.Utils;
 using System;
@@ -12,9 +13,9 @@ using System.Xml.Linq;
 using Windows.Storage;
 using Windows.System;
 
-namespace SubstrateCore.ViewModels
+namespace SubstrateApp.ViewModels
 {
-    public class AddReferenceViewModel : BindableBase
+    public class AddReferenceViewModel : ObservableRecipient
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         private ISearchPathService _searchPathService;
@@ -33,7 +34,7 @@ namespace SubstrateCore.ViewModels
         public bool IsLoading
         {
             get => _isLoading;
-            set => Set(ref _isLoading, value);
+            set => SetProperty(ref _isLoading, value);
         }
 
         private string _needAdd;
@@ -41,7 +42,7 @@ namespace SubstrateCore.ViewModels
         public string NeedAdd
         {
             get => _needAdd;
-            set => Set(ref _needAdd, value);
+            set => SetProperty(ref _needAdd, value);
         }
 
         public ObservableCollection<string> AddFail { get; set; } = new ObservableCollection<string>();

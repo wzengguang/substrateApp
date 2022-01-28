@@ -1,9 +1,9 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp;
+using SubstrateApp.Configuration;
 using SubstrateApp.Utils;
 using SubstrateCore.Common;
-using SubstrateCore.Configuration;
 using SubstrateCore.Models;
 using SubstrateCore.Services;
 using SubstrateCore.Utils;
@@ -20,7 +20,7 @@ using System.Xml.Linq;
 using Windows.Storage;
 using Windows.System;
 
-namespace SubstrateCore.ViewModels
+namespace SubstrateApp.ViewModels
 {
     public class ScanViewModel : ObservableRecipient
     {

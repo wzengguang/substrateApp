@@ -1,5 +1,5 @@
 ﻿using Microsoft.Data.Sqlite;
-using SubstrateCore.Configuration;
+using SubstrateCore.Repositories;
 using System;
 using System.IO;
 using Windows.Storage;
@@ -12,7 +12,7 @@ namespace SubstrateCore.Repository
         public SqliteConnection DbConnection { get; }
         public RepositoryBase()
         {
-            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, AppSettings.DatabaseName);
+            string dbpath = Path.Combine(ApplicationData.Current.LocalFolder.Path, SQLiteDb.DatabaseName);
             DbConnection = new SqliteConnection($"Filename={dbpath}");
             DbConnection.Open();
         }

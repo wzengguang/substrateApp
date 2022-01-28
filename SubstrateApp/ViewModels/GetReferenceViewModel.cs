@@ -1,9 +1,10 @@
-﻿using Microsoft.Toolkit.Uwp;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Uwp;
 using SubstrateApp.Utils;
 using SubstrateCore.Common;
 using SubstrateCore.Services;
 using SubstrateCore.Utils;
-using SubstrateCore.ViewModels;
+using SubstrateApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,9 +14,9 @@ using System.Threading.Tasks;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
 
-namespace SubstrateCore.ViewModels
+namespace SubstrateApp.ViewModels
 {
-    public class GetReferenceViewModel : BindableBase
+    public class GetReferenceViewModel : ObservableRecipient
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         private ISearchPathService _searchPathService;
@@ -32,14 +33,14 @@ namespace SubstrateCore.ViewModels
         public bool IsLoading
         {
             get => _isLoading;
-            set => Set(ref _isLoading, value);
+            set => SetProperty(ref _isLoading, value);
         }
 
         public string _projectNames = "";
         public string ProjectNames
         {
             get => _projectNames;
-            set => Set(ref _projectNames, value);
+            set => SetProperty(ref _projectNames, value);
         }
 
         public List<string> NoFindProject = new List<string>();
@@ -84,40 +85,8 @@ namespace SubstrateCore.ViewModels
 
             var pNames = ProjectNames.Split("\r").Select(a => a.Replace(".dll", "").Trim());
             var children = new HashSet<string>();
-            try
-            {
-                var projects = await _projectService.LoadProduces();
 
-                foreach (var pName in pNames)
-                {
-                    if (projects.ContainsKey(pName))
-                    {
-                        (await projects[pName].Produced.getReferences()).Where(a => a.ProjectType == Models.ProjectTypeEnum.Substrate)
-                                .Select(a => a.Name).ToList().ForEach(async a =>
-                                {
-                                    await dispatcherQueue.EnqueueAsync(() =>
-                                   {
-                                       References.Add(a);
-                                   });
-                                });
-                    }
-                    else
-                    {
-                        await dispatcherQueue.EnqueueAsync(() =>
-                        {
-                            NoFindProject.Add(pName);
-                        });
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                await dispatcherQueue.EnqueueAsync(() => { _isLoading = false; });
-            }
+            throw new NotImplementedException();
         }
     }
 }

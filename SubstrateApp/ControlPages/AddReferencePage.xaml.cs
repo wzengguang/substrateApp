@@ -1,7 +1,7 @@
+using SubstrateApp.Configuration;
 using SubstrateApp.Utils;
-using SubstrateCore.Configuration;
+using SubstrateApp.ViewModels;
 using SubstrateCore.Utils;
-using SubstrateCore.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

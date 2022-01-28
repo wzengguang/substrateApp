@@ -1,14 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SubstrateCore.Repositories;
-using SubstrateCore.Repository;
 using SubstrateCore.Services;
-using SubstrateCore.ViewModels;
+using SubstrateApp.ViewModels;
 using System;
 using System.Collections.Concurrent;
-using System.Reflection;
 using Windows.UI.ViewManagement;
 
-namespace SubstrateCore.Configuration
+namespace SubstrateApp.Configuration
 {
     public class ServiceProvider : IDisposable
     {
@@ -19,16 +17,8 @@ namespace SubstrateCore.Configuration
         static public void Configure(IServiceCollection serviceCollection)
         {
             serviceCollection.AddTransient<ProjectRepository>();
-            serviceCollection.AddScoped<IContextService, ContextService>();
-            serviceCollection.AddScoped<ICommonServices, CommonServices>();
-
-            serviceCollection.AddSingleton<IMessageService, MessageService>();
-            serviceCollection.AddSingleton<IDialogService, DialogService>();
-            serviceCollection.AddSingleton<IFilePickerService, FilePickerService>();
             serviceCollection.AddSingleton<IProjectService, ProjectService>();
             serviceCollection.AddSingleton<ISearchPathService, SearchPathService>();
-            serviceCollection.AddSingleton<IScanService, ScanService>();
-
             serviceCollection.AddTransient<TargetPathPageViewModel>();
             serviceCollection.AddTransient<SearchFilePathViewModel>();
             serviceCollection.AddTransient<RemoveReferenceViewModel>();

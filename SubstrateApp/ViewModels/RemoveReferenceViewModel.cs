@@ -1,8 +1,9 @@
-﻿using Microsoft.Toolkit.Uwp;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Uwp;
 using SubstrateCore.Common;
 using SubstrateCore.Services;
 using SubstrateCore.Utils;
-using SubstrateCore.ViewModels;
+using SubstrateApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ using System.Threading.Tasks;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
 
-namespace SubstrateCore.ViewModels
+namespace SubstrateApp.ViewModels
 {
-    public class RemoveReferenceViewModel : BindableBase
+    public class RemoveReferenceViewModel : ObservableRecipient
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
         private ISearchPathService _searchPathService;
@@ -33,14 +34,14 @@ namespace SubstrateCore.ViewModels
         public bool IsLoading
         {
             get => _isLoading;
-            set => Set(ref _isLoading, value);
+            set => SetProperty(ref _isLoading, value);
         }
 
         public string _needRemoved;
         public string NeedRemoved
         {
             get => _needRemoved;
-            set => Set(ref _needRemoved, value);
+            set => SetProperty(ref _needRemoved, value);
         }
 
 

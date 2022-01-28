@@ -33,8 +33,6 @@ namespace SubstrateCore.Models
         public string TargetPath { get { return PathUtil.GetTargetPath(Name, PhysicalPath); } }
 
 
-
-
         public Project() { }
 
         public Project(string name, string relativePath, ProjectTypeEnum projectType, string framework, bool unnecessary = false)
@@ -46,7 +44,6 @@ namespace SubstrateCore.Models
             Unnecessary = unnecessary;
 
         }
-
 
         public override bool Equals(object obj)
         {
@@ -62,24 +59,5 @@ namespace SubstrateCore.Models
             return this.Name.GetHashCode();
         }
 
-
-        private HashSet<Project> resolvers = new HashSet<Project>();
-
-        public async Task<HashSet<Project>> getReferences()
-        {
-            if (resolvers.Count == 0)
-            {
-                var doc = XDocument.Parse(Content);
-                var refs = doc.GetAll(Tags.Reference, Tags.ProjectReference, Tags.PackageReference);
-
-                foreach (var item in refs)
-                {
-                    var r = await ReferenceResolver.Resolve(item, PhysicalPath);
-                    resolvers.Add(r);
-                }
-            }
-
-            return resolvers;
-        }
     }
 }

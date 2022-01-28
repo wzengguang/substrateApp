@@ -139,14 +139,11 @@ namespace SubstrateCore.Utils
 
         public static string NameFromIncludeAttr(this XElement xml)
         {
-            return xml.Attribute(SubstrateConst.Include)?.Value?.Trim().Split("\\").Last().Replace(".dll", "");
+            return xml.Attribute(SubstrateConst.Include)?.Value?.Trim().Split("\\").Last()
+                .Replace(".dll", "", StringComparison.OrdinalIgnoreCase);
         }
 
-    }
-
-    public static class XDocumentUtil
-    {
-        public static string TryGetAssemblyName(this XDocument doc, string path)
+        public static string TryGetAssemblyName(XDocument doc, string path)
         {
             string assemblyName = doc.GetFirst(Tags.AssemblyName)?.Value;
 

@@ -1,8 +1,5 @@
-using Microsoft.Toolkit.Uwp;
-using SubstrateCore.Common;
-using SubstrateCore.Configuration;
 using SubstrateCore.Utils;
-using SubstrateCore.ViewModels;
+using SubstrateApp.ViewModels;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -13,6 +10,7 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Documents;
+using SubstrateApp.Configuration;
 
 namespace SubstrateApp.ControlPages
 {
@@ -49,7 +47,7 @@ namespace SubstrateApp.ControlPages
 
             Task.Run(async () =>
             {
-                await ViewModel.ReplaceTargetDir(path, replaced);
+
             });
         }
 

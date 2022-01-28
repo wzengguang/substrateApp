@@ -1,4 +1,5 @@
-﻿using Microsoft.Toolkit.Uwp;
+﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
+using Microsoft.Toolkit.Uwp;
 using SubstrateCore.Common;
 using SubstrateCore.Models;
 using SubstrateCore.Services;
@@ -11,9 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.System;
 
-namespace SubstrateCore.ViewModels
+namespace SubstrateApp.ViewModels
 {
-    public class TargetPathPageViewModel : BindableBase
+    public class TargetPathPageViewModel : ObservableRecipient
     {
         private DispatcherQueue dispatcherQueue = DispatcherQueue.GetForCurrentThread();
 
@@ -38,51 +39,19 @@ namespace SubstrateCore.ViewModels
         public bool IsLoading
         {
             get => _isLoading;
-            set => Set(ref _isLoading, value);
+            set => SetProperty(ref _isLoading, value);
         }
 
         private string _wrongTargetPaths;
         public string WrongTargetPaths
         {
             get => _wrongTargetPaths;
-            set => Set(ref _wrongTargetPaths, value);
+            set => SetProperty(ref _wrongTargetPaths, value);
         }
 
-        public async Task ReplaceTargetDir(string path, IEnumerable<string> replaces)
+        public async void ReplaceTargetDir(string path, IEnumerable<string> replaces)
         {
-            try
-            {
-                var xml = await XmlUtil.LoadAsync(path);
 
-                var nones = xml.GetIncludes(SubstrateConst.None).Where(a => a.Value.Attribute(SubstrateConst.Include).Value.StartsWith(SubstrateConst.TargetPathDir)).ToDictionary(a => a.Key, b => b.Value);
-
-                var customs = xml.GetIncludes(SubstrateConst.QCustomInput);
-
-                var Projects = await _projectService.LoadProduces();
-
-                foreach (var item in replaces)
-                {
-                    if (nones.ContainsKey(item))
-                    {
-                        var target = nones[item].AttrInclude().Replace(@"$(FlavorPlatformDir)", @"bin\$(Configuration)\netcoreapp3.1");
-                        if (Projects.ContainsKey(item) && Projects[item].NetCore != null)
-                        {
-                            target.Replace(@".NetStd\", @".NetCore\");
-                        }
-                        nones[item].SetAttributeValue(SubstrateConst.Include, target);
-                        customs[item].SetAttributeValue(SubstrateConst.Include, target);
-                    }
-                }
-
-                await XmlUtil.SaveAsync(xml, path);
-            }
-            catch (Exception e)
-            {
-                await dispatcherQueue.EnqueueAsync(() =>
-                {
-                    WrongTargetPaths = e.StackTrace;
-                });
-            }
 
         }
 
@@ -140,28 +109,29 @@ namespace SubstrateCore.ViewModels
 
         private async Task<bool> CheckCanFix(string name)
         {
-            var Projects = await _projectService.LoadProduces();
+            //var Projects = await _projectService.LoadProduces();
 
-            var p1 = Projects.ContainsKey(name) ? (Projects[name]?.Produced?.RelativePath) : null;
-            if (p1 != null)
-            {
-                var targetPath = PathUtil.GetTargetPath(name, PathUtil.GetPhysicalPath(p1));
-                var remotePath = (SubstrateConst.redmondRemote + PathUtil.ReplacePathVirable(targetPath)).Replace("/", "\\");
+            //var p1 = Projects.ContainsKey(name) ? (Projects[name]?.Produced?.RelativePath) : null;
+            //if (p1 != null)
+            //{
+            //    var targetPath = PathUtil.GetTargetPath(name, PathUtil.GetPhysicalPath(p1));
+            //    var remotePath = (SubstrateConst.redmondRemote + PathUtil.ReplacePathVirable(targetPath)).Replace("/", "\\");
 
-                var targetPath2 = PathUtil.GetTargetPathNew(name, "");
-                var remotePath2 = (SubstrateConst.redmondRemote + PathUtil.ReplacePathVirable(targetPath2)).Replace("/", "\\");
-                if (File.Exists(remotePath))
-                {
-                    CanFix.Add(name, targetPath);
-                    return true;
-                }
-                else if (File.Exists(remotePath2))
-                {
-                    CanFix.Add(name, targetPath2);
-                    return true;
-                }
-            }
-            return false;
+            //    var targetPath2 = PathUtil.GetTargetPathNew(name, "");
+            //    var remotePath2 = (SubstrateConst.redmondRemote + PathUtil.ReplacePathVirable(targetPath2)).Replace("/", "\\");
+            //    if (File.Exists(remotePath))
+            //    {
+            //        CanFix.Add(name, targetPath);
+            //        return true;
+            //    }
+            //    else if (File.Exists(remotePath2))
+            //    {
+            //        CanFix.Add(name, targetPath2);
+            //        return true;
+            //    }
+            //}
+            //return false;
+            throw new NotImplementedException();
         }
 
         private async Task VerifyPathFromRemote(string path)

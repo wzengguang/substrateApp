@@ -81,6 +81,39 @@ namespace SubstrateCore.Repositories
             return result;
         }
 
+        public async Task<Project> GetProjectByPath(string path)
+        {
+            var result = new List<Project>();
+            try
+            {
+                SqliteCommand selectCommand = new SqliteCommand
+                    ("SELECT ProjectType,Framework,Name,RelativePath,Content from Project WHERE RelativePath=@path", DbConnection);
+                selectCommand.Parameters.AddWithValue("@path", path);
+
+                SqliteDataReader query = await selectCommand.ExecuteReaderAsync();
+
+                while (await query.ReadAsync())
+                {
+                    var pinfo = new Project()
+                    {
+                        ProjectType = (ProjectTypeEnum)query.GetInt32(0),
+                        Framework = query.GetString(1),
+                        Name = query.GetString(2),
+                        RelativePath = query.GetString(3),
+                        Content = query.GetString(4),
+                    };
+
+                    return pinfo;
+                }
+            }
+            catch (Exception eSql)
+            {
+                Debug.WriteLine("Exception: " + eSql.Message);
+            }
+            return null;
+        }
+
+
         public async Task AddProjects(List<Project> projects)
         {
             foreach (var item in projects)

@@ -1,13 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SubstrateCore.Repositories;
-using SubstrateCore.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace SubstrateCore.Configuration
+namespace SubstrateApp.Configuration
 {
     static public class Startup
     {
