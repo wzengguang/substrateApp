@@ -25,8 +25,8 @@ namespace SubstrateCore.Services
             _sQLiteDataRepository = sQLiteDataRepository;
         }
 
-
         private List<ProjectInfo> _projects;
+
         public async Task<List<ProjectInfo>> GetAll()
         {
             if (_projects == null)
@@ -36,6 +36,18 @@ namespace SubstrateCore.Services
             return _projects;
         }
 
+
+        public async Task InsertOrUpdateProjectInfo(ProjectInfo projectInfo)
+        {
+            await _sQLiteDataRepository.AddProject(projectInfo);
+        }
+
+        public async Task<int> CountProjectInfo()
+        {
+            return await _sQLiteDataRepository.CountProjectInfo();
+        }
+
+        #region Deprecated
 
         public Dictionary<string, Project> ProjectSet { get; private set; } = new Dictionary<string, Project>(StringComparer.OrdinalIgnoreCase);
 
@@ -131,5 +143,6 @@ namespace SubstrateCore.Services
 
             return file;
         }
+        #endregion
     }
 }

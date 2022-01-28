@@ -9,10 +9,12 @@ using SubstrateCore.Utils;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using Windows.Storage;
 using Windows.System;
 
@@ -69,36 +71,49 @@ namespace SubstrateCore.ViewModels
             try
             {
                 var current = await StorageFolder.GetFolderFromPathAsync(Path.Combine(PathUtil.SubstrateDir, "sources\\dev"));
-
-                var queue = new ConcurrentQueue<ProjectInfo>();
-                await Director(current, queue);
-
-                Dictionary<string, Project> projects = new Dictionary<string, Project>();
-                foreach (var item in queue)
-                {
-                    // projects.AddProject(item);
-                }
-                await _projectService.Save(projects);
-
+                await TraverseProjectFile(current);
             }
             catch (Exception e)
             {
-                throw e;
+                Debug.WriteLine(e.Message);
             }
             finally
             {
-                await dispatcherQueue.EnqueueAsync(() =>
+
+                var c = await _projectService.CountProjectInfo();
+
+                await dispatcherQueue.EnqueueAsync(async () =>
                 {
-                    ScaningFolder = "";
+                    var count = await _projectService.CountProjectInfo();
+
+                    ScaningFolder = $"Scan project {count}.";
                     IsLoading = false;
                 });
             }
         }
 
-        public async Task Director(StorageFolder folder, ConcurrentQueue<ProjectInfo> projects)
+        private async void WriteDataToDb(StorageFile fileInfo)
+        {
+            var fileText = await FileIO.ReadTextAsync(fileInfo);
+            var xml = XDocument.Parse(fileText).Root;
+            var name = ProjectUtil.InferAssemblyName(fileInfo.Path, xml) ?? Path.GetFileNameWithoutExtension(fileInfo.Path);
+            try
+            {
+                await _projectService.InsertOrUpdateProjectInfo(new ProjectInfo
+                {
+                    Content = fileText,
+                    Name = name
+                });
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+        }
+
+        private async Task TraverseProjectFile(StorageFolder folder)
         {
             await dispatcherQueue.EnqueueAsync(() => { ScaningFolder = folder.Path; });
-
 
             var fs = await folder.GetFilesAsync();
 
@@ -106,42 +121,42 @@ namespace SubstrateCore.ViewModels
             {
                 if (fileInfo.FileType == ".csproj" || fileInfo.FileType == ".vcxproj")
                 {
-                    var p = new ProjectInfo() { RelativePath = PathUtil.TrimToRelativePath(fileInfo.Path), ProjectType = ProjectTypeEnum.Substrate };
-                    try
+                    WriteDataToDb(fileInfo);
+                    continue;
+                }
+                if (fileInfo.Name == "dirs")
+                {
+                    var dirs = await FileIO.ReadLinesAsync(fileInfo);
+
+                    foreach (var item in dirs)
                     {
-                        var xml = await XmlUtil.LoadDocAsync(fileInfo.Path);
-                        var assemblyName = xml.GetFirst(SubstrateConst.AssemblyName)?.Value;
-                        var framework = xml.GetFirst(SubstrateConst.TargetFramework)?.Value;
-                        var package = xml.GetFirst(SubstrateConst.PackageId)?.Value;
-                        var nuspe = xml.GetFirst(SubstrateConst.NuspecFile)?.Value;
-                        p.Name = assemblyName ?? package ?? nuspe;
-                        p.Framework = framework;
-                        if (p.Framework == null && package != null)
+                        var folderName = item.Replace("\\", "").Replace("{amd64}", "").Trim();
+
+                        if (folderName.IndexOf("DIRS_NOT_YET_PORTED", StringComparison.OrdinalIgnoreCase) >= 0)
                         {
-                            p.Framework = FrameworkConst.Nupkg;
-                        }
-                        if (p.Name == null)
-                        {
-                            p.Name = fileInfo.Name;
+                            break;
                         }
 
-                        projects.Append(p);
-                    }
-                    catch (Exception e)
-                    {
-                        throw e;
+                        if (!string.IsNullOrEmpty(folderName) &&
+                            folderName.IndexOf("DIRS", StringComparison.OrdinalIgnoreCase) < 0 &&
+                            !folderName.StartsWith("#"))
+                        {
+                            await Task.Run(async () =>
+                         {
+                             try
+                             {
+                                 var subFolder = await StorageFolder.GetFolderFromPathAsync(Path.Combine(folder.Path, folderName));
+                                 await TraverseProjectFile(subFolder);
+                             }
+                             catch (Exception e)
+                             {
+                                 Debug.WriteLine(e);
+                             }
+                         });
+
+                        }
                     }
                 }
-            }
-
-            var directs = (await folder.GetFoldersAsync()).Where(a => a.Name != "obj" && a.Name != "objd").ToArray();
-
-            foreach (var dd in directs)
-            {
-                await Task.Run(async () =>
-                 {
-                     await Director(dd, projects);
-                 });
             }
         }
     }

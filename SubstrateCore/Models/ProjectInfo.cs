@@ -24,6 +24,8 @@ namespace SubstrateCore.Models
 
         public string RelativePath { get; set; }
 
+        public string Content { get; set; }
+
         public bool Unnecessary { get; set; }
 
         [XmlIgnore]
@@ -68,15 +70,7 @@ namespace SubstrateCore.Models
             }
         }
 
-        [XmlIgnore]
-        private Dictionary<string, ProjectInfo> references;
-
-        [XmlIgnore]
-        protected Dictionary<string, ProjectInfo> References { get { return references == null ? new Dictionary<string, ProjectInfo>() : references; } }
-
-
         public ProjectInfo() { }
-
 
         public ProjectInfo(string name, string relativePath, ProjectTypeEnum projectType, string framework, bool unnecessary = false)
         {

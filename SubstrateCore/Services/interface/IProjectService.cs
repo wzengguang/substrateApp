@@ -9,7 +9,10 @@ namespace SubstrateCore.Services
 {
     public interface IProjectService
     {
+        Task<List<ProjectInfo>> GetAll();
         Task<Dictionary<string, Project>> LoadProduces();
         Task Save(Dictionary<string, Project> projectSet);
+        Task InsertOrUpdateProjectInfo(ProjectInfo projectInfo);
+        Task<int> CountProjectInfo();
     }
 }

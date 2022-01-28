@@ -95,7 +95,6 @@ namespace SubstrateApp
             Task.Run(async () => { await ViewModel.ScanSubstrateFolder(); });
         }
 
-
         private void OnThemeRadioButtonChecked(object sender, RoutedEventArgs e)
         {
             var selectedTheme = ((RadioButton)sender)?.Tag?.ToString();

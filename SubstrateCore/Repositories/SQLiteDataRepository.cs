@@ -14,6 +14,11 @@ namespace SubstrateCore.Repositories
 {
     public class SQLiteDataRepository : RepositoryBase
     {
+        private SqliteCommand Command()
+        {
+            return new SqliteCommand() { Connection = DbConnection };
+        }
+
         public async Task<List<ProjectInfo>> GetProjects()
         {
             var result = new List<ProjectInfo>();
@@ -58,11 +63,14 @@ namespace SubstrateCore.Repositories
             {
                 SqliteCommand insertCommand = new SqliteCommand() { Connection = DbConnection };
 
-                insertCommand.CommandText = "INSERT OR REPLACE INTO ProjectInfo (ProjectType,Framework,Name,RelativePath) VALUES (@ProjectType, @Framework,@Name,@RelativePath);";
+                insertCommand.CommandText = "INSERT OR REPLACE INTO ProjectInfo (ProjectType,Framework,Name,RelativePath,Content) " +
+                                            "VALUES (@ProjectType, @Framework,@Name,@RelativePath,@Content);";
+
                 insertCommand.Parameters.AddWithValue("@ProjectType", (int)project.ProjectType);
                 insertCommand.Parameters.AddWithValue("@Framework", project.Framework);
                 insertCommand.Parameters.AddWithValue("@Name", project.Name);
                 insertCommand.Parameters.AddWithValue("@RelativePath", project.RelativePath);
+                insertCommand.Parameters.AddWithValue("@Content", project.Content);
 
                 await insertCommand.ExecuteReaderAsync();
             }
@@ -70,6 +78,14 @@ namespace SubstrateCore.Repositories
             {
                 Debug.WriteLine(e.Message);
             }
+        }
+
+        public async Task<int> CountProjectInfo()
+        {
+            SqliteCommand insertCommand = Command();
+            insertCommand.CommandText = "SELECT COUNT(Id) FROM ProjectInfo";
+            var count = await insertCommand.ExecuteScalarAsync();
+            return (int)count;
         }
     }
 }

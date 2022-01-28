@@ -65,7 +65,7 @@ namespace SubstrateCore.Utils
         /// </summary>
         public static XElement GetFirst(this XElement element, string tag)
         {
-            return element.GetAll(tag).FirstOrDefault();
+            return element?.GetAll(tag).FirstOrDefault();
         }
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace SubstrateCore.Utils
         /// </summary>
         public static IEnumerable<XElement> GetAll(this XElement element, string tag)
         {
-            return element.Elements().Where(e => e.Name.LocalName.EqualsIgnoreCase(tag));
+            return element?.Elements().Where(e => e.Name.LocalName.EqualsIgnoreCase(tag));
         }
 
         /// <summary>
