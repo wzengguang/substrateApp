@@ -120,13 +120,14 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Utils\Common\SubstrateConst.cs" />
+    <Compile Include="Models\SearchInput.cs" />
+    <Compile Include="Utils\ControlUtil.cs" />
+    <Compile Include="Utils\SubstrateConst.cs" />
     <Compile Include="Models\Package.cs" />
     <Compile Include="Utils\Jsonutil.cs" />
-    <Compile Include="Utils\Substrate\SubstrateNuGets.cs" />
     <Compile Include="Repositories\RepositoryBase.cs" />
     <Compile Include="Repositories\SQLiteDataRepository.cs" />
-    <Compile Include="Utils\Common\FrameworkConst.cs" />
+    <Compile Include="Models\FrameworkConst.cs" />
     <Compile Include="Models\ProjectGroup.cs" />
     <Compile Include="Models\Project.cs" />
     <Compile Include="Models\ProjectTypeEnum.cs" />
@@ -136,17 +137,11 @@
     <Compile Include="Services\ProjectService.cs" />
     <Compile Include="Services\interface\IProjectService.cs" />
     <Compile Include="Services\SearchPathService.cs" />
-    <Compile Include="Utils\MSBuildPath.cs" />
-    <Compile Include="Utils\MSBuildUtils.cs" />
     <Compile Include="Utils\PathUtil.cs" />
-    <Compile Include="Utils\PathUtils.cs" />
-    <Compile Include="Utils\ProjectUtil.cs" />
     <Compile Include="Utils\StringExtension.cs" />
-    <Compile Include="Utils\Substrate\ReferenceResolver.cs" />
-    <Compile Include="Utils\Substrate\XDocumentExtension.cs" />
-    <Compile Include="Utils\Substrate\XElementExtension.cs" />
-    <Compile Include="Utils\XmlUtil.cs" />
-    <Compile Include="Utils\Tags.cs" />
+    <Compile Include="Utils\XDocumentExtension.cs" />
+    <Compile Include="Utils\XElementExtension.cs" />
+    <Compile Include="Utils\ProjectUtil.cs" />
     <EmbeddedResource Include="Properties\SubstrateCore.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +170,7 @@
   <ItemGroup>
     <Content Include="Models\substrate.nugets.json" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

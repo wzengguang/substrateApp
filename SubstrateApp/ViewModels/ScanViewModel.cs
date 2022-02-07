@@ -2,14 +2,11 @@
 using Microsoft.Toolkit.Mvvm.Input;
 using Microsoft.Toolkit.Uwp;
 using SubstrateApp.Configuration;
-using SubstrateApp.Utils;
 using SubstrateCore.Common;
 using SubstrateCore.Models;
 using SubstrateCore.Services;
 using SubstrateCore.Utils;
 using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -113,8 +110,8 @@ namespace SubstrateApp.ViewModels
         private async void SaveFileInfoToDb(StorageFile fileInfo)
         {
             var fileText = await FileIO.ReadTextAsync(fileInfo);
-            var xml = XDocument.Parse(fileText).Root;
-            var name = ProjectUtil.InferAssemblyName(fileInfo.Path, xml) ?? Path.GetFileNameWithoutExtension(fileInfo.Path);
+            var xml = XDocument.Parse(fileText);
+            var name = ProjectUtil.TryGetAssemblyName(xml, fileInfo.Path) ?? Path.GetFileNameWithoutExtension(fileInfo.Path);
             try
             {
                 await _projectService.InsertOrUpdateProject(new Project
@@ -122,7 +119,8 @@ namespace SubstrateApp.ViewModels
                     Content = fileText,
                     Name = name,
                     RelativePath = PathUtil.TrimToRelativePath(fileInfo.Path),
-                    Framework = ""
+                    Framework = xml.GetFirst(SubstrateConst.TargetFramework)?.Value ?? ProjectUtil.InferFrameworkByPath(fileInfo.Path),
+                    ProjectType = fileInfo.FileType.EndsWithIgnoreCase("csproj") ? ProjectTypeEnum.Substrate : ProjectTypeEnum.CPP
                 });
             }
             catch (Exception e)

@@ -58,7 +58,7 @@ namespace SubstrateApp.ViewModels
         public async Task OrderTargetPath()
         {
             var path = PathUtil.GetPhysicalPath(SearchFilePathViewModel.SearchPath);
-            var xml = await XmlUtil.LoadAsync(path);
+            var xml = await ProjectUtil.LoadAsync(path);
 
             var nones = xml.Descendants(SubstrateConst.None).ToList();
             var noneParent = nones.First().Parent;
@@ -90,7 +90,7 @@ namespace SubstrateApp.ViewModels
                 customParent.Add(item);
             }
 
-            await XmlUtil.SaveAsync(xml, path);
+            await ProjectUtil.SaveAsync(xml, path);
 
         }
 
@@ -145,7 +145,7 @@ namespace SubstrateApp.ViewModels
             });
             try
             {
-                var xml = await XmlUtil.LoadAsync(path);
+                var xml = await ProjectUtil.LoadAsync(path);
 
                 var nones = xml.GetIncludes(SubstrateConst.None).Where(a => a.Value.Attribute(SubstrateConst.Include).Value.StartsWith(SubstrateConst.TargetPathDir));
 

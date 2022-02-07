@@ -12,5 +12,9 @@ namespace SubstrateCore.Services
         Task<List<Project>> GetAll();
         Task InsertOrUpdateProject(Project projectInfo);
         Task<int> GetProjectCount();
+        Task<HashSet<string>> GetProjectReferences(Project project);
+        Task<Project> GetProducedProjectByName(string name);
+        Task<Project> GetProjectByPath(string path);
+        Task<Project> GetProject(SearchInput search);
     }
 }

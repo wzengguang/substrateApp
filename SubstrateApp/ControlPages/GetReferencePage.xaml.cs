@@ -18,10 +18,5 @@ namespace SubstrateApp.ControlPages
             ViewModel = ServiceProvider.Current.GetService<GetReferenceViewModel>();
         }
 
-        private void GetReferenceBtn_Click(object sender, RoutedEventArgs e)
-        {
-            ViewModel.GetCurrentPathIncludes().ConfigureAwait(false);
-
-        }
     }
 }

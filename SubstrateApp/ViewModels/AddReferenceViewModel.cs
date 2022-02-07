@@ -53,7 +53,7 @@ namespace SubstrateApp.ViewModels
 
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
 
-            var xml = await XmlUtil.LoadDocAsync(file.Path);
+            var xml = await ProjectUtil.LoadDocAsync(file.Path);
 
             foreach (var item in xml.Descendants("None"))
             {
@@ -88,7 +88,7 @@ namespace SubstrateApp.ViewModels
             {
                 if (fileInfo.FileType == ".csproj")
                 {
-                    var xml = await XmlUtil.LoadAsync(fileInfo.Path);
+                    var xml = await ProjectUtil.LoadAsync(fileInfo.Path);
                     foreach (var none in xml.Descendants("None"))
                     {
                         var attr = none.Attribute("Include")?.Value;
@@ -139,9 +139,9 @@ namespace SubstrateApp.ViewModels
 
             var readys = await GetTargetPathInNupkgFile();
 
-            var needs = PathUtil.ConvertProjectNameArrayFromTextBox(NeedAdd);
+            var needs = ControlUtil.GetProjectNamesFromTextBox(NeedAdd);
 
-            var xml = await XmlUtil.LoadAsync(path);
+            var xml = await ProjectUtil.LoadAsync(path);
             var nones = xml.Descendants("None")
                     .ToDictionary(a => a.Attribute("Include").Value.Split("\\").Last().Replace(".dll", ""), a => a, StringComparer.OrdinalIgnoreCase);
             var qCustomInputs = xml.Descendants("QCustomInput")
@@ -149,18 +149,18 @@ namespace SubstrateApp.ViewModels
 
             foreach (var need in needs)
             {
-                if (readys.ContainsKey(need))
+                if (readys.ContainsKey(need.Content))
                 {
-                    if (!nones.ContainsKey(need))
+                    if (!nones.ContainsKey(need.Content))
                     {
                         var ele = new XElement("None", new XAttribute("Pack", "true"), new XAttribute("PackagePath", @"lib\netcoreapp3.1"),
-                            new XAttribute("Include", readys[need]));
+                            new XAttribute("Include", readys[need.Content]));
                         nones.ElementAt(0).Value.Parent.Add(ele);
                     }
-                    if (!qCustomInputs.ContainsKey(need))
+                    if (!qCustomInputs.ContainsKey(need.Content))
                     {
                         var ele2 = new XElement("QCustomInput", new XAttribute("Visible", "false"),
-                            new XAttribute("Include", readys[need]));
+                            new XAttribute("Include", readys[need.Content]));
                         qCustomInputs.ElementAt(0).Value.Parent.Add(ele2);
                     }
                 }
@@ -168,12 +168,12 @@ namespace SubstrateApp.ViewModels
                 {
                     await dispatcherQueue.EnqueueAsync(() =>
                     {
-                        AddFail.Add(need);
+                        AddFail.Add(need.Content);
                     });
                 }
             }
 
-            await XmlUtil.SaveAsync(xml, path);
+            await ProjectUtil.SaveAsync(xml, path);
 
         }
     }

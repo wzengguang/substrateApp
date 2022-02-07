@@ -1,5 +1,6 @@
 namespace SubstrateCore.Utils
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Xml.Linq;
@@ -20,7 +21,7 @@ namespace SubstrateCore.Utils
         /// </summary>
         public static XElement GetFirst(this XDocument document, string tag)
         {
-            return document.GetAll(tag).FirstOrDefault();
+            return document.GetDescendants(tag).FirstOrDefault();
         }
 
         /// <summary>
@@ -29,16 +30,21 @@ namespace SubstrateCore.Utils
         /// </summary>
         public static XElement GetLast(this XDocument document, string tag)
         {
-            return document.GetAll(tag).LastOrDefault();
+            return document.GetDescendants(tag).LastOrDefault();
         }
 
         /// <summary>
         /// Gets all descendants that match the tag name.
         /// The comparison process is case-insensitive.
         /// </summary>
-        public static IEnumerable<XElement> GetAll(this XDocument document, string tag)
+        public static IEnumerable<XElement> GetDescendants(this XDocument document, string tag)
         {
             return document.Descendants().Where(e => e.Name.LocalName.EqualsIgnoreCase(tag));
+        }
+
+        public static IEnumerable<XElement> GetDescendants(this XDocument document, params string[] tags)
+        {
+            return document.Descendants().Where(e => tags.Contains(e.Name.LocalName, StringComparer.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -48,7 +54,7 @@ namespace SubstrateCore.Utils
         public static IEnumerable<XElement> GetAll(this XDocument document, params string[] tags)
         {
             var result = new List<XElement>();
-            tags.ToList().ForEach(tag => result.AddRange(document.GetAll(tag)));
+            tags.ToList().ForEach(tag => result.AddRange(document.GetDescendants(tag)));
             return result;
         }
     }

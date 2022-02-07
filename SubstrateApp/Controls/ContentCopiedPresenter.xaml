@@ -25,8 +25,8 @@
                 x:Name="CodeScrollViewer" Padding="0,4,32,10"
                 HorizontalScrollBarVisibility="Auto"
                 HorizontalScrollMode="Auto"
-                VerticalScrollBarVisibility="Disabled"
-                VerticalScrollMode="Disabled">
+                VerticalScrollBarVisibility="Auto"
+                VerticalScrollMode="Auto">
             <ContentPresenter x:Name="CodePresenter"/>
         </ScrollViewer>
         <Button x:Name="CopyCodeButton" AutomationProperties.Name="Copy"

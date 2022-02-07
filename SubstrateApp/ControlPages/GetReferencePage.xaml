@@ -12,7 +12,7 @@
         </StackPanel>
 
         <StackPanel FlowDirection="RightToLeft" Margin="0,20">
-            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.IsLoading), Mode=OneWay}" Click="GetReferenceBtn_Click" Style="{StaticResource AccentButtonStyle}" Content="GetReference" />
+            <Button IsEnabled="{x:Bind vm:Converters.Not(ViewModel.GetReferenceCommand.IsRunning), Mode=OneWay}" Command="{x:Bind ViewModel.GetReferenceCommand}" Style="{StaticResource AccentButtonStyle}" Content="GetReference" />
         </StackPanel>
 
         <StackPanel x:DefaultBindMode="OneWay"
@@ -24,11 +24,13 @@
             <controls:ContentCopiedPresenter
                     x:Name="CanFixPaths"
                     Text="{x:Bind vm:Converters.ToRichString(ViewModel.References), Mode=OneWay}"
+                    MaxHeight="500"
+                    
                     Margin="16,20" />
         </StackPanel>
 
         <StackPanel>
-            <TextBlock  Text="{x:Bind vm:Converters.ToRichString(ViewModel.NoFindProject),Mode=OneWay}" TextWrapping="Wrap" MinHeight="200" />
+            <!--<TextBlock  Text="{x:Bind vm:Converters.ToRichString(ViewModel.NoFindProject),Mode=OneWay}" TextWrapping="Wrap" MinHeight="200" />-->
         </StackPanel>
 
     </StackPanel>

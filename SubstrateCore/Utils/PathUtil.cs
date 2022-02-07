@@ -13,33 +13,12 @@ namespace SubstrateCore.Utils
 {
     public static class PathUtil
     {
-
         public static string SubstrateDir
         {
             get
             {
                 return ApplicationData.Current.LocalSettings.Values["SubstrateDir"] as string;
             }
-        }
-
-        /// <summary>
-        /// no repeat,no empty, ignore case
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string[] ConvertProjectNameArrayFromTextBox(string text)
-        {
-            HashSet<string> result = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-            foreach (string str in text.Split('\r'))
-            {
-                var s = str.Replace(".dll", "").Trim();
-                if (!string.IsNullOrEmpty(s))
-                {
-                    result.Add(s);
-                }
-            }
-            return result.ToArray();
         }
 
         public static string TrimToRelativePath(string path)

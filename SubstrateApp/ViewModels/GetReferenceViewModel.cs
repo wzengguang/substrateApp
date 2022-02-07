@@ -1,6 +1,5 @@
 ﻿using Microsoft.Toolkit.Mvvm.ComponentModel;
 using Microsoft.Toolkit.Uwp;
-using SubstrateApp.Utils;
 using SubstrateCore.Common;
 using SubstrateCore.Services;
 using SubstrateCore.Utils;
@@ -13,6 +12,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.System;
 using Windows.UI.Xaml.Controls;
+using Microsoft.Toolkit.Mvvm.Input;
+using System.Runtime.Versioning;
+using SubstrateCore.Models;
 
 namespace SubstrateApp.ViewModels
 {
@@ -22,20 +24,6 @@ namespace SubstrateApp.ViewModels
         private ISearchPathService _searchPathService;
         private IProjectService _projectService;
 
-        public GetReferenceViewModel(IProjectService projectService, ISearchPathService searchPathService)
-        {
-            _projectService = projectService;
-            _searchPathService = searchPathService;
-        }
-
-        private bool _isLoading;
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set => SetProperty(ref _isLoading, value);
-        }
-
         public string _projectNames = "";
         public string ProjectNames
         {
@@ -43,24 +31,31 @@ namespace SubstrateApp.ViewModels
             set => SetProperty(ref _projectNames, value);
         }
 
-        public List<string> NoFindProject = new List<string>();
-
         public ObservableCollection<string> References = new ObservableCollection<string>();
 
-        public async Task GetCurrentPathIncludes()
-        {
-            await dispatcherQueue.EnqueueAsync(() =>
-            {
-                References.Clear();
-            });
+        public IAsyncRelayCommand GetReferenceCommand { get; set; }
 
-            var pNames = PathUtil.ConvertProjectNameArrayFromTextBox(ProjectNames);
+        public GetReferenceViewModel(IProjectService projectService, ISearchPathService searchPathService)
+        {
+            _projectService = projectService;
+            _searchPathService = searchPathService;
+            GetReferenceCommand = new AsyncRelayCommand(GetProjectReferences);
+        }
+
+
+        private async Task GetProjectReferences()
+        {
+            References.Clear();
+
+            var pNames = ControlUtil.GetProjectNamesFromTextBox(ProjectNames);
 
             foreach (var item in pNames)
             {
-                var xml = await XmlUtil.LoadAsync(item);
-                var nones = xml.GetIncludes(SubstrateConst.None);
-                foreach (var n in nones.Keys)
+                var project = await _projectService.GetProject(item);
+
+                var references = await _projectService.GetProjectReferences(project);
+
+                foreach (var n in references)
                 {
                     if (!References.Contains(n))
                     {
@@ -71,22 +66,6 @@ namespace SubstrateApp.ViewModels
                     }
                 }
             }
-        }
-
-
-        public async Task GetReferencesAsync()
-        {
-            await dispatcherQueue.EnqueueAsync(() =>
-            {
-                _isLoading = true;
-                NoFindProject.Clear();
-                References.Clear();
-            });
-
-            var pNames = ProjectNames.Split("\r").Select(a => a.Replace(".dll", "").Trim());
-            var children = new HashSet<string>();
-
-            throw new NotImplementedException();
         }
     }
 }

@@ -1,5 +1,4 @@
 using SubstrateApp.Configuration;
-using SubstrateApp.Utils;
 using SubstrateApp.ViewModels;
 using SubstrateCore.Utils;
 using System;

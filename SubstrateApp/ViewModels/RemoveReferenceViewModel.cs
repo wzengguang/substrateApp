@@ -52,16 +52,16 @@ namespace SubstrateApp.ViewModels
             {
                 var path = PathUtil.GetPhysicalPath(SearchFilePathViewModel.SearchPath);
 
-                var removes = PathUtil.ConvertProjectNameArrayFromTextBox(NeedRemoved);
+                var removes = ControlUtil.GetProjectNamesFromTextBox(NeedRemoved);
 
-                var xml = await XmlUtil.LoadAsync(path);
+                var xml = await ProjectUtil.LoadAsync(path);
                 var nones = xml.GetIncludes(SubstrateConst.None);
 
                 var customs = xml.GetIncludes(SubstrateConst.QCustomInput);
 
                 foreach (var remove in removes)
                 {
-                    var key = remove;
+                    var key = remove.Content;
                     if (nones.ContainsKey(key))
                     {
                         nones[key].Remove();
@@ -72,7 +72,7 @@ namespace SubstrateApp.ViewModels
                     }
                 }
 
-                await XmlUtil.SaveAsync(xml, path);
+                await ProjectUtil.SaveAsync(xml, path);
             }
             catch (Exception e)
             {

@@ -87,8 +87,8 @@ namespace SubstrateCore.Repositories
             try
             {
                 SqliteCommand selectCommand = new SqliteCommand
-                    ("SELECT ProjectType,Framework,Name,RelativePath,Content from Project WHERE RelativePath=@path", DbConnection);
-                selectCommand.Parameters.AddWithValue("@path", path);
+                    ("SELECT ProjectType,Framework,Name,RelativePath,Content from Project WHERE RelativePath like @path", DbConnection);
+                selectCommand.Parameters.AddWithValue("@path", "%" + path);
 
                 SqliteDataReader query = await selectCommand.ExecuteReaderAsync();
 
@@ -112,7 +112,6 @@ namespace SubstrateCore.Repositories
             }
             return null;
         }
-
 
         public async Task AddProjects(List<Project> projects)
         {
