@@ -16,8 +16,6 @@ namespace SubstrateApp.ControlPages
             ViewModel = ServiceProvider.Current.GetService<RemoveReferenceViewModel>();
         }
 
-
-
         private async void RemoveBtn_Click(object sender, RoutedEventArgs e)
         {
             await Task.Run(async () => await ViewModel.RemoveReferenceAsync());

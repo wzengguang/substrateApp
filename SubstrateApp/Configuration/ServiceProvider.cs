@@ -27,6 +27,7 @@ namespace SubstrateApp.Configuration
             serviceCollection.AddTransient<AddReferenceViewModel>();
             serviceCollection.AddTransient<ToolViewModel>();
             serviceCollection.AddTransient<SettingViewModel>();
+            serviceCollection.AddTransient<ProjectReferenceViewModel>();
             serviceCollection.AddSingleton<ScanViewModel>();
 
             _rootServiceProvider = serviceCollection.BuildServiceProvider();

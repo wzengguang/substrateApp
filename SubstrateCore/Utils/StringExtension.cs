@@ -47,7 +47,7 @@
         /// Replaces all strings that match a specified string with a specified replacement string.
         /// Case-insensitive.
         /// </summary>
-        public static string ReplaceIgnoreCase(this string s, string v, string r)
+        public static string ReplaceIgnoreCaseRegex(this string s, string v, string r)
         {
             return (v == null || r == null)
                 ? s
@@ -61,6 +61,26 @@
         public static string[] SplitIgnoreCase(this string s, string v)
         {
             return Regex.Split(s, Regex.Escape(v), RegexOptions.IgnoreCase);
+        }
+
+        public static bool ContainIgnoreCase(this string str, string value)
+        {
+            if (str == null)
+            {
+                return false;
+            }
+
+            return str.Contains(value, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static string ReplaceIgnoreCase(this string str, string value, string replace)
+        {
+            if (str == null)
+            {
+                return null;
+            }
+
+            return str.Replace(value, replace);
         }
     }
 }

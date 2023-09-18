@@ -29,17 +29,10 @@ namespace SubstrateApp.ViewModels
             _projectService = projectService;
         }
 
-
         public async void SearchPathTb_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
             Suggestions.Clear();
-            var text = searchPath.Replace(".dll", "").Trim();
-            if (text.Contains(":") && text.IndexOf("src") != -1)
-            {
-                var srcIndex = text.IndexOf("src");
-                text = text.Substring(srcIndex + 3);
-            }
-            throw new Exception();
+
         }
 
         public void FilePathTb_SuggestionChosen(AutoSuggestBox sender, AutoSuggestBoxSuggestionChosenEventArgs args)

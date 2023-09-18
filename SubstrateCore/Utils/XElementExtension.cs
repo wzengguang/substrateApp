@@ -141,5 +141,139 @@ namespace SubstrateCore.Utils
             parent.RemoveNodes();
             foreach (var child in children) parent.Add(child);
         }
+
+        public static XElement FirstChild(this XElement element, string name)
+        {
+            if (element == null)
+                return null;
+            return element.Elements().FirstOrDefault(a => a.Name.LocalName == name);
+        }
+
+        public static IEnumerable<XElement> AllChildren(this XElement element, string name)
+        {
+            if (element == null)
+                return null;
+            return element.Elements().Where(a => a.Name.LocalName == name);
+        }
+
+        public static XElement FirstDescendent(this XElement element, string name)
+        {
+            if (element == null)
+                return null;
+            return element.Descendants().FirstOrDefault(a => a.Name.LocalName == name);
+        }
+
+        public static IEnumerable<XElement> AllDescendent(this XElement element, string name)
+        {
+            if (element == null)
+                return null;
+            return element.Descendants().Where(a => a.Name.LocalName == name);
+        }
+
+        public static XElement FirstChildByAttribute(this XElement element, string elementName, string name, bool and = true, params string[] values)
+        {
+            if (element != null)
+            {
+                foreach (var child in element.AllChildren(elementName))
+                {
+                    var result = child.CheckAttribute(name, and, values);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static IEnumerable<XElement> AllChildByAttribute(this XElement element, string elementName, string name, bool and = true, params string[] values)
+        {
+            if (element != null)
+            {
+                foreach (var child in element.AllChildren(elementName))
+                {
+                    var result = child.CheckAttribute(name, and, values);
+                    if (result != null)
+                    {
+                        yield return result;
+                    }
+                }
+            }
+        }
+
+        public static IEnumerable<XElement> AllDescendentsByAttribute(this XElement element, string elementName, string name, bool and = true, params string[] values)
+        {
+            if (element != null)
+            {
+                foreach (var child in element.AllDescendent(elementName))
+                {
+                    var result = child.CheckAttribute(name, and, values);
+                    if (result != null)
+                    {
+                        yield return result;
+                    }
+                }
+            }
+        }
+
+        public static XElement FirstDescendentByAttribute(this XElement element, string elementName, string name, bool and = true, params string[] values)
+        {
+            if (element != null)
+            {
+                foreach (var child in element.AllDescendent(elementName))
+                {
+                    var result = child.CheckAttribute(name, and, values);
+                    if (result != null)
+                    {
+                        return result;
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static XElement CheckAttribute(this XElement element, string name, bool and = true, params string[] values)
+        {
+            foreach (var attr in element.Attributes())
+            {
+                if (attr.Name.LocalName.Equals(name, StringComparison.OrdinalIgnoreCase))
+                {
+                    if (values.Length > 0)
+                    {
+                        if (and)
+                        {
+                            foreach (var v in values)
+                            {
+                                if (!attr.Value.Contains(v, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    return null;
+                                }
+                            }
+
+                            return element;
+                        }
+                        else
+                        {
+                            foreach (var v in values)
+                            {
+                                if (attr.Value.Contains(v, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    return element;
+                                }
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        return element;
+                    }
+                }
+            }
+
+            return null;
+        }
     }
 }

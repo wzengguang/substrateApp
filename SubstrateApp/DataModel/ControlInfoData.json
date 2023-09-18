@@ -16,6 +16,17 @@
       "Description": "",
       "Items": [
         {
+          "UniqueId": "ProjectReferences",
+          "Title": "ProjectReferences",
+          "Subtitle": "Get ProjectReferences from a project file.",
+          "ImagePath": "ms-appx:///Assets/FlipView.png",
+          "Description": "Get ProjectReferences from a project file.",
+          "Content": "",
+          "IsUpdated": false,
+          "Docs": [],
+          "RelatedControls": []
+        },
+        {
           "UniqueId": "GetReference",
           "Title": "GetReference",
           "Subtitle": "Get reference from a project file.",
@@ -92,7 +103,7 @@
           "Docs": [],
           "RelatedControls": []
         }
-        
+
       ]
     }
   ]
