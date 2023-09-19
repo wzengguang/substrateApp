@@ -20,12 +20,12 @@ namespace SubstrateCore
         {
             if (node != null)
             {
-                string span = new string(' ', deep);
+                string span = new string('-', deep);
                 strings.Add(span + node.NodeValue);
-
+                ++deep;
                 foreach (var child in node.Children)
                 {
-                    TraverseTree(child, ref strings, deep++);
+                    TraverseTree(child, ref strings, deep);
                 }
             }
         }

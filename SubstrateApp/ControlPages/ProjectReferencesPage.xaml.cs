@@ -32,13 +32,7 @@ namespace SubstrateApp.ControlPages
 
         private void QuerySubmitted(AutoSuggestBox sender, AutoSuggestBoxQuerySubmittedEventArgs args)
         {
-            if (!ViewModel.IsLoading)
-            {
-                ViewModel.GetReference().ConfigureAwait(false);
-                ViewModel.IsLoading = true;
-            }
-
-            ViewModel.IsLoading = false;
+            ViewModel.GetReference().ConfigureAwait(false);
         }
     }
 }

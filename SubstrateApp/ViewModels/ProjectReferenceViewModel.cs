@@ -27,35 +27,17 @@ namespace SubstrateApp.ViewModels
             SearchFilePathViewModel = searchFilePathViewModel;
         }
 
-        private bool _isLoading;
+        private bool _isCanQuery = true;
 
-        public bool IsLoading
+        public bool IsCanQuery
         {
-            get => _isLoading;
-            set => SetProperty(ref _isLoading, value);
+            get => _isCanQuery;
+            set => SetProperty(ref _isCanQuery, value);
         }
+
+        public ObservableCollection<TreeNode> TreeDataSource = new ObservableCollection<TreeNode>();
 
         public ObservableCollection<string> Result { get; set; } = new ObservableCollection<string>();
-
-        private async Task<Dictionary<string, string>> GetKnownTargetPathFromLocalFile(Dictionary<string, string> dic)
-        {
-            Uri dataUri = new Uri("ms-appx:///DataModel/rightTagetPath.xml");
-
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
-
-            var xml = await ProjectUtil.LoadDocAsync(file.Path);
-
-            foreach (var item in xml.Descendants("None"))
-            {
-                var attr = item.Attribute("Include")?.Value;
-                var name = attr.Split("\\").Last().Replace(".dll", "");
-                if (!dic.ContainsKey(name))
-                {
-                    dic.Add(name, attr);
-                }
-            }
-            return dic;
-        }
 
         private async Task GetKnownTargetPathFromNupkgFolderFiler(StorageFolder folder, Dictionary<string, string> projects)
         {
@@ -92,67 +74,77 @@ namespace SubstrateApp.ViewModels
 
         public async Task GetReference()
         {
+            IsCanQuery = false;
             await dispatcherQueue.EnqueueAsync(() =>
             {
                 Result.Clear();
+                TreeDataSource.Clear();
             });
-
             string path = PathUtil.GetPhysicalPath(SearchFilePathViewModel.SearchPath);
-
+            TreeNode treeNode = new TreeNode { NodeValue = PathUtil.ConvertPhysicalPathToRelative(path) };
             XDocument xDocument = await ProjectUtil.LoadDocAsync(path);
             if (xDocument == null)
             {
                 return;
             }
 
-            TreeNode treeNode = new TreeNode { NodeValue = path };
             await FindNotNet6ProjectReference(xDocument, treeNode, 0);
-            var list = treeNode.ToList();
             await dispatcherQueue.EnqueueAsync(() =>
             {
+                TreeDataSource.Add(treeNode);
+
+                var list = treeNode.ToList();
                 foreach (var item in list)
                 {
                     Result.Add(item);
                 }
             });
 
-            await ProjectUtil.SaveAsync(xDocument.Root, path);
+            // await ProjectUtil.SaveAsync(xDocument.Root, path);
+
+            IsCanQuery = true;
         }
 
         private async Task FindNotNet6ProjectReference(XDocument xDocument, TreeNode treeNode, int deep, int maxDeep = 10)
         {
             deep++;
-
+            List<Task> tasks = new List<Task>();
             var projectReferenceElements = xDocument.Root.AllDescendent("ProjectReference");
 
             foreach (var projectReferenceElement in projectReferenceElements)
             {
+                if (projectReferenceElement.Parent.CheckAttribute("Condition", true, "==", "net472") != null)
+                {
+                    continue;
+                }
+
                 string includePath = projectReferenceElement.Attribute("Include")?.Value;
                 if (includePath != null)
                 {
-                    string fullPath = SubstratePath.Combine(includePath.ReplaceIgnoreCase("$(INETROOT)\\", string.Empty));
-                    var doc = await ProjectUtil.LoadAsync(fullPath);
+                    string relativePath = includePath.ReplaceIgnoreCase("$(INETROOT)\\", string.Empty);
+                    var doc = await ProjectUtil.LoadAsync(relativePath);
                     if (doc != null)
                     {
                         var propertyGroupElement = doc.FirstChild("PropertyGroup");
                         string propertyGroupElementValue = propertyGroupElement?.Value;
                         if (propertyGroupElementValue != null && !propertyGroupElementValue.ContainIgnoreCase("net6"))
                         {
-                            TreeNode childTree = new TreeNode { Parent = treeNode, NodeValue = includePath };
-
+                            TreeNode childTree = new TreeNode { Parent = treeNode, NodeValue = relativePath };
                             treeNode.Children.Add(childTree);
                             if (deep <= maxDeep)
                             {
-                                XDocument xd = await ProjectUtil.LoadDocAsync(fullPath);
+                                XDocument xd = await ProjectUtil.LoadDocAsync(relativePath);
                                 if (xd != null)
                                 {
-                                    await FindNotNet6ProjectReference(xd, childTree, deep);
+                                    tasks.Add(Task.Run(() => FindNotNet6ProjectReference(xd, childTree, deep)));
                                 }
                             }
                         }
                     }
                 }
             }
+
+            await Task.WhenAll(tasks);
         }
     }
 }

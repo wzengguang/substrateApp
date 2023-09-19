@@ -54,8 +54,8 @@ namespace SubstrateApp
                 navigationLocation.SelectedIndex = 1;
             }
 
-            screenshotModeToggle.IsOn = UIHelper.IsScreenshotMode;
-            screenshotFolderLinkContent.Text = UIHelper.ScreenshotStorageFolder.Path;
+            //screenshotModeToggle.IsOn = UIHelper.IsScreenshotMode;
+            //screenshotFolderLinkContent.Text = UIHelper.ScreenshotStorageFolder.Path;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -136,7 +136,7 @@ namespace SubstrateApp
 
         private void screenshotModeToggle_Toggled(object sender, RoutedEventArgs e)
         {
-            UIHelper.IsScreenshotMode = screenshotModeToggle.IsOn;
+            //UIHelper.IsScreenshotMode = screenshotModeToggle.IsOn;
         }
 
         private void spatialSoundBox_Unchecked(object sender, RoutedEventArgs e)
@@ -162,7 +162,7 @@ namespace SubstrateApp
             if (folder != null)
             {
                 UIHelper.ScreenshotStorageFolder = folder;
-                screenshotFolderLink.Content = UIHelper.ScreenshotStorageFolder.Path;
+                //screenshotFolderLink.Content = UIHelper.ScreenshotStorageFolder.Path;
             }
         }
 

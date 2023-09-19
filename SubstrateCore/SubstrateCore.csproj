@@ -121,8 +121,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Models\SearchInput.cs" />
-    <Compile Include="Utils\ProjectReference.cs" />
-    <Compile Include="Utils\SubstratePath.cs" />
     <Compile Include="Models\TreeNode.cs" />
     <Compile Include="Utils\TreeNodeExtension.cs" />
     <Compile Include="Utils\ControlUtil.cs" />

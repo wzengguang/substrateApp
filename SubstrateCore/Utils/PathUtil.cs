@@ -32,6 +32,12 @@ namespace SubstrateCore.Utils
             return path;
         }
 
+        public static string ConvertPhysicalPathToRelative(string path)
+        {
+            path = path.Replace(SubstrateDir, "");
+            return path;
+        }
+
         public static string GetPhysicalPath(string path)
         {
             path = path.Trim();

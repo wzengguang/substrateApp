@@ -139,7 +139,8 @@ namespace SubstrateCore.Utils
                                StringComparison.OrdinalIgnoreCase)
             );
             parent.RemoveNodes();
-            foreach (var child in children) parent.Add(child);
+            foreach (var child in children)
+                parent.Add(child);
         }
 
         public static XElement FirstChild(this XElement element, string name)
@@ -234,6 +235,14 @@ namespace SubstrateCore.Utils
             return null;
         }
 
+        /// <summary>
+        /// if has return itself, else return null
+        /// </summary>
+        /// <param name="element"></param>
+        /// <param name="name"></param>
+        /// <param name="and"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
         public static XElement CheckAttribute(this XElement element, string name, bool and = true, params string[] values)
         {
             foreach (var attr in element.Attributes())

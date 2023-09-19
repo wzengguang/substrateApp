@@ -18,7 +18,7 @@
         {
           "UniqueId": "ProjectReferences",
           "Title": "ProjectReferences",
-          "Subtitle": "Get ProjectReferences from a project file.",
+          "Subtitle": "Get ProjectReferences of net472 only from a project file.",
           "ImagePath": "ms-appx:///Assets/FlipView.png",
           "Description": "Get ProjectReferences from a project file.",
           "Content": "",
